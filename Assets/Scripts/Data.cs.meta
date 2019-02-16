@@ -1,9 +1,23 @@
 fileFormatVersion: 2
-guid: 83a7c67de53a5474ebefc201db7ef93b
+guid: 7a655ae4fd7c9694098716c175d70c22
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Angle90: {instanceID: 0}
+  - Angle60: {instanceID: 0}
+  - Angle45: {instanceID: 0}
+  - Angle25: {instanceID: 0}
+  - Angle15: {instanceID: 0}
+  - Angle90Ledge: {instanceID: 0}
+  - Angle60Ledge: {instanceID: 0}
+  - Angle45Ledge: {instanceID: 0}
+  - Angle25Ledge: {instanceID: 0}
+  - Angle15Ledge: {instanceID: 0}
+  - Stand: {instanceID: 0}
+  - Ledge: {instanceID: 0}
+  - Triangle: {instanceID: 0}
+  - lol: {fileID: 1001848781753012, guid: 2f054b4aa9d68dc4aa80232e0be06d31, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

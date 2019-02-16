@@ -3,21 +3,26 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-public class Data : Singleton<Data>
+namespace Stand
 {
-    public List<string[]> TimetableMatrix = new List<string[]>();
-    public List<string[]> LessonScheduleMatrix = new List<string[]>();
-    public List<string[]> ExtraClassesMatrix = new List<string[]>();
-
-    public void Load()
+    public class Data : Singleton<Data>
     {
+        public List<string[]> TimetableMatrix = new List<string[]>();
+        public List<string[]> LessonScheduleMatrix = new List<string[]>();
+        public List<string[]> ExtraClassesMatrix = new List<string[]>();
+        public int Downtime = 0;
 
-        string ManifestPath = Application.dataPath + @"\Manifest.txt";
-        StreamReader ManifestReader = new StreamReader(ManifestPath, encoding: Encoding.GetEncoding(1251));
+        public void Load()
+        {
 
-        TimetableMatrix = CSVReader.Read(Application.dataPath + @"\" + ManifestReader.ReadLine());
-        LessonScheduleMatrix = CSVReader.Read(Application.dataPath + @"\" + ManifestReader.ReadLine());
-        ExtraClassesMatrix = CSVReader.Read(Application.dataPath + @"\" + ManifestReader.ReadLine());
+            string ManifestPath = Application.dataPath + @"\Manifest.txt";
+            StreamReader ManifestReader = new StreamReader(ManifestPath);
 
+            TimetableMatrix = CSVReader.Read(Application.dataPath + @"\" + ManifestReader.ReadLine());
+            LessonScheduleMatrix = CSVReader.Read(Application.dataPath + @"\" + ManifestReader.ReadLine());
+            ExtraClassesMatrix = CSVReader.Read(Application.dataPath + @"\" + ManifestReader.ReadLine());
+            Downtime = int.Parse(ManifestReader.ReadLine());
+
+        }
     }
 }

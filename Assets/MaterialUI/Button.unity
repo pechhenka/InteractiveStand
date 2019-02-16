@@ -310,7 +310,7 @@ Camera:
   m_GameObject: {fileID: 263851083}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 0.93333334, g: 0.93333334, b: 0.93333334, a: 1}
   m_projectionMatrixMode: 1
   m_SensorSize: {x: 36, y: 24}
@@ -323,7 +323,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: -1
-  far clip plane: 1
+  far clip plane: 2
   field of view: 60
   orthographic: 1
   orthographic size: 5
@@ -334,12 +334,12 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 0
+  m_TargetEye: 3
   m_HDR: 0
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 0
+  m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &263851088
@@ -544,7 +544,7 @@ GameObject:
   - component: {fileID: 1212687871}
   m_Layer: 5
   m_Name: Button Layer
-  m_TagString: MaterialButtonLayer
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -886,7 +886,7 @@ GameObject:
   - component: {fileID: 1414307599}
   m_Layer: 5
   m_Name: Button Text
-  m_TagString: MaterialText
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

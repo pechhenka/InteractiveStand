@@ -2,23 +2,26 @@
 using System.IO;
 using System;
 
-public static class CSVReader
+namespace Stand
 {
-    public static List<string[]> Read(string path)
+    public static class CSVReader
     {
-        List<string[]> Matrix = new List<string[]>();
-
-        StreamReader reader = new StreamReader(path);
-        string[] separator = { ('"'.ToString() + ','.ToString() + '"'.ToString()) };
-
-        while (!reader.EndOfStream)
+        public static List<string[]> Read(string path)
         {
-            string line = reader.ReadLine();
-            line = line.Substring(1, line.Length - 2);
+            List<string[]> Matrix = new List<string[]>();
 
-            Matrix.Add(line.Split(separator, StringSplitOptions.None));
+            StreamReader reader = new StreamReader(path);
+            string[] separator = { ('"'.ToString() + ','.ToString() + '"'.ToString()), (','.ToString()) };
+
+            while (!reader.EndOfStream)
+            {
+                string line = reader.ReadLine();
+                line = line.Substring(1, line.Length - 2);
+
+                Matrix.Add(line.Split(separator, StringSplitOptions.None));
+            }
+
+            return Matrix;
         }
-
-        return Matrix;
     }
 }
