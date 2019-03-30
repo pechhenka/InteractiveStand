@@ -132,6 +132,11 @@ namespace Stand
             {
                 float t = (Time.time - StartAnimBlind) / AnimTimeBlind;
 
+                if (t > 0.8f)
+                    ApplicationController.Instance.Clear = false;
+                else
+                    ApplicationController.Instance.Clear = true;
+
                 if (BlindMode)
                 {
                     cam.orthographicSize = Mathf.Lerp(NoBlind, YesBlind, ScaleCam.Evaluate(t));
@@ -164,14 +169,16 @@ namespace Stand
         {
             if (ClassButton.name == "Back")
             {
-                OnLessonSchedule(true);
+                Loger.add($"Окно занятий", "закрыли");
+                ReturnLessonShedule();
                 return;
             }
+            Loger.add($"Окно занятий", "открыли");
             HideAll();
             WeeklySchedule.SetActive(true);
             DatePanel.SetActive(true);
             int number = int.Parse(ClassButton.name);
-            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Stock.Instance.LessonScheduleMatrix[2][number * 4 + 3];
+            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Stock.Instance.LessonScheduleMatrix[2][number];
             DatePanelImage.color = VeryGray;
             CurrentWeeklyDay = DateTime.Now.DayOfWeek.Normalising();
             CurrentWeeklyClass = number;
@@ -180,10 +187,17 @@ namespace Stand
 
         public void ClickClassDay(int id)
         {
-            CurrentWeeklyDay = id;
-            string NameClass = HeadlineWeeklySchedule.text.Split()[1];
-            HeadlineWeeklySchedule.text = ((DayOfWeek)(id + 1)).ConvertToString(false) + " " + NameClass;
-            RefreshWeeklySchedule();
+            if (id != CurrentWeeklyDay)
+                {
+                CurrentWeeklyDay = id;
+                string NameClass = HeadlineWeeklySchedule.text.Split()[1];
+                HeadlineWeeklySchedule.text = ((DayOfWeek)(id + 1)).ConvertToString(false) + " " + NameClass;
+                RefreshWeeklySchedule();
+            }
+            else
+            {
+                Loger.add($"Окно занятий&Class:{Stock.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
+            }
         }
 
         void RefreshWeeklySchedule()
@@ -192,12 +206,14 @@ namespace Stand
             WeeklyLessons.text = "";
 
             int CWD = CurrentWeeklyDay * 16 + 3;
-            int CWC = CurrentWeeklyClass * 4;
+            int CWC = CurrentWeeklyClass;
             bool NullLesson = true;
+
+            Loger.add($"Окно занятий&Class:{Stock.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
 
             for (int i = 0; i < 8; i++)
             {
-                if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 3] == "")
+                if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] == "")
                 {
                     if (NullLesson)
                     {
@@ -210,14 +226,14 @@ namespace Stand
                 }
                 else
                     NullLesson = false;
-                WeeklyLessons.text += Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 3] + '\n';
+                WeeklyLessons.text += Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] + '\n';
 
                 string Classrooms = "";
-                if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 4] != "")
+                if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1] != "")
                 {
-                    Classrooms += Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 4];
-                    if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 6] != "")
-                        Classrooms += "/" + Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 6];
+                    Classrooms += Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1];
+                    if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 2] == "/")
+                        Classrooms += "/" + Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 3];
                 }
                 WeeklyClassrooms.text += Classrooms + '\n';
             }
@@ -230,6 +246,7 @@ namespace Stand
             DatePanel.SetActive(true);
             Main.SetActive(!Open);
             DatePanelImage.color = Open ? VeryGray : Gray;
+            Loger.add("Окно звонков", Open ? "открыли" : "закрыли");
         }
 
         public void OnLessonSchedule(bool Open)
@@ -238,6 +255,15 @@ namespace Stand
             LessonSchedule.SetActive(Open);
             DatePanel.SetActive(!Open);
             Main.SetActive(!Open);
+            Loger.add("Окно уроков", Open ? "открыли" : "закрыли");
+        }
+
+        private void ReturnLessonShedule()
+        {
+            HideAll();
+            LessonSchedule.SetActive(true);
+            DatePanel.SetActive(false);
+            Main.SetActive(false);
         }
 
         public void OnExtraClasses(bool Open)
@@ -249,11 +275,16 @@ namespace Stand
             DatePanelImage.color = Open ? VeryGray : Gray;
             HeadlineExtraClasses.text = DateTime.Now.DayOfWeek.ConvertToString(false);
             CurrentExtraDay = DateTime.Now.DayOfWeek.Normalising();
-            FillExtraClasses();
+            Loger.add("Окно доп.секций", Open ? "открыли" : "закрыли");
+            if (Open)
+                FillExtraClasses();
         }
 
         void FillExtraClasses()
         {
+            Loger.add($"Окно доп.секций&IdDay:{CurrentExtraDay}", "открыли");
+
+
             foreach (Transform child in InformationsBlocks.transform)
                 Destroy(child.gameObject);
             foreach (Transform child in Dots.transform)
@@ -267,8 +298,6 @@ namespace Stand
             int i = 1;
             for (; i < LengthExtraBlocks; i++)
             {
-                j = CurrentExtraDay * 4;
-
                 if (Stock.Instance.ExtraClassesMatrix[i][j] == "")
                 {
                     if (i == 1)
@@ -348,9 +377,16 @@ namespace Stand
 
         public void ClickExtraClassDay(int id)
         {
-            CurrentExtraDay = id;
-            HeadlineExtraClasses.text = ((DayOfWeek)(id + 1)).ConvertToString(false);
-            FillExtraClasses();
+            if (id != CurrentExtraDay)
+            {
+                CurrentExtraDay = id;
+                HeadlineExtraClasses.text = ((DayOfWeek)(id + 1)).ConvertToString(false);
+                FillExtraClasses();
+            }
+            else
+            {
+                Loger.add($"Окно доп.секций&IdDay:{CurrentExtraDay}", "нервное касание");
+            }
         }
 
         void HideAll()
@@ -366,7 +402,6 @@ namespace Stand
 
         void GenerateClassesButtons()
         {
-            int id = 0;
             int lenMas = Stock.Instance.LessonScheduleMatrix[2].Length;
 
             for (int i = 0; i < lenMas; i++)
@@ -382,9 +417,8 @@ namespace Stand
                     if (number >= 5 && number <= 11)
                     {
                         GameObject go = Instantiate(ClassesButton, ClassButtons[number - 5].transform);
-                        go.name = "" + id;
+                        go.name = "" + i;
                         go.GetComponentInChildren<Text>().text = ClassName;
-                        id++;
                     }
             }
         }
@@ -392,6 +426,7 @@ namespace Stand
         public void OnClickBlindMode()
         {
             BlindMode = !BlindMode;
+            Loger.add("BlindMode", BlindMode ? "включён" : "выключен");
             StartAnimBlind = Time.time;
         }
     }

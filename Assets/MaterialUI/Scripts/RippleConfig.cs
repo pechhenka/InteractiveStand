@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using Stand;
 
 namespace MaterialUI
 {
@@ -112,6 +113,26 @@ namespace MaterialUI
             Refresh();
         }
 
+        void OnDisable()
+        {
+            Clear();
+        }
+
+        void OnEnable()
+        {
+            Clear();
+        }
+
+        void Clear()
+        {
+            foreach (Transform child in transform)
+                if (child.name == "InkBlot(Clone)")
+                    Destroy(child.gameObject);
+
+            if (thisMask)
+                thisMask.enabled = false;
+        }
+
         public void Refresh()
         {
             if (autoSize)
@@ -205,6 +226,9 @@ namespace MaterialUI
                     state = 0;
                 }
             }
+
+            if (ApplicationController.Instance.Clear)
+                Clear();
         }
 
         public void OnPointerEnter(PointerEventData data)
