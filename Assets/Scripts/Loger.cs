@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
+﻿using System.IO;
 using System;
-using System.Text;
 using UnityEngine;
 
 namespace Stand
 {
+    /* Нужен для введения логов
+     * Просто вызовите метод add и он всё за вас красиво оформит
+     */
     public static class Loger
     {
         public static void add(string Name, string Body)

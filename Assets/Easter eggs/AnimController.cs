@@ -12,7 +12,7 @@ namespace Stand
 
         private void Start()
         {
-            BuildDated.text = "build dated: " + Info.Instance.BuildTime.ToString("dd.MM.yyyy");
+            BuildDated.text = "build dated: " + BuildInfo.BUILD_DATE;
             anim = GetComponent<Animation>();
         }
 

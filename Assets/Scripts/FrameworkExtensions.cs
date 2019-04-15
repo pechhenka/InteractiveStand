@@ -1,9 +1,13 @@
 ﻿using System;
 using UnityEngine;
 
+/* Класс содержит только методы расширения
+ * Просто облегчает жизнь при написании кода :)
+ * Вот измените мне альфа канал в Color без него :)
+ * Нет, вы конечно можете изменить его, но это не круто каждыйраз писать одно и тоже
+ */
 public static partial class FrameworkExtensions
 {
-
     public static Color SetAlpha(this Color c, float alpha)
     {
         return new Color(c.r, c.g, c.b, alpha);

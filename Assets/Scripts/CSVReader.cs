@@ -4,6 +4,9 @@ using System;
 
 namespace Stand
 {
+    /* Читает *.csv файл по данному пути
+     * Возвращает лист массива строк - двумерный массив
+     */
     public static class CSVReader
     {
         public static List<string[]> Read(string path)

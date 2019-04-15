@@ -157,7 +157,7 @@ namespace Stand
             Tuesday.text = "";
             Saturday.text = "";
 
-            foreach (string[] s in Stock.Instance.TimetableMatrix)
+            foreach (string[] s in Data.Instance.TimetableMatrix)
             {
                 Monday.text += s[0] + '\n';
                 Tuesday.text += s[1] + '\n';
@@ -178,7 +178,7 @@ namespace Stand
             WeeklySchedule.SetActive(true);
             DatePanel.SetActive(true);
             int number = int.Parse(ClassButton.name);
-            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Stock.Instance.LessonScheduleMatrix[2][number];
+            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonScheduleMatrix[2][number];
             DatePanelImage.color = VeryGray;
             CurrentWeeklyDay = DateTime.Now.DayOfWeek.Normalising();
             CurrentWeeklyClass = number;
@@ -196,7 +196,7 @@ namespace Stand
             }
             else
             {
-                Loger.add($"Окно занятий&Class:{Stock.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
+                Loger.add($"Окно занятий&Class:{Data.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
             }
         }
 
@@ -209,11 +209,11 @@ namespace Stand
             int CWC = CurrentWeeklyClass;
             bool NullLesson = true;
 
-            Loger.add($"Окно занятий&Class:{Stock.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
+            Loger.add($"Окно занятий&Class:{Data.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
 
             for (int i = 0; i < 8; i++)
             {
-                if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] == "")
+                if (Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] == "")
                 {
                     if (NullLesson)
                     {
@@ -226,14 +226,14 @@ namespace Stand
                 }
                 else
                     NullLesson = false;
-                WeeklyLessons.text += Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] + '\n';
+                WeeklyLessons.text += Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] + '\n';
 
                 string Classrooms = "";
-                if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1] != "")
+                if (Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1] != "")
                 {
-                    Classrooms += Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1];
-                    if (Stock.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 2] == "/")
-                        Classrooms += "/" + Stock.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 3];
+                    Classrooms += Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1];
+                    if (Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 2] == "/")
+                        Classrooms += "/" + Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 3];
                 }
                 WeeklyClassrooms.text += Classrooms + '\n';
             }
@@ -291,14 +291,14 @@ namespace Stand
                 Destroy(child.gameObject);
 
             CurrentExtraBlock = 0;
-            LengthExtraBlocks = Stock.Instance.ExtraClassesMatrix.Count;
+            LengthExtraBlocks = Data.Instance.ExtraClassesMatrix.Count;
 
             int j = CurrentExtraDay * 4;
             GameObject go = null;
             int i = 1;
             for (; i < LengthExtraBlocks; i++)
             {
-                if (Stock.Instance.ExtraClassesMatrix[i][j] == "")
+                if (Data.Instance.ExtraClassesMatrix[i][j] == "")
                 {
                     if (i == 1)
                     {
@@ -317,10 +317,10 @@ namespace Stand
                     Instantiate(Dot, Dots.transform);
 
                 go = Instantiate(InformationBlockPrefab, InformationsBlocks.transform);
-                go.transform.Find("CourseName").GetComponent<Text>().text = Stock.Instance.ExtraClassesMatrix[i][j];
-                go.transform.Find("Classes").GetComponent<Text>().text = "Классы: " + Stock.Instance.ExtraClassesMatrix[i][j + 1];
-                go.transform.Find("Time").GetComponent<Text>().text = "Время: " + Stock.Instance.ExtraClassesMatrix[i][j + 2];
-                go.transform.Find("Сlassroom").GetComponent<Text>().text = "Кабинет: " + Stock.Instance.ExtraClassesMatrix[i][j + 3];
+                go.transform.Find("CourseName").GetComponent<Text>().text = Data.Instance.ExtraClassesMatrix[i][j];
+                go.transform.Find("Classes").GetComponent<Text>().text = "Классы: " + Data.Instance.ExtraClassesMatrix[i][j + 1];
+                go.transform.Find("Time").GetComponent<Text>().text = "Время: " + Data.Instance.ExtraClassesMatrix[i][j + 2];
+                go.transform.Find("Сlassroom").GetComponent<Text>().text = "Кабинет: " + Data.Instance.ExtraClassesMatrix[i][j + 3];
 
                 if (i != 1)
                     go.GetComponent<CanvasGroup>().alpha = 0f;
@@ -402,14 +402,14 @@ namespace Stand
 
         void GenerateClassesButtons()
         {
-            int lenMas = Stock.Instance.LessonScheduleMatrix[2].Length;
+            int lenMas = Data.Instance.LessonScheduleMatrix[2].Length;
 
             for (int i = 0; i < lenMas; i++)
             {
-                if (Stock.Instance.LessonScheduleMatrix[2][i] == "")
+                if (Data.Instance.LessonScheduleMatrix[2][i] == "")
                     continue;
 
-                string ClassName = Stock.Instance.LessonScheduleMatrix[2][i];
+                string ClassName = Data.Instance.LessonScheduleMatrix[2][i];
                 int len = ClassName.Length;
                 int number;
 
