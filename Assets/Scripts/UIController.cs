@@ -13,7 +13,6 @@ namespace Stand
 
         [Header("Prefabs")]
         public GameObject InformationBlockPrefab;
-        public GameObject ClassesButton;
         public GameObject Dot;
 
         [Header("BlindMode")]
@@ -31,16 +30,13 @@ namespace Stand
         public GameObject Main;
 
         [Header("Calls")]
-        public GameObject Timetable;
-        public Text Monday;
-        public Text Tuesday;
-        public Text Saturday;
+        public IWindow CallsWindow;
 
         [Header("Lessons")]
-        public GameObject LessonSchedule;
-        public GameObject[] ClassButtons;
+        public IWindow LessonsWindow;
 
         [Header("Lessons_Class")]
+        public IWindow Lessons_ClassWindow;
         public GameObject WeeklySchedule;
         public Text HeadlineWeeklySchedule;
         public Text WeeklyLessons;
@@ -82,7 +78,7 @@ namespace Stand
         [Header("TimeLine")]
         public GameObject TimeLine;
 
-        void Awake()
+        void Start()
         {
             string day = DateTime.Now.DayOfWeek.ConvertToString();
             TimeUI.text = DateTime.Now.ToString("HH:mm ") + day;
@@ -90,8 +86,8 @@ namespace Stand
             HideAll();
             Main.SetActive(true);
             TimePanel.SetActive(true);
-            GenerateClassesButtons();
-            FillTimetable();
+            LessonsWindow.PrimaryFill();
+            CallsWindow.PrimaryFill();
             GrayScale.SetFloat("_EffectAmount", 0f);
         }
 
@@ -151,20 +147,6 @@ namespace Stand
                     cam.orthographicSize = Mathf.Lerp(YesBlind, NoBlind, ScaleCam.Evaluate(t));
                     GrayScale.SetFloat("_EffectAmount", 1 - GrayScaleAnim.Evaluate(t));
                 }
-            }
-        }
-
-        void FillTimetable()
-        {
-            Monday.text = "";
-            Tuesday.text = "";
-            Saturday.text = "";
-
-            foreach (string[] s in Data.Instance.TimetableMatrix)
-            {
-                Monday.text += s[0] + '\n';
-                Tuesday.text += s[1] + '\n';
-                Saturday.text += s[2] + '\n';
             }
         }
 
@@ -242,20 +224,20 @@ namespace Stand
             }
         }
 
-        public void OnTimetable(bool Open)
+        public void OpenCallsWindow(bool Open)
         {
             HideAll();
-            Timetable.SetActive(Open);
+            CallsWindow.SetActive(Open);
             TimePanel.SetActive(true);
             Main.SetActive(!Open);
             TimePanelImage.color = Open ? VeryGray : Gray;
             Loger.add("Окно звонков", Open ? "открыли" : "закрыли");
         }
 
-        public void OnLessonSchedule(bool Open)
+        public void OpenLessonsWindow(bool Open)
         {
             HideAll();
-            LessonSchedule.SetActive(Open);
+            LessonsWindow.SetActive(Open);
             TimePanel.SetActive(!Open);
             Main.SetActive(!Open);
             Loger.add("Окно уроков", Open ? "открыли" : "закрыли");
@@ -264,7 +246,7 @@ namespace Stand
         private void ReturnLessonShedule()
         {
             HideAll();
-            LessonSchedule.SetActive(true);
+            LessonsWindow.SetActive(true);
             TimePanel.SetActive(false);
             Main.SetActive(false);
         }
@@ -395,36 +377,13 @@ namespace Stand
         void HideAll()
         {
             Main.SetActive(false);
-            Timetable.SetActive(false);
-            LessonSchedule.SetActive(false);
+            CallsWindow.SetActive(false);
+            LessonsWindow.SetActive(false);
             ExtraClasses.SetActive(false);
             TimePanel.SetActive(false);
             WeeklySchedule.SetActive(false);
             TimeLine.SetActive(false);
             TimePanelImage.color = Gray;
-        }
-
-        void GenerateClassesButtons()
-        {
-            int lenMas = Data.Instance.LessonScheduleMatrix[2].Length;
-
-            for (int i = 0; i < lenMas; i++)
-            {
-                if (Data.Instance.LessonScheduleMatrix[2][i] == "")
-                    continue;
-
-                string ClassName = Data.Instance.LessonScheduleMatrix[2][i];
-                int len = ClassName.Length;
-                int number;
-
-                if (int.TryParse(ClassName.Substring(0, len - 1), out number))
-                    if (number >= 5 && number <= 11)
-                    {
-                        GameObject go = Instantiate(ClassesButton, ClassButtons[number - 5].transform);
-                        go.name = "" + i;
-                        go.GetComponentInChildren<Text>().text = ClassName;
-                    }
-            }
         }
 
         public void OnClickBlindMode()
