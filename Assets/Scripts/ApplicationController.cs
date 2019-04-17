@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Stand
@@ -10,12 +9,6 @@ namespace Stand
         public int Downtime = 0;
         public float LastTouch = 0f;
         public bool Clear = false;
-
-        public float StartTimeInGame = -1000f;
-        public float TimeInGame = 20f;
-        public float StartTimePauseGame = -1000f;
-        public float TimePauseGame = 60f;
-        public bool GameTimeComplete = true;
 
         private Coroutine Cor;
         private bool Quit = false;
@@ -62,42 +55,6 @@ namespace Stand
         {
             if (!Quit)
                 Loger.add("Стенд", "Закрыт");
-        }
-
-        public void QuitGame()
-        {
-            StopCoroutine(Cor);
-            Loger.add("Игра", "ручной выход");
-            Loger.add("Пасхалка", "выход");
-            SceneManager.LoadScene(1);
-        }
-
-        public void ActivateGame()
-        {
-            if (GameTimeComplete)
-            {
-                Loger.add("Игра", "Активирована");
-                GameTimeComplete = false;
-                StartCoroutine(TimePauseGameC());
-                Cor = StartCoroutine(TimeInGameC());
-                SceneManager.LoadScene(2);
-            }
-        }
-
-        IEnumerator TimeInGameC()
-        {
-            StartTimeInGame = Time.time;
-            yield return new WaitForSeconds(TimeInGame);
-            Loger.add("Игра", "авто выход");
-            Loger.add("Пасхалка", "выход");
-            SceneManager.LoadScene(1);
-        }
-
-        IEnumerator TimePauseGameC()
-        {
-            StartTimePauseGame = Time.time;
-            yield return new WaitForSeconds(TimePauseGame);
-            GameTimeComplete = true;
         }
     }
 }

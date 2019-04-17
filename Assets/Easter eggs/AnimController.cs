@@ -16,18 +16,6 @@ namespace Stand
             anim = GetComponent<Animation>();
         }
 
-        public void FixedUpdate()
-        {
-            if (ApplicationController.Instance.StartTimePauseGame + ApplicationController.Instance.TimePauseGame > Time.time)
-            {
-                TimerOnGame.text = "" + (int)(ApplicationController.Instance.TimePauseGame - (Time.time - ApplicationController.Instance.StartTimePauseGame));
-            }
-            else
-            {
-                TimerOnGame.text = "";
-            }
-        }
-
         public void OnAboutTheAuthor()
         {
             if (!anim.isPlaying)
@@ -44,11 +32,6 @@ namespace Stand
                 Loger.add("Пасхалка", "выход");
                 anim.Play("OffAboutTheAuthor");
             }
-        }
-
-        public void ClickActivateGame()
-        {
-            ApplicationController.Instance.ActivateGame();
         }
     }
 }

@@ -30,17 +30,17 @@ namespace Stand
         [Header("Main")]
         public GameObject Main;
 
-        [Header("Timetable")]
+        [Header("Calls")]
         public GameObject Timetable;
         public Text Monday;
         public Text Tuesday;
         public Text Saturday;
 
-        [Header("LessonSchedule")]
+        [Header("Lessons")]
         public GameObject LessonSchedule;
         public GameObject[] ClassButtons;
 
-        [Header("WeeklySchedule")]
+        [Header("Lessons_Class")]
         public GameObject WeeklySchedule;
         public Text HeadlineWeeklySchedule;
         public Text WeeklyLessons;
@@ -49,7 +49,7 @@ namespace Stand
         private int CurrentWeeklyDay = 0;
         private int CurrentWeeklyClass = 0;
 
-        [Header("ExtraClasses")]
+        [Header("Extra")]
         public GameObject ExtraClasses;
         public Text HeadlineExtraClasses;
         public GameObject InformationsBlocks;
@@ -71,13 +71,16 @@ namespace Stand
         private bool ActivateNextRightBlock = false;
         private bool EndAnimation = false;
 
-        [Header("DatePanel")]
-        public GameObject DatePanel;
+        [Header("TimePanel")]
+        public GameObject TimePanel;
         public Text TimeUI;
         public Text DateUI;
-        public Image DatePanelImage;
+        public Image TimePanelImage;
 
         bool BlindMode = false;
+
+        [Header("TimeLine")]
+        public GameObject TimeLine;
 
         void Awake()
         {
@@ -86,7 +89,7 @@ namespace Stand
             DateUI.text = DateTime.Now.ToString("dd.MM.yyyy");
             HideAll();
             Main.SetActive(true);
-            DatePanel.SetActive(true);
+            TimePanel.SetActive(true);
             GenerateClassesButtons();
             FillTimetable();
             GrayScale.SetFloat("_EffectAmount", 0f);
@@ -176,10 +179,10 @@ namespace Stand
             Loger.add($"Окно занятий", "открыли");
             HideAll();
             WeeklySchedule.SetActive(true);
-            DatePanel.SetActive(true);
+            TimePanel.SetActive(true);
             int number = int.Parse(ClassButton.name);
             HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonScheduleMatrix[2][number];
-            DatePanelImage.color = VeryGray;
+            TimePanelImage.color = VeryGray;
             CurrentWeeklyDay = DateTime.Now.DayOfWeek.Normalising();
             CurrentWeeklyClass = number;
             RefreshWeeklySchedule();
@@ -243,9 +246,9 @@ namespace Stand
         {
             HideAll();
             Timetable.SetActive(Open);
-            DatePanel.SetActive(true);
+            TimePanel.SetActive(true);
             Main.SetActive(!Open);
-            DatePanelImage.color = Open ? VeryGray : Gray;
+            TimePanelImage.color = Open ? VeryGray : Gray;
             Loger.add("Окно звонков", Open ? "открыли" : "закрыли");
         }
 
@@ -253,7 +256,7 @@ namespace Stand
         {
             HideAll();
             LessonSchedule.SetActive(Open);
-            DatePanel.SetActive(!Open);
+            TimePanel.SetActive(!Open);
             Main.SetActive(!Open);
             Loger.add("Окно уроков", Open ? "открыли" : "закрыли");
         }
@@ -262,7 +265,7 @@ namespace Stand
         {
             HideAll();
             LessonSchedule.SetActive(true);
-            DatePanel.SetActive(false);
+            TimePanel.SetActive(false);
             Main.SetActive(false);
         }
 
@@ -270,9 +273,9 @@ namespace Stand
         {
             HideAll();
             ExtraClasses.SetActive(Open);
-            DatePanel.SetActive(true);
+            TimePanel.SetActive(true);
             Main.SetActive(!Open);
-            DatePanelImage.color = Open ? VeryGray : Gray;
+            TimePanelImage.color = Open ? VeryGray : Gray;
             HeadlineExtraClasses.text = DateTime.Now.DayOfWeek.ConvertToString(false);
             CurrentExtraDay = DateTime.Now.DayOfWeek.Normalising();
             Loger.add("Окно доп.секций", Open ? "открыли" : "закрыли");
@@ -395,9 +398,10 @@ namespace Stand
             Timetable.SetActive(false);
             LessonSchedule.SetActive(false);
             ExtraClasses.SetActive(false);
-            DatePanel.SetActive(false);
+            TimePanel.SetActive(false);
             WeeklySchedule.SetActive(false);
-            DatePanelImage.color = Gray;
+            TimeLine.SetActive(false);
+            TimePanelImage.color = Gray;
         }
 
         void GenerateClassesButtons()

@@ -226,9 +226,6 @@ namespace MaterialUI
                     state = 0;
                 }
             }
-
-            if (ApplicationController.Instance.Clear)
-                Clear();
         }
 
         public void OnPointerEnter(PointerEventData data)
