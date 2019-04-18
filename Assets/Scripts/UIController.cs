@@ -37,13 +37,6 @@ namespace Stand
 
         [Header("Lessons_Class")]
         public IWindow Lessons_ClassWindow;
-        public GameObject WeeklySchedule;
-        public Text HeadlineWeeklySchedule;
-        public Text WeeklyLessons;
-        public Text WeeklyClassrooms;
-
-        private int CurrentWeeklyDay = 0;
-        private int CurrentWeeklyClass = 0;
 
         [Header("Extra")]
         public GameObject ExtraClasses;
@@ -68,24 +61,19 @@ namespace Stand
         private bool EndAnimation = false;
 
         [Header("TimePanel")]
-        public GameObject TimePanel;
-        public Text TimeUI;
-        public Text DateUI;
-        public Image TimePanelImage;
+        public IWindow TimePanelWindow;
+
+        [Header("TimeLine")]
+        public IWindow TimeLineWindow;
 
         bool BlindMode = false;
 
-        [Header("TimeLine")]
-        public GameObject TimeLine;
-
         void Start()
         {
-            string day = DateTime.Now.DayOfWeek.ConvertToString();
-            TimeUI.text = DateTime.Now.ToString("HH:mm ") + day;
-            DateUI.text = DateTime.Now.ToString("dd.MM.yyyy");
+            TimePanelWindow.PrimaryFill();
             HideAll();
             Main.SetActive(true);
-            TimePanel.SetActive(true);
+            TimePanelWindow.SetActive(true);
             LessonsWindow.PrimaryFill();
             CallsWindow.PrimaryFill();
             GrayScale.SetFloat("_EffectAmount", 0f);
@@ -93,9 +81,7 @@ namespace Stand
 
         void FixedUpdate()
         {
-            string day = DateTime.Now.DayOfWeek.ConvertToString();
-            TimeUI.text = DateTime.Now.ToString("HH:mm ") + day;
-            DateUI.text = DateTime.Now.ToString("dd.MM.yyyy");
+            TimePanelWindow.Fill();
 
             if (StartAnimation + AnimationTime > Time.time)
             {
@@ -150,87 +136,27 @@ namespace Stand
             }
         }
 
-        public void ClickClass(GameObject ClassButton)
+        public void Lessons_ClassWindow_ChooseClass(string ClassID)
         {
-            if (ClassButton.name == "Back")
-            {
-                Loger.add($"Окно занятий", "закрыли");
-                ReturnLessonShedule();
-                return;
-            }
-            Loger.add($"Окно занятий", "открыли");
-            HideAll();
-            WeeklySchedule.SetActive(true);
-            TimePanel.SetActive(true);
-            int number = int.Parse(ClassButton.name);
-            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonScheduleMatrix[2][number];
-            TimePanelImage.color = VeryGray;
-            CurrentWeeklyDay = DateTime.Now.DayOfWeek.Normalising();
-            CurrentWeeklyClass = number;
-            RefreshWeeklySchedule();
+            Lessons_ClassWindow.SetActive(true);
+            LessonsWindow.SetActive(false);
+            TimePanelWindow.Merge(true);
+            TimePanelWindow.SetActive(true);
+            Lessons_ClassWindow.ChooseClass(ClassID);
         }
 
-        public void ClickClassDay(int id)
+        public void MergeTimePanel(bool Status)
         {
-            if (id != CurrentWeeklyDay)
-                {
-                CurrentWeeklyDay = id;
-                string NameClass = HeadlineWeeklySchedule.text.Split()[1];
-                HeadlineWeeklySchedule.text = ((DayOfWeek)(id + 1)).ConvertToString(false) + " " + NameClass;
-                RefreshWeeklySchedule();
-            }
-            else
-            {
-                Loger.add($"Окно занятий&Class:{Data.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
-            }
-        }
-
-        void RefreshWeeklySchedule()
-        {
-            WeeklyClassrooms.text = "";
-            WeeklyLessons.text = "";
-
-            int CWD = CurrentWeeklyDay * 16 + 3;
-            int CWC = CurrentWeeklyClass;
-            bool NullLesson = true;
-
-            Loger.add($"Окно занятий&Class:{Data.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
-
-            for (int i = 0; i < 8; i++)
-            {
-                if (Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] == "")
-                {
-                    if (NullLesson)
-                    {
-                        WeeklyLessons.text += "--" + '\n';
-                        WeeklyClassrooms.text += "--" + '\n';
-                        continue;
-                    }
-                    else
-                        break;
-                }
-                else
-                    NullLesson = false;
-                WeeklyLessons.text += Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] + '\n';
-
-                string Classrooms = "";
-                if (Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1] != "")
-                {
-                    Classrooms += Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1];
-                    if (Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 2] == "/")
-                        Classrooms += "/" + Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 3];
-                }
-                WeeklyClassrooms.text += Classrooms + '\n';
-            }
+            TimePanelWindow.Merge(Status);
         }
 
         public void OpenCallsWindow(bool Open)
         {
             HideAll();
             CallsWindow.SetActive(Open);
-            TimePanel.SetActive(true);
+            TimePanelWindow.SetActive(true);
             Main.SetActive(!Open);
-            TimePanelImage.color = Open ? VeryGray : Gray;
+            TimePanelWindow.Merge(Open);
             Loger.add("Окно звонков", Open ? "открыли" : "закрыли");
         }
 
@@ -238,26 +164,27 @@ namespace Stand
         {
             HideAll();
             LessonsWindow.SetActive(Open);
-            TimePanel.SetActive(!Open);
+            TimePanelWindow.SetActive(!Open);
             Main.SetActive(!Open);
             Loger.add("Окно уроков", Open ? "открыли" : "закрыли");
         }
 
-        private void ReturnLessonShedule()
+        public void OpenLessons_ClassWindow(bool Open)
         {
             HideAll();
             LessonsWindow.SetActive(true);
-            TimePanel.SetActive(false);
+            TimePanelWindow.SetActive(false);
             Main.SetActive(false);
+            Loger.add("Окно занятий", Open ? "открыли" : "закрыли");
         }
 
         public void OnExtraClasses(bool Open)
         {
             HideAll();
             ExtraClasses.SetActive(Open);
-            TimePanel.SetActive(true);
+            TimePanelWindow.SetActive(true);
             Main.SetActive(!Open);
-            TimePanelImage.color = Open ? VeryGray : Gray;
+            TimePanelWindow.Merge(Open);
             HeadlineExtraClasses.text = DateTime.Now.DayOfWeek.ConvertToString(false);
             CurrentExtraDay = DateTime.Now.DayOfWeek.Normalising();
             Loger.add("Окно доп.секций", Open ? "открыли" : "закрыли");
@@ -380,10 +307,10 @@ namespace Stand
             CallsWindow.SetActive(false);
             LessonsWindow.SetActive(false);
             ExtraClasses.SetActive(false);
-            TimePanel.SetActive(false);
-            WeeklySchedule.SetActive(false);
-            TimeLine.SetActive(false);
-            TimePanelImage.color = Gray;
+            TimePanelWindow.SetActive(false);
+            Lessons_ClassWindow.SetActive(false);
+            TimeLineWindow.SetActive(false);
+            TimePanelWindow.Merge(false);
         }
 
         public void OnClickBlindMode()

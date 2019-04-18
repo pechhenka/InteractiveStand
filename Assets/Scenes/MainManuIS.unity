@@ -223,13 +223,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 42368740}
+  - component: {fileID: 42368742}
+  - component: {fileID: 42368741}
   m_Layer: 5
   m_Name: Lessons_Class
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &42368740
 RectTransform:
   m_ObjectHideFlags: 0
@@ -251,6 +253,34 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &42368741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42368739}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ff56056a7af2ae41b4ed4afa74882c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
+  HeadlineWeeklySchedule: {fileID: 539257768}
+  WeeklyLessons: {fileID: 840411682}
+  WeeklyClassrooms: {fileID: 1865147118}
+--- !u!225 &42368742
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42368739}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &64617126
 GameObject:
   m_ObjectHideFlags: 0
@@ -380,10 +410,10 @@ RectTransform:
   m_Father: {fileID: 1458158400}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 113.875, y: -235}
-  m_SizeDelta: {x: 207.75, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &81423555
 GameObject:
@@ -3892,6 +3922,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 435778873}
+  - component: {fileID: 435778875}
+  - component: {fileID: 435778874}
   m_Layer: 5
   m_Name: TimeLine
   m_TagString: Untagged
@@ -3920,6 +3952,31 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &435778874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435778872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b6802123dbe6f4fbb86a4cf2df4294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
+--- !u!225 &435778875
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435778872}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &437760016
 GameObject:
   m_ObjectHideFlags: 0
@@ -3967,7 +4024,7 @@ GameObject:
   m_Component:
   - component: {fileID: 468854046}
   m_Layer: 5
-  m_Name: Main (OutsideData)
+  m_Name: Main (StaticSchedules)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4519,10 +4576,10 @@ RectTransform:
   m_Father: {fileID: 1458158400}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 331.625, y: -235}
-  m_SizeDelta: {x: 207.75, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &579201957
 GameObject:
@@ -5456,11 +5513,7 @@ MonoBehaviour:
   Main: {fileID: 468854045}
   CallsWindow: {fileID: 1866142174}
   LessonsWindow: {fileID: 289818257}
-  Lessons_ClassWindow: {fileID: 0}
-  WeeklySchedule: {fileID: 42368739}
-  HeadlineWeeklySchedule: {fileID: 539257768}
-  WeeklyLessons: {fileID: 840411682}
-  WeeklyClassrooms: {fileID: 1865147118}
+  Lessons_ClassWindow: {fileID: 42368741}
   ExtraClasses: {fileID: 1739771949}
   HeadlineExtraClasses: {fileID: 2073284450}
   InformationsBlocks: {fileID: 1937764098}
@@ -5516,11 +5569,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   AnimationTime: 0.6
-  TimePanel: {fileID: 1363121690}
-  TimeUI: {fileID: 1512099155}
-  DateUI: {fileID: 1623088976}
-  TimePanelImage: {fileID: 1723706935}
-  TimeLine: {fileID: 435778872}
+  TimePanelWindow: {fileID: 1363121692}
+  TimeLineWindow: {fileID: 435778874}
 --- !u!1 &698863576
 GameObject:
   m_ObjectHideFlags: 0
@@ -5692,10 +5742,10 @@ RectTransform:
   m_Father: {fileID: 1458158400}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 331.625, y: -75}
-  m_SizeDelta: {x: 207.75, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &739834634
 GameObject:
@@ -7347,8 +7397,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClassDay
+      - m_Target: {fileID: 42368741}
+        m_MethodName: ChooseDay
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8010,10 +8060,10 @@ RectTransform:
   m_Father: {fileID: 1458158400}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 113.875, y: -395}
-  m_SizeDelta: {x: 207.75, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1099469304
 GameObject:
@@ -8138,8 +8188,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClassDay
+      - m_Target: {fileID: 42368741}
+        m_MethodName: ChooseDay
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8585,8 +8635,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClassDay
+      - m_Target: {fileID: 42368741}
+        m_MethodName: ChooseDay
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -9377,6 +9427,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1363121691}
+  - component: {fileID: 1363121693}
+  - component: {fileID: 1363121692}
   m_Layer: 5
   m_Name: TimePanel
   m_TagString: Untagged
@@ -9407,6 +9459,34 @@ RectTransform:
   m_AnchoredPosition: {x: 222.50002, y: -166.5}
   m_SizeDelta: {x: 435, y: 240}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1363121692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363121690}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2610530aafdaa844ae1dfba442f0065, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 0}
+  TimeUI: {fileID: 1512099155}
+  DateUI: {fileID: 1623088976}
+  TimePanelImage: {fileID: 1723706935}
+--- !u!225 &1363121693
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1363121690}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1391064396
 GameObject:
   m_ObjectHideFlags: 0
@@ -10127,11 +10207,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClass
-        m_Mode: 2
+        m_MethodName: OpenLessons_ClassWindow
+        m_Mode: 6
         m_Arguments:
-          m_ObjectArgument: {fileID: 320396290}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -11714,8 +11794,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClassDay
+      - m_Target: {fileID: 42368741}
+        m_MethodName: ChooseDay
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -12239,7 +12319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1670625789}
   m_Layer: 5
-  m_Name: Main (OnlyLocalData)
+  m_Name: Main (ChangesSchedules)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13670,8 +13750,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClassDay
+      - m_Target: {fileID: 42368741}
+        m_MethodName: ChooseDay
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -13898,10 +13978,10 @@ RectTransform:
   m_Father: {fileID: 1458158400}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 331.625, y: -395}
-  m_SizeDelta: {x: 207.75, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1875142821
 GameObject:
@@ -14315,10 +14395,10 @@ RectTransform:
   m_Father: {fileID: 1458158400}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 113.875, y: -75}
-  m_SizeDelta: {x: 207.75, y: 150}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1916464567
 GameObject:
@@ -15512,8 +15592,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 694758614}
-        m_MethodName: ClickClassDay
+      - m_Target: {fileID: 42368741}
+        m_MethodName: ChooseDay
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

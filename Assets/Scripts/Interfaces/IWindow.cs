@@ -16,6 +16,11 @@ public abstract class IWindow:MonoBehaviour
     abstract public void Fill(int id);
     abstract public void Fill(GameObject gameObject);
 
+    abstract public void ChooseClass(string Class);
+    abstract public void ChooseDay(int id);
+
+    abstract public void Merge(bool Status);
+
     public void SetActive(bool Open)
     {
         if (Open)

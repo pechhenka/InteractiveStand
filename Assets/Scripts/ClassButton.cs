@@ -18,7 +18,7 @@ namespace Stand
 
         public void OnClick()
         {
-            UIC.ClickClass(transform.parent.gameObject);
+            UIC.Lessons_ClassWindow_ChooseClass(transform.parent.name);
         }
     }
 }
