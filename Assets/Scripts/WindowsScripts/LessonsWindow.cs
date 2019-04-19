@@ -5,19 +5,22 @@ namespace Stand
 {
     public class LessonsWindow : IWindow
     {
+        [Header("Prefabs")]
         public GameObject ClassesButton;
+
+        [Header("Others")]
         public GameObject[] ClassButtons;
 
         public override void PrimaryFill()
         {
-            int lenMas = Data.Instance.LessonScheduleMatrix[2].Length;
+            int lenMas = Data.Instance.LessonsMatrix[2].Length;
 
             for (int i = 0; i < lenMas; i++)
             {
-                if (Data.Instance.LessonScheduleMatrix[2][i] == "")
+                if (Data.Instance.LessonsMatrix[2][i] == "")
                     continue;
 
-                string ClassName = Data.Instance.LessonScheduleMatrix[2][i];
+                string ClassName = Data.Instance.LessonsMatrix[2][i];
                 int len = ClassName.Length;
                 int number;
 

@@ -12,13 +12,6 @@ namespace Stand
         public Text DateUI;
         public Image TimePanelImage;
 
-        private UIController uIController;
-
-        void Start()
-        {
-            uIController = GetComponentInParent<UIController>();
-        }
-
         public override void PrimaryFill() => Fill();
 
         public override void Refill() => Fill();
@@ -33,7 +26,7 @@ namespace Stand
 
         public override void Merge(bool Status)
         {
-            TimePanelImage.color = Status ? uIController.VeryGray : uIController.Gray;
+            TimePanelImage.color = Status ? _UIController.VeryGray : _UIController.Gray;
         }
 
         public override void ChooseClass(string Class) => Fill();

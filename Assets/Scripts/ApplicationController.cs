@@ -6,11 +6,10 @@ namespace Stand
     public class ApplicationController : Singleton<ApplicationController>
     {
 
-        public int Downtime = 0;
+        public int DownTime = 0;
         public float LastTouch = 0f;
         public bool Clear = false;
 
-        private Coroutine Cor;
         private bool Quit = false;
 
         void Awake()
@@ -33,7 +32,7 @@ namespace Stand
             if (Input.touchCount > 0 || Input.anyKey)
                 LastTouch = Time.time;
 
-            if ((Downtime > 0) && LastTouch + Downtime < Time.time)
+            if ((DownTime > 0) && LastTouch + DownTime < Time.time)
             {
                 Loger.add("Стенд", $"Возврат в нальное состояние&LastTouch:{LastTouch}");
                 LastTouch = Time.time;

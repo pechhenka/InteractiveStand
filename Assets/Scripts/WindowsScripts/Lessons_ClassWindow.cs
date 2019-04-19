@@ -12,19 +12,13 @@ namespace Stand
 
         private int CurrentWeeklyDay = 0;
         private int CurrentWeeklyClass = 0;
-        private UIController uIController;
-
-        void Start()
-        {
-            uIController = GetComponentInParent<UIController>();
-        }
 
         public override void ChooseClass(string Class)
         {
-            Loger.add($"Окно занятий", "открыли");
+            Loger.add("Окно занятий", "открыли");
             int number = int.Parse(Class);
-            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonScheduleMatrix[2][number];
-            uIController.MergeTimePanel(true);
+            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonsMatrix[2][number];
+            _UIController.MergeTimePanel(true);
             CurrentWeeklyDay = DateTime.Now.DayOfWeek.Normalising();
             CurrentWeeklyClass = number;
             Fill();
@@ -41,7 +35,7 @@ namespace Stand
             }
             else
             {
-                Loger.add($"Окно занятий&Class:{Data.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
+                Loger.add($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
             }
         }
 
@@ -54,11 +48,11 @@ namespace Stand
             int CWC = CurrentWeeklyClass;
             bool NullLesson = true;
 
-            Loger.add($"Окно занятий&Class:{Data.Instance.LessonScheduleMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
+            Loger.add($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
 
             for (int i = 0; i < 8; i++)
             {
-                if (Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] == "")
+                if (Data.Instance.LessonsMatrix[CWD + i * 2][CWC] == "")
                 {
                     if (NullLesson)
                     {
@@ -71,14 +65,14 @@ namespace Stand
                 }
                 else
                     NullLesson = false;
-                WeeklyLessons.text += Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC] + '\n';
+                WeeklyLessons.text += Data.Instance.LessonsMatrix[CWD + i * 2][CWC] + '\n';
 
                 string Classrooms = "";
-                if (Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1] != "")
+                if (Data.Instance.LessonsMatrix[CWD + i * 2 + 1][CWC + 1] != "")
                 {
-                    Classrooms += Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 1];
-                    if (Data.Instance.LessonScheduleMatrix[CWD + i * 2][CWC + 2] == "/")
-                        Classrooms += "/" + Data.Instance.LessonScheduleMatrix[CWD + i * 2 + 1][CWC + 3];
+                    Classrooms += Data.Instance.LessonsMatrix[CWD + i * 2 + 1][CWC + 1];
+                    if (Data.Instance.LessonsMatrix[CWD + i * 2][CWC + 2] == "/")
+                        Classrooms += "/" + Data.Instance.LessonsMatrix[CWD + i * 2 + 1][CWC + 3];
                 }
                 WeeklyClassrooms.text += Classrooms + '\n';
             }

@@ -1,4 +1,4 @@
-calls.csv
-timetable.csv
-extraClasses.csv
-120
+NameCallsMatrix=Calls.csv;
+NameLessonsMatrix=Lessons.csv;
+NameExtraMatrix=Extra.csv;
+DownTime=120;
