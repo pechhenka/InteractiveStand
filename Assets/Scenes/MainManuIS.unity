@@ -5541,8 +5541,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  MainStaticSchedules: {fileID: 1670625790}
-  MainChangesSchedules: {fileID: 468854047}
+  MainStaticSchedulesWindow: {fileID: 1670625790}
+  MainChangesSchedulesWindow: {fileID: 468854047}
   CallsWindow: {fileID: 1866142174}
   LessonsWindow: {fileID: 289818257}
   Lessons_ClassWindow: {fileID: 42368741}

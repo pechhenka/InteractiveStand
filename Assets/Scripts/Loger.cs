@@ -5,13 +5,20 @@ using UnityEngine;
 namespace Stand
 {
     /* Нужен для введения логов
-     * Просто вызовите метод add и он всё за вас красиво оформит
+     * Просто вызовите нужный метод и он всё за вас красиво оформит
      */
     public static class Loger
     {
-        public static void add(string Name, string Body)
+        private const string NameNotesLog = "LogNotes_Stand.txt";
+        private const string NameWarningsLog = "LogWarnings_Stand.txt";
+        private const string NameErrorsLog = "LogErrors_Stand.txt";
+
+        public static void Log(string Name, string Body)
         {
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Log_Stand.txt";
+            if (!Data.Instance.CurrentManifest.LogNotesRecording)
+                return;
+
+            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameNotesLog;
 
             if (Name == null || Name == "")
                 Name = "Untagged";
@@ -20,7 +27,7 @@ namespace Stand
 
             string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
             line += Name + "|";
-            line += Body;
+            line += Body + ";";
 
             try
             {
@@ -38,16 +45,19 @@ namespace Stand
             }
         }
 
-        public static void add<Name>(string Body)
+        public static void Log<Name>(string Body)
         {
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\Log_Stand.txt";
+            if (!Data.Instance.CurrentManifest.LogNotesRecording)
+                return;
+
+            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameNotesLog;
 
             if (Body == null || Body == "")
                 Body = "Untagged";
 
             string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
             line += typeof(Name).ToString() + "|";
-            line += Body;
+            line += Body + ";";
 
             try
             {
@@ -65,23 +75,137 @@ namespace Stand
             }
         }
 
-        public static void CompleteInitialized<T>()
+        public static void Warning(string Name, string Body)
         {
-            add(typeof(T).ToString(), "успешно инициализирован");
+            if (!Data.Instance.CurrentManifest.LogWarningsRecording)
+                return;
+
+            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameWarningsLog;
+
+            if (Name == null || Name == "")
+                Name = "Untagged";
+            if (Body == null || Body == "")
+                Body = "Untagged";
+
+            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
+            line += Name + "|";
+            line += Body + ";";
+
+            try
+            {
+                if (!File.Exists(writePath))
+                    CreateFile(writePath);
+
+                using (StreamWriter sw = new StreamWriter(writePath, true))
+                {
+                    sw.WriteLine(line);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(line + '\n' + e.Message);
+            }
         }
 
-        public static void ErrorInitialized<T>(Exception e)
+        public static void Warning<Name>(string Body)
         {
-            add(typeof(T).ToString(), "ошибка инициализации:" + e.Message);
+            if (!Data.Instance.CurrentManifest.LogWarningsRecording)
+                return;
+
+            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameWarningsLog;
+
+            if (Body == null || Body == "")
+                Body = "Untagged";
+
+            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
+            line += typeof(Name).ToString() + "|";
+            line += Body + ";";
+
+            try
+            {
+                if (!File.Exists(writePath))
+                    CreateFile(writePath);
+
+                using (StreamWriter sw = new StreamWriter(writePath, true))
+                {
+                    sw.WriteLine(line);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(line + '\n' + e.Message);
+            }
+        }
+
+        public static void Error(string Name, string Body)
+        {
+            if (!Data.Instance.CurrentManifest.LogErrorsRecording)
+                return;
+
+            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameErrorsLog;
+
+            if (Name == null || Name == "")
+                Name = "Untagged";
+            if (Body == null || Body == "")
+                Body = "Untagged";
+
+            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
+            line += Name + "|";
+            line += Body + ";";
+
+            try
+            {
+                if (!File.Exists(writePath))
+                    CreateFile(writePath);
+
+                using (StreamWriter sw = new StreamWriter(writePath, true))
+                {
+                    sw.WriteLine(line);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(line + '\n' + e.Message);
+            }
+        }
+
+        public static void Error<Name>(string Body)
+        {
+            if (!Data.Instance.CurrentManifest.LogErrorsRecording)
+                return;
+
+            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameErrorsLog;
+
+            if (Body == null || Body == "")
+                Body = "Untagged";
+
+            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
+            line += typeof(Name).ToString() + "|";
+            line += Body + ";";
+
+            try
+            {
+                if (!File.Exists(writePath))
+                    CreateFile(writePath);
+
+                using (StreamWriter sw = new StreamWriter(writePath, true))
+                {
+                    sw.WriteLine(line);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning(line + '\n' + e.Message);
+            }
         }
 
         private static void CreateFile(string writePath)
         {
             using (StreamWriter sw = new StreamWriter(writePath, true))
             {
-                sw.WriteLine("date|time|key|value");
+                sw.WriteLine("date|time|key|value;");
             }
-            add("Лог файл", "не обнаржен&был создан");
+            Log("Лог файл", "не обнаржен&был создан");
         }
     }
 }

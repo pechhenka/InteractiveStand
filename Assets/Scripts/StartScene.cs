@@ -10,7 +10,7 @@ namespace Stand
     {
         void Awake()
         {
-            Loger.add("Стенд", "Запуск");
+            Loger.Log("Стенд", "Запуск");
             SceneManager.LoadScene(1);
         }
     }

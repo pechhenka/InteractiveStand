@@ -29,8 +29,8 @@ namespace Stand
                 string dataPath = report.summary.outputPath;//Папка Data построенного проекта
                 string buildPath = dataPath.Replace(Application.productName + ".exe", "");//Папка построенного проекта
 
-                sourcePath += @"/Data/";
-                dataPath = buildPath + Application.productName + "_Data/Data/";
+                sourcePath += @"/LocalData/";
+                dataPath = buildPath + Application.productName + "_Data/LocalData/";
 
                 //Создаёт папку Data
                 if (!System.IO.Directory.Exists(dataPath))

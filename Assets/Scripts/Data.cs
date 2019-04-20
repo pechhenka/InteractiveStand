@@ -13,29 +13,37 @@ namespace Stand
         public List<string[]> ExtraMatrix = new List<string[]>();
         public string DataPath = "";
 
-        public Manifest LocalManifest = new Manifest();
-        public Manifest OutsideManifest = new Manifest();
         public Manifest CurrentManifest = new Manifest();
+
+        private Manifest LocalManifest = new Manifest();
+        private Manifest OutsideManifest = new Manifest();
 
         void Awake()
         {
             try
             {
-                
-                DataPath = Application.dataPath + @"\Data\";
+                DataPath = Application.dataPath + @"\LocalData\";
 
                 LocalManifest.Load(DataPath + "Manifest.txt");
+                CurrentManifest = LocalManifest;
 
-                CallsMatrix = CSVReader.Read(DataPath + LocalManifest.NameCallsMatrix);
-                LessonsMatrix = CSVReader.Read(DataPath + LocalManifest.NameLessonsMatrix);
-                ExtraMatrix = CSVReader.Read(DataPath + LocalManifest.NameExtraMatrix);
-                ApplicationController.Instance.DownTime = LocalManifest.DownTime;
+                if (LocalManifest.PathOutsideData != "")
+                {
+                    if (OutsideManifest.Load(LocalManifest.PathOutsideData + "Manifest.txt"))
+                    {
+                        CurrentManifest = OutsideManifest;
+                    }
+                }
 
-                Loger.CompleteInitialized<Data>();
+                CallsMatrix = CSVReader.Read(DataPath + CurrentManifest.NameCallsMatrix);
+                LessonsMatrix = CSVReader.Read(DataPath + CurrentManifest.NameLessonsMatrix);
+                ExtraMatrix = CSVReader.Read(DataPath + CurrentManifest.NameExtraMatrix);
+                ApplicationController.Instance.DownTime = CurrentManifest.DownTime;
+
             }
             catch (Exception e)
             {
-                Loger.ErrorInitialized<Data>(e);
+                Loger.Error<Data>(e.Message);
             }
         }
     }

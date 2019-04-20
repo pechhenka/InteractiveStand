@@ -23,8 +23,9 @@ namespace Stand
         private float StartAnimBlind = -10f;
 
         [Header("Mains")]
-        public IWindow MainStaticSchedules;
-        public IWindow MainChangesSchedules;
+        public IWindow MainStaticSchedulesWindow;
+        public IWindow MainChangesSchedulesWindow;
+        private IWindow MainCurrentWindow;
 
         [Header("Calls")]
         public IWindow CallsWindow;
@@ -48,9 +49,16 @@ namespace Stand
 
         void Start()
         {
-            TimePanelWindow.PrimaryFill();
+            MainChangesSchedulesWindow.SetActive(false);
+            MainStaticSchedulesWindow.SetActive(false);
+            if (Data.Instance.CurrentManifest.SupportChangesSchedules)
+                MainCurrentWindow = MainChangesSchedulesWindow;
+            else
+                MainCurrentWindow = MainStaticSchedulesWindow;
+
             HideAll();
-            MainChangesSchedules.SetActive(true);
+            MainCurrentWindow.SetActive(true);
+            TimePanelWindow.PrimaryFill();
             TimePanelWindow.SetActive(true);
             TimeLineWindow.SetActive(true);
             LessonsWindow.PrimaryFill();
@@ -104,9 +112,9 @@ namespace Stand
             HideAll();
             CallsWindow.SetActive(Open);
             TimePanelWindow.SetActive(true);
-            MainChangesSchedules.SetActive(!Open);
+            MainCurrentWindow.SetActive(!Open);
             TimePanelWindow.Merge(Open);
-            Loger.add("Окно звонков", Open ? "открыли" : "закрыли");
+            Loger.Log("Окно звонков", Open ? "открыли" : "закрыли");
         }
 
         public void OpenLessonsWindow(bool Open)
@@ -114,8 +122,8 @@ namespace Stand
             HideAll();
             LessonsWindow.SetActive(Open);
             TimePanelWindow.SetActive(!Open);
-            MainChangesSchedules.SetActive(!Open);
-            Loger.add("Окно уроков", Open ? "открыли" : "закрыли");
+            MainCurrentWindow.SetActive(!Open);
+            Loger.Log("Окно уроков", Open ? "открыли" : "закрыли");
         }
 
         public void OpenLessons_ClassWindow(bool Open)
@@ -123,8 +131,8 @@ namespace Stand
             HideAll();
             LessonsWindow.SetActive(true);
             TimePanelWindow.SetActive(false);
-            MainChangesSchedules.SetActive(false);
-            Loger.add("Окно занятий", Open ? "открыли" : "закрыли");
+            MainCurrentWindow.SetActive(false);
+            Loger.Log("Окно занятий", Open ? "открыли" : "закрыли");
         }
 
         public void OpenExtraWindow(bool Open)
@@ -133,16 +141,15 @@ namespace Stand
             ExtraWindow.PrimaryFill();
             TimePanelWindow.Merge(Open);
 
-            MainChangesSchedules.SetActive(!Open);
+            MainCurrentWindow.SetActive(!Open);
             ExtraWindow.SetActive(Open);
             TimePanelWindow.SetActive(true);
-            Loger.add("Окно доп.секций", Open ? "открыли" : "закрыли");
+            Loger.Log("Окно доп.секций", Open ? "открыли" : "закрыли");
         }
 
         void HideAll()
         {
-            MainChangesSchedules.SetActive(false);
-            MainStaticSchedules.SetActive(false);
+            MainCurrentWindow.SetActive(false);
             CallsWindow.SetActive(false);
             LessonsWindow.SetActive(false);
             ExtraWindow.SetActive(false);
@@ -154,7 +161,7 @@ namespace Stand
         public void OnClickBlindMode()
         {
             BlindMode = !BlindMode;
-            Loger.add("BlindMode", BlindMode ? "включён" : "выключен");
+            Loger.Log("BlindMode", BlindMode ? "включён" : "выключен");
             StartAnimBlind = Time.time;
         }
     }

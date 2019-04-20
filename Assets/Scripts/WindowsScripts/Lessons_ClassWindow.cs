@@ -15,7 +15,7 @@ namespace Stand
 
         public override void ChooseClass(string Class)
         {
-            Loger.add("Окно занятий", "открыли");
+            Loger.Log("Окно занятий", "открыли");
             int number = int.Parse(Class);
             HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonsMatrix[2][number];
             _UIController.MergeTimePanel(true);
@@ -35,7 +35,7 @@ namespace Stand
             }
             else
             {
-                Loger.add($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
+                Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
             }
         }
 
@@ -48,7 +48,7 @@ namespace Stand
             int CWC = CurrentWeeklyClass;
             bool NullLesson = true;
 
-            Loger.add($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
+            Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
 
             for (int i = 0; i < 8; i++)
             {

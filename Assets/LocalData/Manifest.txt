@@ -2,3 +2,4 @@ NameCallsMatrix=Calls.csv;
 NameLessonsMatrix=Lessons.csv;
 NameExtraMatrix=Extra.csv;
 DownTime=120;
+SupportChangesSchedules=true;

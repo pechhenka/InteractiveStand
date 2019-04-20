@@ -121,7 +121,7 @@ namespace Stand
         public override void Refill() => PrimaryFill();
         public override void Fill()
         {
-            Loger.add($"Окно доп.секций&IdDay:{CurrentExtraDay}", "открыли");
+            Loger.Log($"Окно доп.секций&IdDay:{CurrentExtraDay}", "открыли");
 
 
             foreach (Transform child in InformationsBlocks.transform)
@@ -179,7 +179,7 @@ namespace Stand
             }
             else
             {
-                Loger.add($"Окно доп.секций&IdDay:{CurrentExtraDay}", "нервное касание");
+                Loger.Log($"Окно доп.секций&IdDay:{CurrentExtraDay}", "нервное касание");
             }
         }
 

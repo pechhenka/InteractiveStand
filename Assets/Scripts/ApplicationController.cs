@@ -24,7 +24,7 @@ namespace Stand
                 if (!Quit)
                 {
                     Quit = true;
-                    Loger.add("Стенд", "Выход с клавиатуры");
+                    Loger.Log("Стенд", "Выход с клавиатуры");
                     Application.Quit();
                 }
             }
@@ -34,7 +34,7 @@ namespace Stand
 
             if ((DownTime > 0) && LastTouch + DownTime < Time.time)
             {
-                Loger.add("Стенд", $"Возврат в нальное состояние&LastTouch:{LastTouch}");
+                Loger.Log("Стенд", $"Возврат в нальное состояние LastTouch:&{LastTouch}");
                 LastTouch = Time.time;
                 SceneManager.LoadScene(1);
             }
@@ -42,18 +42,18 @@ namespace Stand
 
         void OnApplicationFocus(bool focus)
         {
-            Loger.add("Стенд", "MonoBehaviour.OnApplicationFocus:" + focus);
+            Loger.Log("Стенд", "MonoBehaviour.OnApplicationFocus:&" + focus);
         }
 
         void OnApplicationPause(bool pause)
         {
-            Loger.add("Стенд", "MonoBehaviour.OnApplicationPause:" + pause);
+            Loger.Log("Стенд", "MonoBehaviour.OnApplicationPause:&" + pause);
         }
 
         void OnApplicationQuit()
         {
             if (!Quit)
-                Loger.add("Стенд", "Закрыт");
+                Loger.Log("Стенд", "Закрыт");
         }
     }
 }

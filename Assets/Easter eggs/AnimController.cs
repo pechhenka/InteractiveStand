@@ -20,7 +20,7 @@ namespace Stand
         {
             if (!anim.isPlaying)
             {
-                Loger.add("Пасхалка", "вход");
+                Loger.Log("Пасхалка", "вход");
                 anim.Play("OnAboutTheAuthor");
             }
         }
@@ -29,7 +29,7 @@ namespace Stand
         {
             if (!anim.isPlaying)
             {
-                Loger.add("Пасхалка", "выход");
+                Loger.Log("Пасхалка", "выход");
                 anim.Play("OffAboutTheAuthor");
             }
         }
