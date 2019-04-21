@@ -69,6 +69,7 @@ namespace Stand
         void FixedUpdate()
         {
             TimePanelWindow.Fill();
+            TimeLineWindow.Fill();
 
             if (StartAnimBlind + AnimTimeBlind > Time.time)
             {
