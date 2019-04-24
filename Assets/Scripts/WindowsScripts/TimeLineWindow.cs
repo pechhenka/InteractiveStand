@@ -86,16 +86,40 @@ namespace Stand
             TimeToCall.text = TimeToCallText;
 
             int WhatNowIndex = CallsController.Instance.WhatNow();
-            if (WhatNowIndex > 0)
+            if (DateTime.Now.DayOfWeek.Normalising() == 1)
             {
-                WhatNow.text = "Идёт " + WhatNowIndex + NumberDeclination(WhatNowIndex) + " урок";
-            }
-            else if (WhatNowIndex < 0)
-            {
-                WhatNow.text = "Закончился " + Math.Abs(WhatNowIndex) + NumberDeclination(Math.Abs(WhatNowIndex)) + " урок";
+                if (WhatNowIndex == 1)
+                {
+                    WhatNow.text = "Идёт классный час";
+                }
+                else if (WhatNowIndex == -1)
+                {
+                    WhatNow.text = "Закончился классный час";
+                }
+                else if (WhatNowIndex > 0)
+                {
+                    WhatNow.text = "Идёт " + (WhatNowIndex-1) + NumberDeclination(WhatNowIndex-1) + " урок";
+                }
+                else if (WhatNowIndex < 0)
+                {
+                    WhatNow.text = "Закончился " + (Math.Abs(WhatNowIndex)-1) + NumberDeclination(Math.Abs(WhatNowIndex)-1) + " урок";
+                }
+                else
+                    WhatNow.text = "--";
             }
             else
-                WhatNow.text = "--";
+            {
+                if (WhatNowIndex > 0)
+                {
+                    WhatNow.text = "Идёт " + WhatNowIndex + NumberDeclination(WhatNowIndex) + " урок";
+                }
+                else if (WhatNowIndex < 0)
+                {
+                    WhatNow.text = "Закончился " + Math.Abs(WhatNowIndex) + NumberDeclination(Math.Abs(WhatNowIndex)) + " урок";
+                }
+                else
+                    WhatNow.text = "--";
+            }
         }
 
         string NumberDeclination(int number)
