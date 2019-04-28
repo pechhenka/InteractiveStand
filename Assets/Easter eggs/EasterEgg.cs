@@ -3,9 +3,8 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class AnimController : MonoBehaviour
+    public class EasterEgg : MonoBehaviour
     {
-        public Text TimerOnGame;
         public Text BuildDated;
 
         private Animation anim;

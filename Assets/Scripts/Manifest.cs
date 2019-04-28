@@ -83,7 +83,7 @@ namespace Stand
             }
             catch (Exception e)
             {
-                Loger.Log(path,"Ошибка чтения манифеста:&" + e.Message);
+                Loger.Log(path,"Ошибка чтения манифеста:" + e.Message);
             }
             return false;
         }
