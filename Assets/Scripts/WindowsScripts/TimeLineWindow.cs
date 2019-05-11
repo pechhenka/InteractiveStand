@@ -82,7 +82,7 @@ namespace Stand
                 flag = true;
             }
             if (!flag)
-                TimeToCallText += " --";
+                TimeToCallText = "--";
             TimeToCall.text = TimeToCallText;
 
             int WhatNowIndex = CallsController.Instance.WhatNow();
