@@ -17,9 +17,9 @@ namespace Stand
         {
             Loger.Log("Окно занятий", "открыли");
             int number = int.Parse(Class);
-            HeadlineWeeklySchedule.text = DateTime.Now.DayOfWeek.ConvertToString(false) + " " + Data.Instance.LessonsMatrix[2][number];
+            ChooseDay(DateTime.Now.DayOfWeek.Normalising());
+            HeadlineWeeklySchedule.text = CurrentWeeklyDay.ConvertToString(false) + " " + Data.Instance.LessonsMatrix[2][number];
             _UIController.MergeTimePanel(true);
-            CurrentWeeklyDay = DateTime.Now.DayOfWeek.Normalising();
             CurrentWeeklyClass = number;
             Fill();
         }
@@ -28,6 +28,7 @@ namespace Stand
         {
             if (id != CurrentWeeklyDay)
             {
+                if (id > 5 || id < 0) id = 0;
                 CurrentWeeklyDay = id;
                 string NameClass = HeadlineWeeklySchedule.text.Split()[1];
                 HeadlineWeeklySchedule.text = ((DayOfWeek)(id + 1)).ConvertToString(false) + " " + NameClass;
@@ -43,7 +44,7 @@ namespace Stand
         {
             WeeklyClassrooms.text = "";
             WeeklyLessons.text = "";
-
+            if (CurrentWeeklyDay > 5 || CurrentWeeklyDay < 0) CurrentWeeklyDay = 0;
             int CWD = CurrentWeeklyDay * 16 + 3;
             int CWC = CurrentWeeklyClass;
             bool NullLesson = true;

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="utf-8">
+	<title>Call controller</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css">
+	<script src="jquery-3.4.1.min.js"></script>
+</head>
+<body>
+
+	<div class="task_Off">
+		<button class="task_Off btn btn1" onclick='$.get("", { s: "1", ui: "0" } );'>Отменить задания</button>
+	</div>
+
+	<div class="task_form">
+		<form class="form">
+			<div class="inputGroup">
+				<input id="radio1" name="task_type" type="radio" value="c"/>
+				<label for="radio1">Звонок</label>
+			</div>
+			<div class="inputGroup">
+				<input id="radio2" name="task_type" type="radio" value="p"/>
+				<label for="radio2">Пауза</label>
+			</div>
+			<div class="inputGroup">
+				<input id="radio3" name="task_type" type="radio" value="s"/>
+				<label for="radio3">Отмена</label>
+			</div>
+		</form>
+		<div style="display: flex;">
+			<input type="number" class="task_time" min="1" max="10000" placeholder="Время в миллисекундах (1000 миллисекунд = 1 секунда)">
+			<button class="task_check square btn2 fas fa-check" onclick="TaskProccess();"></button>
+			<button class="task_send square btn1 far fa-paper-plane" onclick="SendTasks();"></button>
+		</div>
+	</div>
+
+	<div class="tasks">
+		<h3>Задания</h3>
+
+	</div>
+
+	<script type="text/javascript">
+		function TaskProccess()
+		{
+			var task_type = $("input[name='task_type']:checked").val();
+			var task;
+
+			if ($("input[name='task_type']:checked").val() == undefined || $(".task_time").val() == "")
+				return;
+			if (!(task_type == "c" || task_type == "p" || task_type == "s"))
+				return;
+
+			task = $("<div class='taskNode task" + task_type.toUpperCase() + "'></div>").text(i + ") " + $(".task_time").val());
+
+			/*var del = $("<i class='fas fa-trash-alt'></i>").click(function(){
+				var p = $(this).parent();
+				p.fadeOut(function(){
+					p.remove();
+				});
+			});
+			
+
+			task.append(del);*/
+
+			task.fadeOut(function(){
+				$(".tasks").append(task);
+				task.fadeIn();
+			});
+
+			tasks.push({type:task_type,time:parseInt($(".task_time").val())});
+
+			i++;
+		}
+
+		function SendTasks()
+		{
+			var cmd = "?ui=0";
+			console.log(tasks);
+			tasks.forEach(function (e) {
+				cmd += "&"+e.type+ "="+e.time;
+			})
+			$.get(cmd);
+		}
+
+		var tasks = [];
+		var i=0;
+		$(".task_time").on("keyup",function(e){
+			if(e.keyCode == 13) TaskProccess();
+		});
+
+		$('.square').each(function() {
+			if ($(this).height() > $(this).width()) {
+				$(this).css('min-width', $(this).height());
+			} else {
+				$(this).css('min-height', $(this).width());
+			}
+		});
+	</script>
+
+	<div id="copyright">
+		made by <a href="https://pechhenka.ru/">pechhenka.ru</a>
+	</div>
+</body>
+</html>

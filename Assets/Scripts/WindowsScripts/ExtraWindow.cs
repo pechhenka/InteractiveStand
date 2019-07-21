@@ -131,7 +131,7 @@ namespace Stand
 
             CurrentExtraBlock = 0;
             LengthExtraBlocks = Data.Instance.ExtraMatrix.Count;
-
+            if (CurrentExtraDay > 5) CurrentExtraDay = 0;
             int j = CurrentExtraDay * 4;
             GameObject go = null;
             int i = 1;

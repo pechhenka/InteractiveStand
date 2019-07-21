@@ -36,6 +36,29 @@ public static partial class FrameworkExtensions
         }
     }
 
+    public static string ConvertToString(this int dow, bool abbreviated = true)
+    {
+        switch (dow)
+        {
+            case 0:
+                return (abbreviated ? "пн" : "Понедельник");
+            case 1:
+                return (abbreviated ? "вт" : "Вторник");
+            case 2:
+                return (abbreviated ? "ср" : "Среда");
+            case 3:
+                return (abbreviated ? "чт" : "Четверг");
+            case 4:
+                return (abbreviated ? "пт" : "Пятница");
+            case 5:
+                return (abbreviated ? "сб" : "Суббота");
+            case 6:
+                return (abbreviated ? "вс" : "Воскресенье");
+            default:
+                return null;
+        }
+    }
+
     public static int Normalising(this DayOfWeek dow)
     {
         if (dow == 0)

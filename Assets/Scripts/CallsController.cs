@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.Networking;
+using NPOI.HSSF.UserModel;
 
 namespace Stand
 {
@@ -193,9 +194,9 @@ namespace Stand
             return result;
         }
 
-        public void Call(int t = 2)
+        public void Call(int t = 2000)
         {
-            UnityWebRequest uwr = UnityWebRequest.Get("http://192.168.1.211/Call?c=2000");
+            UnityWebRequest uwr = UnityWebRequest.Get("http://192.168.1.211/Call?c=" + t);
             uwr.SendWebRequest();
             Loger.Log("звонок", "включен звонок продолжительность:" + t);
         }
