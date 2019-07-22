@@ -5,9 +5,12 @@ namespace Stand
 {
     public class Manifest
     {
-        public string NameCallsMatrix = "Calls.csv"; // Имя файла со звонками
-        public string NameLessonsMatrix = "Lessons.csv"; // Имя файла с уроками
-        public string NameExtraMatrix = "Extra.csv"; // Имя файла с дополнительными занятиями
+        public string NameCallsMatrix = "Calls.xls"; // Имя файла со звонками
+        public string NameLessonsMatrix = "Lessons.xls"; // Имя файла с уроками
+        public string NameExtraMatrix = "Extra.xls"; // Имя файла с дополнительными занятиями
+
+        public string NameChangeCallsMatrix = "ChangeCalls.xls"; // Имя файла с изменёнными звонками
+        public string NameChangeLessonsMatrix = "ChangeLessons.xls"; // Имя файла с измененными уроками
 
         public string PathOutsideData = ""; // Папка с внешнеми данными
         public int DownTime = 120; // Времячерез которое стенд вернётся в начальное состояние
@@ -15,7 +18,7 @@ namespace Stand
         public bool LogNotesRecording = false; // Запись логов с заметками
         public bool LogWarningsRecording = true; // Запись логов с предупреждениями
         public bool LogErrorsRecording = true; // Запись логов с ошибками
-        public bool SendLogsToOutsideData = false; // Отправка логов в папку с внемнеми данными
+        public bool SendLogsToOutsideData = false; // Отправка логов в папку с внешними данными
 
         public bool SupportChangesSchedules = false; // Поддержка меню с кнопками с изменениями в расписаниях
         public bool SupportAutomaticCalling = false; // Включить автоматическую подачу звонков
@@ -43,6 +46,13 @@ namespace Stand
                         case "NameExtraMatrix":
                             NameExtraMatrix = s[1];
                             break;
+                        case "NameChangeCallsMatrix":
+                            NameChangeCallsMatrix = s[1];
+                            break;
+                        case "NameChangeLessonsMatrix":
+                            NameChangeLessonsMatrix = s[1];
+                            break;
+
                         case "PathOutsideData":
                             PathOutsideData = s[1];
                             break;

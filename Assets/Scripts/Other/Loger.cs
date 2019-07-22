@@ -207,5 +207,30 @@ namespace Stand
             }
             Log("Лог файл", "не обнаржен&был создан");
         }
+
+        public static void StartLoger()
+        {
+            Application.logMessageReceived += HandleLog;
+        }
+        static void HandleLog(string logString, string stackTrace, LogType type)
+        {
+            switch (type)
+            {
+                case LogType.Log:
+                    if (!Data.Instance.CurrentManifest.LogNotesRecording) return;
+
+                    Log("HookConsole", logString + "&" + stackTrace + "&" + "LogType:" + type.ToString());
+                    break;
+                case LogType.Warning:
+                    if (!Data.Instance.CurrentManifest.LogWarningsRecording) return;
+
+                    Warning("HookConsole", logString + "&" + stackTrace + "&" + "LogType:" + type.ToString());
+                    break;
+                default:
+                    if (!Data.Instance.CurrentManifest.LogErrorsRecording) return;
+                    Error("HookConsole", logString + "&" + stackTrace + "&" + "LogType:" + type.ToString());
+                    break;
+            }
+        }
     }
 }

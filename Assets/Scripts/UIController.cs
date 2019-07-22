@@ -39,6 +39,12 @@ namespace Stand
         [Header("Extra")]
         public IWindow ExtraWindow;
 
+        [Header("ChangeCallsWindow")]
+        public IWindow ChangeCallsWindow;
+
+        [Header("ChangeLessonsWindow")]
+        public IWindow ChangeLessonsWindow;
+
         [Header("TimePanel")]
         public IWindow TimePanelWindow;
 
@@ -148,6 +154,28 @@ namespace Stand
             Loger.Log("Окно доп.секций", Open ? "открыли" : "закрыли");
         }
 
+        public void OpenChangeCallsWindow(bool Open)
+        {
+            HideAll();
+            ChangeCallsWindow.PrimaryFill();
+            TimePanelWindow.Merge(Open);
+
+            MainCurrentWindow.SetActive(!Open);
+            ChangeCallsWindow.SetActive(Open);
+            TimePanelWindow.SetActive(true);
+            Loger.Log("Окно изменений звонков", Open ? "открыли" : "закрыли");
+        }
+        public void OpenChangeLessonsWindow(bool Open)
+        {
+            HideAll();
+            ChangeLessonsWindow.PrimaryFill();
+            TimePanelWindow.Merge(Open);
+
+            MainCurrentWindow.SetActive(!Open);
+            ChangeLessonsWindow.SetActive(Open);
+            TimePanelWindow.SetActive(true);
+            Loger.Log("Окно изменений звонков", Open ? "открыли" : "закрыли");
+        }
         void HideAll()
         {
             MainCurrentWindow.SetActive(false);
@@ -156,6 +184,7 @@ namespace Stand
             ExtraWindow.SetActive(false);
             TimePanelWindow.SetActive(false);
             Lessons_ClassWindow.SetActive(false);
+            ChangeCallsWindow.SetActive(false);
             TimePanelWindow.Merge(false);
         }
 

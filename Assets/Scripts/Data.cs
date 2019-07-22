@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using NPOI.HSSF.UserModel;
+using NPOI.XSSF.UserModel;
 
 namespace Stand
 {
@@ -10,9 +11,12 @@ namespace Stand
      */
     public class Data : Singleton<Data>
     {
-        public List<string[]> CallsMatrix = new List<string[]>();
-        public List<string[]> LessonsMatrix = new List<string[]>();
-        public List<string[]> ExtraMatrix = new List<string[]>();
+        public ISheet CallsMatrix = null;
+        public ISheet LessonsMatrix = null;
+        public ISheet ExtraMatrix = null;
+        public ISheet ChangeCallsMatrix = null;
+        public ISheet ChangeLessonsMatrix = null;
+
         public string DataPath = "";
 
         public Manifest CurrentManifest = new Manifest();
@@ -37,11 +41,15 @@ namespace Stand
                     }
                 }
 
-                CallsMatrix = CSVReader.Read(DataPath + CurrentManifest.NameCallsMatrix);
-                LessonsMatrix = CSVReader.Read(DataPath + CurrentManifest.NameLessonsMatrix);
-                ExtraMatrix = CSVReader.Read(DataPath + CurrentManifest.NameExtraMatrix);
+                CallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameCallsMatrix).GetSheetAt(0);
+                LessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameLessonsMatrix).GetSheetAt(0);
+                ExtraMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameExtraMatrix).GetSheetAt(0);
+                if (CurrentManifest.SupportChangesSchedules)
+                {
+                    ChangeCallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeCallsMatrix).GetSheetAt(0);
+                    ChangeLessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeLessonsMatrix).GetSheetAt(0);
+                }
                 ApplicationController.Instance.DownTime = CurrentManifest.DownTime;
-
             }
             catch (Exception e)
             {

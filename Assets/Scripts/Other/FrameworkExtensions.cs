@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NPOI.SS.UserModel;
+using System;
 using UnityEngine;
 
 /* Класс содержит только методы расширения
@@ -8,6 +9,27 @@ using UnityEngine;
  */
 public static partial class FrameworkExtensions
 {
+
+    public static string GetCell(this ISheet s, int row, int id)
+    {
+        IRow r = s.GetRow(row);
+        if (r == null) return "";
+        ICell c = r.GetCell(id);
+        if (c == null) return "";
+
+        switch(c.CellType)
+        {
+            case CellType.Blank: return "";
+            case CellType.Boolean: return c.BooleanCellValue.ToString();
+            case CellType.Error: return "";
+            case CellType.Formula: return "";
+            case CellType.Numeric: return c.NumericCellValue.ToString();
+            case CellType.String: return c.StringCellValue;
+            case CellType.Unknown: return "";
+        }
+        return c == null ? "" : c.StringCellValue;
+    }
+
     public static Color SetAlpha(this Color c, float alpha)
     {
         return new Color(c.r, c.g, c.b, alpha);

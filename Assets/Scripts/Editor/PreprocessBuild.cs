@@ -24,7 +24,7 @@ namespace Stand
             sb.Append("}");
             sb.Append('\n' + "//Данный класс создаётся автоматически редактирование осуществляется в классе PreprocessBuild");
             using (System.IO.StreamWriter file =
-                new System.IO.StreamWriter(@"Assets/Scripts/BuildInfo.cs"))
+                new System.IO.StreamWriter(@"Assets/Scripts/Other/BuildInfo.cs"))
             {
                 file.WriteLine(sb.ToString());
             }

@@ -18,7 +18,7 @@ namespace Stand
             Loger.Log("Окно занятий", "открыли");
             int number = int.Parse(Class);
             ChooseDay(DateTime.Now.DayOfWeek.Normalising());
-            HeadlineWeeklySchedule.text = CurrentWeeklyDay.ConvertToString(false) + " " + Data.Instance.LessonsMatrix[2][number];
+            HeadlineWeeklySchedule.text = CurrentWeeklyDay.ConvertToString(false) + " " + Data.Instance.LessonsMatrix.GetCell(2, number);
             _UIController.MergeTimePanel(true);
             CurrentWeeklyClass = number;
             Fill();
@@ -36,7 +36,7 @@ namespace Stand
             }
             else
             {
-                Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
+                Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix.GetCell(2, CurrentWeeklyClass)}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
             }
         }
 
@@ -49,11 +49,11 @@ namespace Stand
             int CWC = CurrentWeeklyClass;
             bool NullLesson = true;
 
-            Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix[2][CurrentWeeklyClass]}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
+            Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix.GetCell(2, CurrentWeeklyClass)}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
 
             for (int i = 0; i < 8; i++)
             {
-                if (Data.Instance.LessonsMatrix[CWD + i * 2][CWC] == "")
+                if (Data.Instance.LessonsMatrix.GetCell(CWD + i * 2, CWC) == "")
                 {
                     if (NullLesson)
                     {
@@ -66,14 +66,14 @@ namespace Stand
                 }
                 else
                     NullLesson = false;
-                WeeklyLessons.text += Data.Instance.LessonsMatrix[CWD + i * 2][CWC] + '\n';
+                WeeklyLessons.text += Data.Instance.LessonsMatrix.GetCell(CWD + i * 2, CWC) + '\n';
 
                 string Classrooms = "";
-                if (Data.Instance.LessonsMatrix[CWD + i * 2 + 1][CWC + 1] != "")
+                if (Data.Instance.LessonsMatrix.GetCell(CWD + i * 2 + 1, CWC + 1) != "")
                 {
-                    Classrooms += Data.Instance.LessonsMatrix[CWD + i * 2 + 1][CWC + 1];
-                    if (Data.Instance.LessonsMatrix[CWD + i * 2][CWC + 2] == "/")
-                        Classrooms += "/" + Data.Instance.LessonsMatrix[CWD + i * 2 + 1][CWC + 3];
+                    Classrooms += Data.Instance.LessonsMatrix.GetCell(CWD + i * 2 + 1, CWC + 1);
+                    if (Data.Instance.LessonsMatrix.GetCell(CWD + i * 2, CWC + 2) == "/")
+                        Classrooms += "/" + Data.Instance.LessonsMatrix.GetCell(CWD + i * 2 + 1, CWC + 3);
                 }
                 WeeklyClassrooms.text += Classrooms + '\n';
             }

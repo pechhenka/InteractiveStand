@@ -130,14 +130,14 @@ namespace Stand
                 Destroy(child.gameObject);
 
             CurrentExtraBlock = 0;
-            LengthExtraBlocks = Data.Instance.ExtraMatrix.Count;
+            LengthExtraBlocks = Data.Instance.ExtraMatrix.LastRowNum;
             if (CurrentExtraDay > 5) CurrentExtraDay = 0;
             int j = CurrentExtraDay * 4;
             GameObject go = null;
             int i = 1;
             for (; i < LengthExtraBlocks; i++)
             {
-                if (Data.Instance.ExtraMatrix[i][j] == "")
+                if (Data.Instance.ExtraMatrix.GetCell(i, j) == "")
                 {
                     if (i == 1)
                     {
@@ -156,10 +156,10 @@ namespace Stand
                     Instantiate(Dot, Dots.transform);
 
                 go = Instantiate(InformationBlockPrefab, InformationsBlocks.transform);
-                go.transform.Find("CourseName").GetComponent<Text>().text = Data.Instance.ExtraMatrix[i][j];
-                go.transform.Find("Classes").GetComponent<Text>().text = "Классы: " + Data.Instance.ExtraMatrix[i][j + 1];
-                go.transform.Find("Time").GetComponent<Text>().text = "Время: " + Data.Instance.ExtraMatrix[i][j + 2];
-                go.transform.Find("Сlassroom").GetComponent<Text>().text = "Кабинет: " + Data.Instance.ExtraMatrix[i][j + 3];
+                go.transform.Find("CourseName").GetComponent<Text>().text = Data.Instance.ExtraMatrix.GetCell(i, j);
+                go.transform.Find("Classes").GetComponent<Text>().text = "Классы: " + Data.Instance.ExtraMatrix.GetCell(i, j + 1);
+                go.transform.Find("Time").GetComponent<Text>().text = "Время: " + Data.Instance.ExtraMatrix.GetCell(i, j + 2);
+                go.transform.Find("Сlassroom").GetComponent<Text>().text = "Кабинет: " + Data.Instance.ExtraMatrix.GetCell(i, j + 3);
 
                 if (i != 1)
                     go.GetComponent<CanvasGroup>().alpha = 0f;

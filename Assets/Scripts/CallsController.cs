@@ -59,10 +59,10 @@ namespace Stand
             List<string> Times = new List<string>();
             char[] deaf = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '—', ':' };
             int i = 0;
-            foreach (string[] s in Data.Instance.CallsMatrix)
+            for (i = 0; i <= Data.Instance.CallsMatrix.LastRowNum; i++)
             {
                 string str = "";
-                foreach (char c in s[IndexInTable])
+                foreach (char c in Data.Instance.CallsMatrix.GetCell(i,IndexInTable))
                 {
                     if (deaf.Select(x => x).Contains(c))
                         str += c;
@@ -73,7 +73,6 @@ namespace Stand
                     Times.Add(calls[0]);
                     Times.Add(calls[1]);
                 }
-                i++;
             }
 
             string time = DateTime.Now.ToString("HH:mm");
@@ -157,10 +156,10 @@ namespace Stand
             List<string> Times = new List<string>();
             char[] deaf = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '-', '—', ':' };
             int i = 0;
-            foreach (string[] s in Data.Instance.CallsMatrix)
+            for (i = 0; i <= Data.Instance.CallsMatrix.LastRowNum; i++)
             {
                 string str = "";
-                foreach (char c in s[IndexInTable])
+                foreach (char c in Data.Instance.CallsMatrix.GetCell(i,IndexInTable))
                 {
                     if (deaf.Select(x => x).Contains(c))
                         str += c;
@@ -171,7 +170,6 @@ namespace Stand
                     Times.Add(calls[0]);
                     Times.Add(calls[1]);
                 }
-                i++;
             }
 
             string time = DateTime.Now.ToString("HH:mm");

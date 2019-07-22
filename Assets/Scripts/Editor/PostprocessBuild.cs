@@ -58,7 +58,7 @@ namespace Stand
             }
             catch (Exception e)
             {
-                Debug.LogWarning("Ошибка дополнительного PostprocessBuild:" + e.Message);
+                Debug.LogWarning("Ошибка PostprocessBuild:" + e.Message);
             }
         }
     }
