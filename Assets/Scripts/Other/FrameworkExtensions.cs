@@ -2,22 +2,33 @@
 using System;
 using UnityEngine;
 
-/* Класс содержит только методы расширения
- * Просто облегчает жизнь при написании кода :)
- * Вот измените мне альфа канал в Color без него :)
- * Нет, вы конечно можете изменить его, но это не круто каждыйраз писать одно и тоже
+/* Методы расширения
  */
 public static partial class FrameworkExtensions
 {
-
-    public static string GetCell(this ISheet s, int row, int id)
+    public static string ToTime(this TimeSpan a) => a.Hours + ":" + a.Minutes;
+    public static string ToTime(this TimeSpan? a)
     {
-        IRow r = s.GetRow(row);
-        if (r == null) return "";
+        if (a == null) return "--:--";
+        return a?.Hours + ":" + a?.Minutes;
+    }
+    public static TimeSpan ToTimeSpan(this DateTime dt)
+    {
+        TimeSpan res = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
+        return res;
+    }
+    public static string Clear(this string s)
+    {
+        return s.Replace(" ", string.Empty)
+            .Replace(Environment.NewLine, string.Empty);
+    }
+
+    public static string Cell(this IRow r, int id)
+    {
         ICell c = r.GetCell(id);
         if (c == null) return "";
 
-        switch(c.CellType)
+        switch (c.CellType)
         {
             case CellType.Blank: return "";
             case CellType.Boolean: return c.BooleanCellValue.ToString();
@@ -26,9 +37,18 @@ public static partial class FrameworkExtensions
             case CellType.Numeric: return c.NumericCellValue.ToString();
             case CellType.String: return c.StringCellValue;
             case CellType.Unknown: return "";
+            default: return "";
         }
-        return c == null ? "" : c.StringCellValue;
     }
+
+    public static string Cell(this ISheet s, int row, int id)
+    {
+        IRow r = s.GetRow(row);
+        if (r == null) return "";
+        return r.Cell(id);
+    }
+
+    public static string GetCell(this ISheet s, int row, int id) => Cell(s, row, id);
 
     public static Color SetAlpha(this Color c, float alpha)
     {

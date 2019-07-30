@@ -12,8 +12,8 @@ namespace Stand
         public string NameChangeCallsMatrix = "ChangeCalls.xls"; // Имя файла с изменёнными звонками
         public string NameChangeLessonsMatrix = "ChangeLessons.xls"; // Имя файла с измененными уроками
 
-        public string PathOutsideData = ""; // Папка с внешнеми данными
-        public int DownTime = 120; // Времячерез которое стенд вернётся в начальное состояние
+        public string PathOutsideData = null; // Папка с внешнеми данными
+        public int DownTime = 120; // Время через которое стенд вернётся в начальное состояние
 
         public bool LogNotesRecording = false; // Запись логов с заметками
         public bool LogWarningsRecording = true; // Запись логов с предупреждениями
@@ -34,6 +34,7 @@ namespace Stand
                 foreach (string Values in ReadText.Split(';'))
                 {
                     string[] s = Values.Split('=');
+                    if (s.Length < 2) continue;
 
                     switch (s[0])
                     {
@@ -93,7 +94,7 @@ namespace Stand
             }
             catch (Exception e)
             {
-                Loger.Log(path,"Ошибка чтения манифеста:" + e.Message);
+                Loger.Warning(path,"Ошибка чтения манифеста:" + e.Message);
             }
             return false;
         }

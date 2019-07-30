@@ -2,17 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LessonsParser : MonoBehaviour
+namespace Stand
 {
-    // Start is called before the first frame update
-    void Start()
+    public static class LessonsParser
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

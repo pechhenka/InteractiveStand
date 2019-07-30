@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 using NPOI.SS.UserModel;
-using NPOI.HSSF.UserModel;
-using NPOI.XSSF.UserModel;
 
 namespace Stand
 {
@@ -21,8 +18,8 @@ namespace Stand
 
         public Manifest CurrentManifest = new Manifest();
 
-        private Manifest LocalManifest = new Manifest();
-        private Manifest OutsideManifest = new Manifest();
+        private readonly Manifest LocalManifest = new Manifest();
+        private readonly Manifest OutsideManifest = new Manifest();
 
         void Awake()
         {
@@ -33,7 +30,7 @@ namespace Stand
                 LocalManifest.Load(DataPath + "Manifest.txt");
                 CurrentManifest = LocalManifest;
 
-                if (LocalManifest.PathOutsideData != "")
+                if (LocalManifest.PathOutsideData != null)
                 {
                     if (OutsideManifest.Load(LocalManifest.PathOutsideData + "Manifest.txt"))
                     {
@@ -41,14 +38,24 @@ namespace Stand
                     }
                 }
 
-                CallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameCallsMatrix).GetSheetAt(0);
-                LessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameLessonsMatrix).GetSheetAt(0);
-                ExtraMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameExtraMatrix).GetSheetAt(0);
+                try { CallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameCallsMatrix).GetSheetAt(0); }
+                catch (Exception e) { Loger.Error<Data>(e.Message); }
+                try { LessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameLessonsMatrix).GetSheetAt(0); }
+                catch (Exception e) { Loger.Error<Data>(e.Message); }
+                try { ExtraMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameExtraMatrix).GetSheetAt(0); }
+                catch (Exception e) { Loger.Error<Data>(e.Message); }
                 if (CurrentManifest.SupportChangesSchedules)
                 {
-                    ChangeCallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeCallsMatrix).GetSheetAt(0);
-                    ChangeLessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeLessonsMatrix).GetSheetAt(0);
+                    try { ChangeCallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeCallsMatrix).GetSheetAt(0); }
+                    catch (Exception e) { Loger.Error<Data>(e.Message); }
+                    try { ChangeLessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeLessonsMatrix).GetSheetAt(0); }
+                    catch (Exception e) { Loger.Error<Data>(e.Message); }
                 }
+
+                /*DateTime lol = new DateTime(2019, 7, 25);
+                string kek = "";
+                Debug.Log(Parser.ContainsDate(ref kek, ref lol));*/
+
                 ApplicationController.Instance.DownTime = CurrentManifest.DownTime;
             }
             catch (Exception e)

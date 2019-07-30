@@ -40,25 +40,25 @@ namespace Stand
 
         public override void Fill()
         {
-            string[] calls = CallsController.Instance.BordersCalls();
-            LeftBorder.text = calls[0];
-            RightBorder.text = calls[1];
+            (TimeSpan? Last, TimeSpan? Next) = CallsParser.Instance.BordersCalls();
+            LeftBorder.text = Last.ToTime();
+            RightBorder.text = Next.ToTime();
 
-            int[] Attitude = CallsController.Instance.AttitudeCalls();
-            if (Attitude[0] == 0)
+            (int Difference, int TimeLeft) = CallsParser.Instance.AttitudeCalls();
+            if (Difference == 0)
             {
                 ProgressBar = 0;
             }
-            else if (Attitude[1] == 0)
+            else if (TimeLeft == 0)
             {
                 ProgressBar = 1;
             }
             else
             {
-                ProgressBar = 1 - ((float)Attitude[1]) / Attitude[0];
+                ProgressBar = 1 - ((float)TimeLeft) / Difference;
             }
 
-            TimeToCallTS = TimeSpan.FromSeconds(Attitude[1]);
+            TimeToCallTS = TimeSpan.FromSeconds(TimeLeft);
             string TimeToCallText = "До звонка";
             bool flag = false;
             if (TimeToCallTS.Days > 0)
