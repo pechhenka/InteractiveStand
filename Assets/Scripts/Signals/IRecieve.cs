@@ -12,4 +12,9 @@ namespace Stand
     public interface IRecieve
     {
     }
+
+    public interface IReciever
+    {
+        void StartRecieve();
+    }
 }

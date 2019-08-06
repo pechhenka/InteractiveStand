@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace Stand
 {
-    public class CallsWindow : IWindow
+    public class CallsWindow : WindowBase, IReceive<SignalCallsMatrixChanged>
     {
         public Text Monday;
         public Text Tuesday;
@@ -11,16 +12,35 @@ namespace Stand
 
         public override void PrimaryFill()
         {
-            Monday.text = "";
-            Tuesday.text = "";
-            Saturday.text = "";
+            string[] res = new string[3];
+            res[0] = Data.Instance.CallsMatrix.GetCell(0, 0) + Environment.NewLine;
+            res[1] = Data.Instance.CallsMatrix.GetCell(0, 1) + Environment.NewLine;
+            res[2] = Data.Instance.CallsMatrix.GetCell(0, 2) + Environment.NewLine;
 
-            for (int i = 0; i <= Data.Instance.CallsMatrix.LastRowNum; i++)
+            bool Switch = false;
+            foreach (TimeSpan item in CallsParser.Instance.GetColumnWithoutChanges(0))
             {
-                Monday.text += Data.Instance.CallsMatrix.GetCell(i, 0) + '\n';
-                Tuesday.text += Data.Instance.CallsMatrix.GetCell(i, 1) + '\n';
-                Saturday.text += Data.Instance.CallsMatrix.GetCell(i, 2) + '\n';
+                res[0] += item.ToTimeString() + (Switch ? Environment.NewLine : " - ");
+                Switch = !Switch;
             }
+
+            Switch = false;
+            foreach (TimeSpan item in CallsParser.Instance.GetColumnWithoutChanges(1))
+            {
+                res[1] += item.ToTimeString() + (Switch ? Environment.NewLine : " - ");
+                Switch = !Switch;
+            }
+
+            Switch = false;
+            foreach (TimeSpan item in CallsParser.Instance.GetColumnWithoutChanges(2))
+            {
+                res[2] += item.ToTimeString() + (Switch ? Environment.NewLine : " - ");
+                Switch = !Switch;
+            }
+
+            Monday.text = res[0];
+            Tuesday.text = res[1];
+            Saturday.text = res[2];
         }
 
         public override void Refill() => PrimaryFill();
@@ -31,5 +51,10 @@ namespace Stand
         public override void ChooseDay(int id) => PrimaryFill();
 
         public override void Merge(bool Status) { }
+
+        void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

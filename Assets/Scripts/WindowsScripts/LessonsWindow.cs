@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class LessonsWindow : IWindow
+    public class LessonsWindow : WindowBase
     {
         [Header("Prefabs")]
         public GameObject ClassesButton;

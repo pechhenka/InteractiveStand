@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class ChangeLessonsWindow : IWindow
+    public class ChangeLessonsWindow : WindowBase
     {
         public override void PrimaryFill()
         {

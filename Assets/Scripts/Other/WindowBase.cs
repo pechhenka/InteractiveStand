@@ -3,10 +3,11 @@
 namespace Stand
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class IWindow : MonoBehaviour
+    public abstract class WindowBase : MonoBehaviour
     {
         [HideInInspector] public CanvasGroup _CanvasGroup;
         [HideInInspector] public UIController _UIController;
+        private bool? OpenStatus = null;
         void Awake()
         {
             _CanvasGroup = GetComponent<CanvasGroup>();
@@ -27,6 +28,9 @@ namespace Stand
 
         public void SetActive(bool Open)
         {
+            if (OpenStatus != null && OpenStatus == Open)
+                return;
+
             if (Open)
             {
                 _CanvasGroup.alpha = 1;
@@ -39,6 +43,7 @@ namespace Stand
                 _CanvasGroup.interactable = false;
                 _CanvasGroup.blocksRaycasts = false;
             }
+            OpenStatus = Open;
         }
     }
 }

@@ -4,31 +4,43 @@ using System.Collections.Generic;
 
 namespace Stand
 {
-    public class CallsParser : Parser<CallsParser>, IReceive<SignalCallsMatrixChanged>, IReceive<SignalChangeCallsMatrixChanged>
+    public class CallsParser : Parser<CallsParser>, IReciever, IReceive<SignalCallsMatrixChanged>, IReceive<SignalChangeCallsMatrixChanged>
     {
+        void IReciever.StartRecieve()
+        {
+            ProcessingSignals.Default.Add(this);
+        }
+
+        public bool Changes()
+        {
+            throw new NotImplementedException();
+        }
+
         public TimeSpan? NextCall() => BordersCalls().Next;
 
         public TimeSpan? LastCall() => BordersCalls().Last;
 
-        public (TimeSpan? Last,TimeSpan? Next) BordersCalls()
+        public (TimeSpan? Last, TimeSpan? Next) BordersCalls()
         {
             (TimeSpan? Last, TimeSpan? Next) res = (null, null);
             TimeSpan TimeSpanNow = DateTime.Now.ToTimeSpan();
 
-            List<TimeSpan> gap = new List<TimeSpan>();
-            GetCurrentColumn().ForEach(x => gap.AddRange(Times(x)));
+            List<TimeSpan> gap = GetCurrentColumn();
 
             int len = gap.Count;
             if (TimeSpanNow <= gap[0]) { res.Next = gap[0]; return res; }
             if (TimeSpanNow >= gap[len - 1]) { res.Last = gap[len - 1]; return res; }
             for (int j = 0; j < len; j++)
                 if (TimeSpanNow <= gap[j])
+                {
                     res = (gap[j - 1], gap[j]);
+                    break;
+                }
 
             return res;
         }
 
-        public bool CheckClassroomHour() => CheckClassroomHour(GetCurrentColumn()[0]);
+        public bool CheckClassroomHour() => CheckClassroomHour(GetFirstLineCurrentColumn());
 
         /// <summary>
         /// &lt;0 номер перемены;
@@ -38,10 +50,8 @@ namespace Stand
         /// <returns>int</returns>
         public int WhatNow()
         {
-            List<TimeSpan> gap = new List<TimeSpan>();
+            List<TimeSpan> gap = GetCurrentColumn();
             TimeSpan TimeSpanNow = DateTime.Now.ToTimeSpan();
-
-            GetCurrentColumn().ForEach(x => gap.AddRange(Times(x)));
 
             if (TimeSpanNow < gap[0]) return 0;
 
@@ -71,14 +81,61 @@ namespace Stand
                 TimeLeft = (int)(RightBorderTS - TimeCurrentTS).TotalSeconds;
                 if (res.Last != null)
                     Difference = (int)(RightBorderTS - LeftBorderTS).TotalSeconds;
-            }                
+            }
 
-            return ( Difference, TimeLeft );
+            return (Difference, TimeLeft);
         }
 
-        public List<string> GetCurrentColumn()
+        public List<TimeSpan> GetCurrentColumnWithoutChanges()
+        {
+            List<TimeSpan> res = new List<TimeSpan>();
+
+            DateTime DateTimeNow = DateTime.Now;
+
+            if (Data.Instance.CallsMatrix == null) return res;
+
+            int index = 0;
+            switch (DateTimeNow.DayOfWeek)
+            {
+                case DayOfWeek.Tuesday:
+                    index = 1;
+                    break;
+                case DayOfWeek.Saturday:
+                    index = 2;
+                    break;
+            }
+
+            int len = Data.Instance.CallsMatrix.LastRowNum;
+            for (int j = 1; j <= len; j++)
+            {
+                string s = Data.Instance.CallsMatrix.Cell(j, index);
+                if (s == "") continue;
+                res.AddRange(Times(s));
+            }
+
+            return res;
+        }
+
+        public List<TimeSpan> GetColumnWithoutChanges(int index)
         {
             List<string> res = new List<string>();
+
+            if (Data.Instance.CallsMatrix == null) return new List<TimeSpan>();
+
+            int len = Data.Instance.CallsMatrix.LastRowNum;
+            for (int j = 1; j <= len; j++)
+            {
+                string s = Data.Instance.CallsMatrix.Cell(j, index);
+                if (s == "") continue;
+                res.Add(s);
+            }
+
+            return Times(res);
+        }
+
+        public List<TimeSpan> GetCurrentColumn()
+        {
+            List<TimeSpan> res = new List<TimeSpan>();
 
             DateTime DateTimeNow = DateTime.Now;
             int len;
@@ -89,16 +146,16 @@ namespace Stand
                 if (DatesChangeRow != null)
                 {
                     len = DatesChangeRow.LastCellNum;
-                    for (int i = 1; i <= len; i++)
+                    for (int i = 0; i <= len; i++)
                         if (ContainsDate(DatesChangeRow.Cell(i), DateTimeNow))
                         {
                             len = Data.Instance.ChangeCallsMatrix.LastRowNum;
 
-                            for (int j = 0; j <= len; j++)
+                            for (int j = 1; j <= len; j++)
                             {
                                 string s = Data.Instance.ChangeCallsMatrix.Cell(j, i);
                                 if (s == "") continue;
-                                res.Add(s);
+                                res.Add(ToTime(s));
                             }
 
                             return res;
@@ -106,7 +163,49 @@ namespace Stand
                 }
             }
 
-            if (Data.Instance.CallsMatrix == null) return res;
+            return GetCurrentColumnWithoutChanges();
+        }
+
+        void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        void IReceive<SignalChangeCallsMatrixChanged>.HandleSignal(SignalChangeCallsMatrixChanged arg)
+        {
+            throw new NotImplementedException();
+        }
+
+        private string GetFirstLineCurrentColumn()
+        {
+            DateTime DateTimeNow = DateTime.Now;
+            int len;
+
+            if (Data.Instance.ChangeCallsMatrix != null)
+            {
+                IRow DatesChangeRow = Data.Instance.ChangeCallsMatrix.GetRow(0);
+                if (DatesChangeRow != null)
+                {
+                    len = DatesChangeRow.LastCellNum;
+                    for (int i = 0; i <= len; i++)
+                        if (ContainsDate(DatesChangeRow.Cell(i), DateTimeNow))
+                        {
+                            len = Data.Instance.ChangeCallsMatrix.LastRowNum;
+
+                            for (int j = 1; j <= len; j++)
+                            {
+                                string s = Data.Instance.ChangeCallsMatrix.Cell(j, i);
+                                if (s == "") continue;
+                                return s;
+                            }
+
+                            return "";
+                        }
+                }
+            }
+
+
+            if (Data.Instance.CallsMatrix == null) return "";
 
             int index = 0;
             switch (DateTimeNow.DayOfWeek)
@@ -124,20 +223,10 @@ namespace Stand
             {
                 string s = Data.Instance.CallsMatrix.Cell(j, index);
                 if (s == "") continue;
-                res.Add(s);
+                return s;
             }
 
-            return res;
-        }
-
-        void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg)
-        {
-            throw new NotImplementedException();
-        }
-
-        void IReceive<SignalChangeCallsMatrixChanged>.HandleSignal(SignalChangeCallsMatrixChanged arg)
-        {
-            throw new NotImplementedException();
+            return "";
         }
     }
 }

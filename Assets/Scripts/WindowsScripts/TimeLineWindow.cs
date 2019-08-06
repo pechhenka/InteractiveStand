@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class TimeLineWindow : IWindow
+    public class TimeLineWindow : WindowBase
     {
         public RectTransform ProgressLine;
         public Text LeftBorder;
@@ -41,84 +41,48 @@ namespace Stand
         public override void Fill()
         {
             (TimeSpan? Last, TimeSpan? Next) = CallsParser.Instance.BordersCalls();
-            LeftBorder.text = Last.ToTime();
-            RightBorder.text = Next.ToTime();
+
+            LeftBorder.text = Last.ToTimeString();
+            RightBorder.text = Next.ToTimeString();
 
             (int Difference, int TimeLeft) = CallsParser.Instance.AttitudeCalls();
+
             if (Difference == 0)
-            {
                 ProgressBar = 0;
-            }
             else if (TimeLeft == 0)
-            {
                 ProgressBar = 1;
-            }
             else
-            {
                 ProgressBar = 1 - ((float)TimeLeft) / Difference;
-            }
 
             TimeToCallTS = TimeSpan.FromSeconds(TimeLeft);
             string TimeToCallText = "До звонка";
-            bool flag = false;
-            if (TimeToCallTS.Days > 0)
+            if (TimeToCallTS.TotalSeconds <= 0) TimeToCallText = "--";
+            else
             {
-                TimeToCallText += " " + TimeToCallTS.Days + "д";
-                flag = true;
+                if (TimeToCallTS.Days > 0) TimeToCallText += " " + TimeToCallTS.Days + "д";
+                if (TimeToCallTS.Hours > 0) TimeToCallText += " " + TimeToCallTS.Hours + "ч";
+                if (TimeToCallTS.Minutes > 0) TimeToCallText += " " + TimeToCallTS.Minutes + "м";
+                if (TimeToCallTS.Seconds > 0) TimeToCallText += " " + TimeToCallTS.Seconds + "с";
             }
-            if (TimeToCallTS.Hours > 0)
-            {
-                TimeToCallText += " " + TimeToCallTS.Hours + "ч";
-                flag = true;
-            }
-            if (TimeToCallTS.Minutes > 0)
-            {
-                TimeToCallText += " " + TimeToCallTS.Minutes + "м";
-                flag = true;
-            }
-            if (TimeToCallTS.Seconds > 0)
-            {
-                TimeToCallText += " " + TimeToCallTS.Seconds + "с";
-                flag = true;
-            }
-            if (!flag)
-                TimeToCallText = "--";
+
             TimeToCall.text = TimeToCallText;
 
-            int WhatNowIndex = CallsController.Instance.WhatNow();
-            if (DateTime.Now.DayOfWeek.Normalising() == 1)
+            int WhatNowIndex = CallsParser.Instance.WhatNow();
+            bool flag = CallsParser.Instance.CheckClassroomHour();
+
+            if (flag)
             {
-                if (WhatNowIndex == 1)
-                {
-                    WhatNow.text = "Идёт классный час";
-                }
-                else if (WhatNowIndex == -1)
-                {
-                    WhatNow.text = "Закончился классный час";
-                }
-                else if (WhatNowIndex > 0)
-                {
-                    WhatNow.text = "Идёт " + (WhatNowIndex-1) + NumberDeclination(WhatNowIndex-1) + " урок";
-                }
-                else if (WhatNowIndex < 0)
-                {
-                    WhatNow.text = "Закончился " + (Math.Abs(WhatNowIndex)-1) + NumberDeclination(Math.Abs(WhatNowIndex)-1) + " урок";
-                }
-                else
-                    WhatNow.text = "--";
+                if (WhatNowIndex == 1) WhatNow.text = "Идёт классный час";
+                else if (WhatNowIndex == -1) WhatNow.text = "Закончился классный час";
+                else if (WhatNowIndex > 0) WhatNow.text = "Идёт " + (WhatNowIndex - 1) + NumberDeclination(WhatNowIndex - 1) + " урок";
+                else if (WhatNowIndex < 0) WhatNow.text = "Закончился " + (Math.Abs(WhatNowIndex) - 1) + NumberDeclination(Math.Abs(WhatNowIndex) - 1) + " урок";
+                else WhatNow.text = "--";
             }
             else
             {
-                if (WhatNowIndex > 0)
-                {
-                    WhatNow.text = "Идёт " + WhatNowIndex + NumberDeclination(WhatNowIndex) + " урок";
-                }
-                else if (WhatNowIndex < 0)
-                {
-                    WhatNow.text = "Закончился " + Math.Abs(WhatNowIndex) + NumberDeclination(Math.Abs(WhatNowIndex)) + " урок";
-                }
-                else
-                    WhatNow.text = "--";
+                if (WhatNowIndex > 0) WhatNow.text = "Идёт " + (WhatNowIndex) + NumberDeclination(WhatNowIndex) + " урок";
+                else if (WhatNowIndex < 0) WhatNow.text = "Закончился " + (Math.Abs(WhatNowIndex)) + NumberDeclination(Math.Abs(WhatNowIndex)) + " урок";
+                else WhatNow.text = "--";
             }
         }
 

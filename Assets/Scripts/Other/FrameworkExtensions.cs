@@ -6,15 +6,23 @@ using UnityEngine;
  */
 public static partial class FrameworkExtensions
 {
-    public static string ToTime(this TimeSpan a) => a.Hours + ":" + a.Minutes;
-    public static string ToTime(this TimeSpan? a)
+    public static string ToTimeString(this TimeSpan a)
+    {
+        string res = "";
+        if (a.Hours < 10) res += "0";
+        res += a.Hours + ":";
+        if (a.Minutes < 10) res += "0";
+        res += a.Minutes;
+        return res;
+    }
+    public static string ToTimeString(this TimeSpan? a)
     {
         if (a == null) return "--:--";
-        return a?.Hours + ":" + a?.Minutes;
+        return a.Value.ToTimeString();
     }
     public static TimeSpan ToTimeSpan(this DateTime dt)
     {
-        TimeSpan res = new TimeSpan(dt.Hour, dt.Minute, dt.Second);
+        TimeSpan res = new TimeSpan(0, dt.Hour, dt.Minute, dt.Second, 0);
         return res;
     }
     public static string Clear(this string s)
@@ -49,11 +57,6 @@ public static partial class FrameworkExtensions
     }
 
     public static string GetCell(this ISheet s, int row, int id) => Cell(s, row, id);
-
-    public static Color SetAlpha(this Color c, float alpha)
-    {
-        return new Color(c.r, c.g, c.b, alpha);
-    }
 
     public static string ConvertToString(this DayOfWeek dow, bool abbreviated = true)
     {
@@ -109,60 +112,8 @@ public static partial class FrameworkExtensions
             return (int)dow - 1;
     }
 
-    public static Vector3 SetX(this Vector3 v, float x)
-    {
-        return new Vector3(x, v.y, v.z);
-    }
-
-    public static Vector3 SetY(this Vector3 v, float y)
-    {
-        return new Vector3(v.x, y, v.z);
-    }
-
-    public static Vector3 SetZ(this Vector3 v, float z)
-    {
-        return new Vector3(v.x, v.y, z);
-    }
-
     public static Vector3 NegativeX(this Vector3 v)
     {
         return new Vector3(-v.x, v.y, v.z);
-    }
-
-    public static Vector2 SetX(this Vector2 v, float x)
-    {
-        return new Vector3(x, v.y);
-    }
-
-    public static Vector2 SetY(this Vector2 v, float y)
-    {
-        return new Vector2(v.x, y);
-    }
-
-    public static float GetH(this Color c)
-    {
-        float h;
-        float s;
-        float v;
-        Color.RGBToHSV(c, out h, out s, out v);
-        return h;
-    }
-
-    public static float GetS(this Color c)
-    {
-        float h;
-        float s;
-        float v;
-        Color.RGBToHSV(c, out h, out s, out v);
-        return s;
-    }
-
-    public static float GetV(this Color c)
-    {
-        float h;
-        float s;
-        float v;
-        Color.RGBToHSV(c, out h, out s, out v);
-        return v;
     }
 }

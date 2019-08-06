@@ -15,10 +15,7 @@ namespace Stand
                 lock (_lock)
                 {
                     if (_instance == null)
-                    {
                         _instance = new T();
-                        //ProcessingSignals.Default.Add(_instance);
-                    }
 
                     return _instance;
                 }
@@ -157,6 +154,15 @@ namespace Stand
             }
 
             return res;
+        }
+
+        public List<TimeSpan> Times(in List<string> l)
+        {
+            List<TimeSpan> gap = new List<TimeSpan>();
+
+            l.ForEach(x => gap.AddRange(Times(x)));
+
+            return gap;
         }
 
         public bool ContainsCall(in string s, in TimeSpan ts)

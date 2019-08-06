@@ -23,33 +23,33 @@ namespace Stand
         private float StartAnimBlind = -10f;
 
         [Header("Mains")]
-        public IWindow MainStaticSchedulesWindow;
-        public IWindow MainChangesSchedulesWindow;
-        private IWindow MainCurrentWindow;
+        public WindowBase MainStaticSchedulesWindow;
+        public WindowBase MainChangesSchedulesWindow;
+        private WindowBase MainCurrentWindow;
 
         [Header("Calls")]
-        public IWindow CallsWindow;
+        public WindowBase CallsWindow;
 
         [Header("Lessons")]
-        public IWindow LessonsWindow;
+        public WindowBase LessonsWindow;
 
         [Header("Lessons_Class")]
-        public IWindow Lessons_ClassWindow;
+        public WindowBase Lessons_ClassWindow;
 
         [Header("Extra")]
-        public IWindow ExtraWindow;
+        public WindowBase ExtraWindow;
 
         [Header("ChangeCallsWindow")]
-        public IWindow ChangeCallsWindow;
+        public WindowBase ChangeCallsWindow;
 
         [Header("ChangeLessonsWindow")]
-        public IWindow ChangeLessonsWindow;
+        public WindowBase ChangeLessonsWindow;
 
         [Header("TimePanel")]
-        public IWindow TimePanelWindow;
+        public WindowBase TimePanelWindow;
 
         [Header("TimeLine")]
-        public IWindow TimeLineWindow;
+        public WindowBase TimeLineWindow;
 
         bool BlindMode = false;
 

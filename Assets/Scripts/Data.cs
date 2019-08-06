@@ -52,10 +52,6 @@ namespace Stand
                     catch (Exception e) { Loger.Error<Data>(e.Message); }
                 }
 
-                /*DateTime lol = new DateTime(2019, 7, 25);
-                string kek = "";
-                Debug.Log(Parser.ContainsDate(ref kek, ref lol));*/
-
                 ApplicationController.Instance.DownTime = CurrentManifest.DownTime;
             }
             catch (Exception e)

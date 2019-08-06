@@ -11,7 +11,7 @@ namespace Stand
 
         private void Start()
         {
-            BuildDated.text = "build dated: " + BuildInfo.BUILD_DATE;
+            BuildDated.text = "build number: " + BuildInfo.BUILD_NUMBER + '\n' + "build dated: " + BuildInfo.BUILD_DATE;
             anim = GetComponent<Animation>();
         }
 

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class TimePanelWindow : IWindow
+    public class TimePanelWindow : WindowBase
     {
         public Text TimeUI;
         public Text DateUI;

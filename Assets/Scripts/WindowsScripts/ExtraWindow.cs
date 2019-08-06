@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class ExtraWindow : IWindow
+    public class ExtraWindow : WindowBase
     {
         [Header("Prefabs")]
         public GameObject InformationBlockPrefab;

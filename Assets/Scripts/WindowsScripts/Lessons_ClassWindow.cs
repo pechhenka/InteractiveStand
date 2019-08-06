@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class Lessons_ClassWindow : IWindow
+    public class Lessons_ClassWindow : WindowBase
     {
         public Text HeadlineWeeklySchedule;
         public Text WeeklyLessons;

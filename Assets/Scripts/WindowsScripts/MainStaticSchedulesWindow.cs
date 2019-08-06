@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace Stand
 {
-    public class MainStaticSchedulesWindow : IWindow
+    public class MainStaticSchedulesWindow : WindowBase
     {
         public override void PrimaryFill()
         {
