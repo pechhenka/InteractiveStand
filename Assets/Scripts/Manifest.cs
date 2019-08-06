@@ -25,6 +25,8 @@ namespace Stand
 
         public bool HideChangeButtonsIfOutdated = true; // Если изменения устарели скрыть соответствующие кнопки
 
+        public string WebsiteAddress = "http://192.168.1.211/";
+
         public bool Load(string path)
         {
             try
@@ -83,6 +85,10 @@ namespace Stand
 
                         case "DownTime":
                             DownTime = int.Parse(s[1]);
+                            break;
+
+                        case "WebsiteAddress":
+                            WebsiteAddress = s[1];
                             break;
 
                         default:

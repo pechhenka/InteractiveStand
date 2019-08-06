@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using UnityEngine.Networking;
 
 namespace Stand
@@ -12,6 +10,12 @@ namespace Stand
 
         void FixedUpdate()
         {
+            if (!Data.Instance.CurrentManifest.SupportAutomaticCalling)
+            {
+                TimeSet = false;
+                return;
+            }
+
             if (TimeSet)
             {
                 if (DateTime.Now.TimeOfDay >= TimeToCall)
@@ -34,8 +38,8 @@ namespace Stand
 
         public void Call(int t = 2000)
         {
-            UnityWebRequest uwr = UnityWebRequest.Get("http://192.168.1.211/Call?c=" + t);
-            uwr.SendWebRequest();
+            UnityWebRequest.Get(Data.Instance.CurrentManifest.WebsiteAddress + "Call?c=" + t).SendWebRequest();
+
             Loger.Log("звонок", "включен звонок продолжительность:" + t);
         }
     }

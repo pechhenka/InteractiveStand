@@ -52,9 +52,6 @@ namespace Stand
 
         public override void Merge(bool Status) { }
 
-        void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg)
-        {
-            throw new System.NotImplementedException();
-        }
+        void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg) => PrimaryFill();
     }
 }
