@@ -24,7 +24,7 @@ namespace Stand
         private Vector3 StartPos = new Vector3(0, 227.5f, 0);
         private Vector3 StartScale = new Vector3(1, 1, 1);
 
-        private int CurrentExtraDay = 0;
+        private DayOfWeek CurrentExtraDay = 0;
         private int CurrentExtraBlock = 0;
         private int LastExtraBlock = 0;
         private int LengthExtraBlocks = 0;
@@ -114,7 +114,7 @@ namespace Stand
         public override void PrimaryFill()
         {
             HeadlineExtraClasses.text = DateTime.Now.DayOfWeek.ConvertToString(false);
-            CurrentExtraDay = DateTime.Now.DayOfWeek.Normalising();
+            CurrentExtraDay = DateTime.Now.DayOfWeek;
             Fill();
         }
 
@@ -123,57 +123,53 @@ namespace Stand
         {
             Loger.Log($"Окно доп.секций&IdDay:{CurrentExtraDay}", "открыли");
 
-
             foreach (Transform child in InformationsBlocks.transform)
                 Destroy(child.gameObject);
             foreach (Transform child in Dots.transform)
                 Destroy(child.gameObject);
 
+            Extra extra = ExtraParser.Instance.GetExtra(CurrentExtraDay);
             CurrentExtraBlock = 0;
-            LengthExtraBlocks = Data.Instance.ExtraMatrix.LastRowNum;
-            if (CurrentExtraDay > 5) CurrentExtraDay = 0;
-            int j = CurrentExtraDay * 4;
+            LengthExtraBlocks = extra.Amount;
+
             GameObject go = null;
-            int i = 1;
-            for (; i < LengthExtraBlocks; i++)
+            if (extra.Amount == 0)
             {
-                if (Data.Instance.ExtraMatrix.GetCell(i, j) == "")
-                {
-                    if (i == 1)
-                    {
-                        go = Instantiate(InformationBlockPrefab, InformationsBlocks.transform);
-                        go.transform.Find("CourseName").GetComponent<Text>().text = "нет данных";
-                        go.transform.Find("Classes").GetComponent<Text>().text = "";
-                        go.transform.Find("Time").GetComponent<Text>().text = "";
-                        go.transform.Find("Сlassroom").GetComponent<Text>().text = "";
-                    }
-                    break;
-                }
-
-                if (i == 1)
-                    Instantiate(Dot, Dots.transform).GetComponent<Image>().color = Color.white;
-                else
-                    Instantiate(Dot, Dots.transform);
-
                 go = Instantiate(InformationBlockPrefab, InformationsBlocks.transform);
-                go.transform.Find("CourseName").GetComponent<Text>().text = Data.Instance.ExtraMatrix.GetCell(i, j);
-                go.transform.Find("Classes").GetComponent<Text>().text = "Классы: " + Data.Instance.ExtraMatrix.GetCell(i, j + 1);
-                go.transform.Find("Time").GetComponent<Text>().text = "Время: " + Data.Instance.ExtraMatrix.GetCell(i, j + 2);
-                go.transform.Find("Сlassroom").GetComponent<Text>().text = "Кабинет: " + Data.Instance.ExtraMatrix.GetCell(i, j + 3);
-
-                if (i != 1)
-                    go.GetComponent<CanvasGroup>().alpha = 0f;
+                go.transform.Find("CourseName").GetComponent<Text>().text = "нет данных";
+                go.transform.Find("Classes").GetComponent<Text>().text = "";
+                go.transform.Find("Time").GetComponent<Text>().text = "";
+                go.transform.Find("Сlassroom").GetComponent<Text>().text = "";
+                return;
             }
-            LengthExtraBlocks = i - 1;
+            for (int i = 0;i<extra.Amount;i++)
+            {
+                go = Instantiate(InformationBlockPrefab, InformationsBlocks.transform);
+                go.transform.Find("CourseName").GetComponent<Text>().text = extra.CourseName[i];
+                go.transform.Find("Classes").GetComponent<Text>().text = "Классы: " + extra.Classes[i];
+                go.transform.Find("Time").GetComponent<Text>().text = "Время: " + extra.Time[i];
+                go.transform.Find("Сlassroom").GetComponent<Text>().text = "Кабинет: " + extra.Сlassroom[i];
+
+                if (i == 0)
+                {
+                    Instantiate(Dot, Dots.transform).GetComponent<Image>().color = Color.white;
+                }
+                else
+                {
+                    go.GetComponent<CanvasGroup>().alpha = 0f;
+                    Instantiate(Dot, Dots.transform);
+                }                    
+            }
         }
         public override void Fill(int id) => PrimaryFill();
         public override void Fill(GameObject gameObject) => PrimaryFill();
         public override void ChooseClass(string Class) => PrimaryFill();
+        public void ChooseDay(int d) => ChooseDay(d.ToDayOfWeek());
         public override void ChooseDay(DayOfWeek d)
         {
-            if (d.Normalising() != CurrentExtraDay)
+            if (d != CurrentExtraDay)
             {
-                CurrentExtraDay = d.Normalising();
+                CurrentExtraDay = d;
                 HeadlineExtraClasses.text = d.ConvertToString(false);
                 Fill();
             }

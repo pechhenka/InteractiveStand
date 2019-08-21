@@ -1,18 +1,27 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DateCallButton : MonoBehaviour
+namespace Stand
 {
-    // Start is called before the first frame update
-    void Start()
+    public class DateCallButton : MonoBehaviour
     {
-        
-    }
+        public (DateTime date, List<TimeSpan> times) item;
+        UIController UIC;
+        bool FirstEnable = false;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        void OnEnable()
+        {
+            if (FirstEnable)
+                return;
+
+            FirstEnable = true;
+            UIC = GameObject.Find("[UI]").GetComponent<UIController>();
+        }
+
+        public void OnClick()
+        {
+            (UIC.ChangeCallsWindow as ChangeCallsWindow).Choose(item);
+        }
     }
 }

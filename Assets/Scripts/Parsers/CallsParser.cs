@@ -137,15 +137,13 @@ namespace Stand
         {
             List<TimeSpan> res = new List<TimeSpan>();
 
-            DateTime DateTimeNow = DateTime.Now;
-            int len;
-
             if (Data.Instance.ChangeCallsMatrix != null)
             {
                 IRow DatesChangeRow = Data.Instance.ChangeCallsMatrix.GetRow(0);
                 if (DatesChangeRow != null)
                 {
-                    len = DatesChangeRow.LastCellNum;
+                    DateTime DateTimeNow = DateTime.Now;
+                    int len = DatesChangeRow.LastCellNum;
                     for (int i = 0; i <= len; i++)
                         if (ContainsDate(DatesChangeRow.Cell(i), DateTimeNow))
                         {
@@ -164,6 +162,35 @@ namespace Stand
             }
 
             return GetCurrentColumnWithoutChanges();
+        }
+
+        public List<(DateTime date, List<TimeSpan> times)> GetListChangesCalls()
+        {
+            var res = new List<(DateTime date, List<TimeSpan> times)>();
+
+            if (Data.Instance.ChangeCallsMatrix == null) return res;
+
+            IRow DatesRow = Data.Instance.ChangeCallsMatrix.GetRow(0);
+            int LastCell = DatesRow.LastCellNum;
+            int len = Data.Instance.ChangeCallsMatrix.LastRowNum;
+            for (int i = 0; i <= LastCell; i++)
+            {
+                string DatesVal = DatesRow.Cell(i);
+                if (DatesVal == "") continue;
+                List<DateTime> dates = Dates(DatesVal);
+                List<TimeSpan> calls = new List<TimeSpan>();
+                for (int j = 1; j <= len; j++)
+                {
+                    string s = Data.Instance.ChangeCallsMatrix.Cell(j, i);
+                    if (s == "") continue;
+                    calls.AddRange(Times(s));
+                }
+
+                foreach (DateTime item in dates)
+                    res.Add((item, calls));
+            }
+
+            return res;
         }
 
         void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg)

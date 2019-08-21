@@ -6,6 +6,16 @@ using UnityEngine;
  */
 public static partial class FrameworkExtensions
 {
+    public static string ToShortDate(this DateTime d)
+    {
+        string res = "";
+        if (d.Day < 10) res += "0";
+        res += d.Day + ".";
+        if (d.Month < 10) res += "0";
+        res += d.Month;
+        return res;
+    }
+
     public static DayOfWeek ToDayOfWeek(this int n)
     {
         return n == 6 ? DayOfWeek.Sunday : (DayOfWeek)(n+1);

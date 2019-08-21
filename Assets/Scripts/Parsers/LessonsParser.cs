@@ -7,6 +7,11 @@ namespace Stand
 {
     public class LessonsParser : Parser<LessonsParser>, IReciever, IReceive<SignalLessonsMatrixChanged>, IReceive<SignalChangeLessonsMatrixChanged>
     {
+        void IReciever.StartRecieve()
+        {
+            ProcessingSignals.Default.Add(this);
+        }
+
         public List<Class> GetClassesWithoutChanges()
         {
             IRow ClassesRow = Data.Instance.LessonsMatrix?.GetRow(2);
@@ -163,11 +168,6 @@ namespace Stand
         void IReceive<SignalChangeLessonsMatrixChanged>.HandleSignal(SignalChangeLessonsMatrixChanged arg)
         {
             throw new System.NotImplementedException();
-        }
-
-        void IReciever.StartRecieve()
-        {
-            ProcessingSignals.Default.Add(this);
         }
     }
 }

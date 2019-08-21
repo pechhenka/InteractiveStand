@@ -52,6 +52,10 @@ namespace Stand
                     catch (Exception e) { Loger.Error<Data>(e.Message); }
                 }
 
+                (CallsParser.Instance as IReciever)?.StartRecieve();
+                (LessonsParser.Instance as IReciever)?.StartRecieve();
+                (ExtraParser.Instance as IReciever)?.StartRecieve();
+
                 ApplicationController.Instance.DownTime = CurrentManifest.DownTime;
             }
             catch (Exception e)

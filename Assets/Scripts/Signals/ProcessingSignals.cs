@@ -7,7 +7,7 @@ namespace Stand
     [Serializable]
     public class ProcessingSignals : IDisposable
     {
-        public static ProcessingSignals Default;
+        public static ProcessingSignals Default = new ProcessingSignals();
         public readonly Dictionary<int, List<IRecieve>> signals = new Dictionary<int, List<IRecieve>>();
 
         public void Send<T>(T val = default(T))

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
+using UnityEngine;
 
 namespace Stand
 {
@@ -51,107 +53,36 @@ namespace Stand
             try
             {
                 string ReadText = (String.Join("", File.ReadAllLines(path))).Replace(" ", "");
+                FieldInfo[] Fields = typeof(Manifest).GetFields();
 
                 foreach (string Values in ReadText.Split(';'))
                 {
                     string[] s = Values.Split('=');
-                    if (s.Length < 2) continue;
+                    if (s.Length != 2) continue;
 
-                    switch (s[0])
+                    foreach (FieldInfo item in Fields)
                     {
-                        #region Имена файлов
-                        case "NameCallsMatrix":
-                            NameCallsMatrix = s[1];
+                        if (item.Name == s[0])
+                        {
+                            Type t = item.FieldType;
+                            if (t == typeof(int))
+                            {
+                                item.SetValue(this, int.Parse(s[1]));
+                            }
+                            else if (t == typeof(string))
+                            {
+                                item.SetValue(this, s[1]);
+                            }
+                            else if (t == typeof(bool))
+                            {
+                                item.SetValue(this, ReadBool(s[1]));
+                            }
+                            else
+                            {
+                                Loger.Warning(path, $"Не прочитаное значение:&{s[0]}&{s[1]}");
+                            }
                             break;
-                        case "NameLessonsMatrix":
-                            NameLessonsMatrix = s[1];
-                            break;
-                        case "NameExtraMatrix":
-                            NameExtraMatrix = s[1];
-                            break;
-                        case "NameChangeCallsMatrix":
-                            NameChangeCallsMatrix = s[1];
-                            break;
-                        case "NameChangeLessonsMatrix":
-                            NameChangeLessonsMatrix = s[1];
-                            break;
-                        #endregion
-
-                        #region Смещения
-                        case "CallsMatrixOffsetX":
-                            CallsMatrixOffsetX = int.Parse(s[1]);
-                            break;
-                        case "CallsMatrixOffsetY":
-                            CallsMatrixOffsetY = int.Parse(s[1]);
-                            break;
-
-                        case "LessonsMatrixOffsetX":
-                            LessonsMatrixOffsetX = int.Parse(s[1]);
-                            break;
-                        case "LessonsMatrixOffsetY":
-                            LessonsMatrixOffsetY = int.Parse(s[1]);
-                            break;
-
-                        case "ExtraMatrixOffsetX":
-                            ExtraMatrixOffsetX = int.Parse(s[1]);
-                            break;
-                        case "ExtraMatrixOffsetY":
-                            ExtraMatrixOffsetY = int.Parse(s[1]);
-                            break;
-
-                        case "ChangeCallsMatrixOffsetX":
-                            ChangeCallsMatrixOffsetX = int.Parse(s[1]);
-                            break;
-                        case "ChangeCallsMatrixOffsetY":
-                            ChangeCallsMatrixOffsetY = int.Parse(s[1]);
-                            break;
-
-                        case "ChangeLessonsMatrixOffsetX":
-                            ChangeLessonsMatrixOffsetX = int.Parse(s[1]);
-                            break;
-                        case "ChangeLessonsMatrixOffsetY":
-                            ChangeLessonsMatrixOffsetY = int.Parse(s[1]);
-                            break;
-                        #endregion
-
-                        case "PathOutsideData":
-                            PathOutsideData = s[1];
-                            break;
-
-                        case "LogNotesRecording":
-                            LogNotesRecording = ReadBool(s[1]);
-                            break;
-                        case "LogWarningsRecording":
-                            LogWarningsRecording = ReadBool(s[1]);
-                            break;
-                        case "LogErrorsRecording":
-                            LogErrorsRecording = ReadBool(s[1]);
-                            break;
-                        case "SendLogsToOutsideData":
-                            SendLogsToOutsideData = ReadBool(s[1]);
-                            break;
-
-                        case "SupportChangesSchedules":
-                            SupportChangesSchedules = ReadBool(s[1]);
-                            break;
-                        case "SupportAutomaticCalling":
-                            SupportAutomaticCalling = ReadBool(s[1]);
-                            break;
-                        case "HideChangeButtonsIfOutdated":
-                            HideChangeButtonsIfOutdated = ReadBool(s[1]);
-                            break;
-
-                        case "DownTime":
-                            DownTime = int.Parse(s[1]);
-                            break;
-
-                        case "WebsiteAddress":
-                            WebsiteAddress = s[1];
-                            break;
-
-                        default:
-                            Loger.Warning(path, $"Не прочитаное значение:&{s[0]}&{s[1]}");
-                            break;
+                        }
                     }
                 }
                 return true;
