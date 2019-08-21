@@ -6,6 +6,10 @@ using UnityEngine;
  */
 public static partial class FrameworkExtensions
 {
+    public static DayOfWeek ToDayOfWeek(this int n)
+    {
+        return n == 6 ? DayOfWeek.Sunday : (DayOfWeek)(n+1);
+    }
     public static string ToTimeString(this TimeSpan a)
     {
         string res = "";
@@ -31,9 +35,8 @@ public static partial class FrameworkExtensions
             .Replace(Environment.NewLine, string.Empty);
     }
 
-    public static string Cell(this IRow r, int id)
+    public static string Cell (this ICell c)
     {
-        ICell c = r.GetCell(id);
         if (c == null) return "";
 
         switch (c.CellType)
@@ -49,8 +52,17 @@ public static partial class FrameworkExtensions
         }
     }
 
+    public static string Cell(this IRow r, int id)
+    {
+        if (r == null) return "";
+        ICell c = r.GetCell(id);
+        if (c == null) return "";
+        return c.Cell();
+    }
+
     public static string Cell(this ISheet s, int row, int id)
     {
+        if (s == null) return "";
         IRow r = s.GetRow(row);
         if (r == null) return "";
         return r.Cell(id);

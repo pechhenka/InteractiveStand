@@ -10,73 +10,51 @@ namespace Stand
         public Text WeeklyLessons;
         public Text WeeklyClassrooms;
 
-        private int CurrentWeeklyDay = 0;
-        private int CurrentWeeklyClass = 0;
+        private DayOfWeek CurrentDay;
+        private Class CurrentClass;
 
         public override void ChooseClass(string Class)
         {
             Loger.Log("Окно занятий", "открыли");
-            int number = int.Parse(Class);
-            ChooseDay(DateTime.Now.DayOfWeek.Normalising());
-            HeadlineWeeklySchedule.text = CurrentWeeklyDay.ConvertToString(false) + " " + Data.Instance.LessonsMatrix.GetCell(2, number);
+            CurrentClass = new Class(Class);
+            ChooseDay(DateTime.Now.DayOfWeek);
+            HeadlineWeeklySchedule.text = CurrentDay.ConvertToString(false) + " " + CurrentClass.ToString();
             _UIController.MergeTimePanel(true);
-            CurrentWeeklyClass = number;
             Fill();
         }
 
-        public override void ChooseDay(int id)
+        public override void ChooseDay(DayOfWeek d)
         {
-            if (id != CurrentWeeklyDay)
+            if (d != CurrentDay)
             {
-                if (id > 5 || id < 0) id = 0;
-                CurrentWeeklyDay = id;
+                if (d.Normalising() > 5 || d.Normalising() < 0) d = DayOfWeek.Monday;
+                CurrentDay = d;
                 string NameClass = HeadlineWeeklySchedule.text.Split()[1];
-                HeadlineWeeklySchedule.text = ((DayOfWeek)(id + 1)).ConvertToString(false) + " " + NameClass;
+                HeadlineWeeklySchedule.text = d.ConvertToString(false) + " " + NameClass;
                 Fill();
             }
             else
             {
-                Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix.GetCell(2, CurrentWeeklyClass)}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "нервное касание");
+                Loger.Log($"Окно занятий&Class:{CurrentClass.ToString()}&IdDay:{CurrentDay}", "нервное касание");
             }
         }
+
+        public void ChooseDay(int d) => ChooseDay(d.ToDayOfWeek());
 
         public override void Fill()
         {
             WeeklyClassrooms.text = "";
             WeeklyLessons.text = "";
-            if (CurrentWeeklyDay > 5 || CurrentWeeklyDay < 0) CurrentWeeklyDay = 0;
-            int CWD = CurrentWeeklyDay * 16 + 3;
-            int CWC = CurrentWeeklyClass;
-            bool NullLesson = true;
 
-            Loger.Log($"Окно занятий&Class:{Data.Instance.LessonsMatrix.GetCell(2, CurrentWeeklyClass)}&IdClass:{CurrentWeeklyClass}&IdDay:{CurrentWeeklyDay}", "открыли");
+            TableLessons tl = LessonsParser.Instance.GetTableLessonsWithoutChanges(CurrentClass,CurrentDay);
 
-            for (int i = 0; i < 8; i++)
-            {
-                if (Data.Instance.LessonsMatrix.GetCell(CWD + i * 2, CWC) == "")
-                {
-                    if (NullLesson)
-                    {
-                        WeeklyLessons.text += "--" + '\n';
-                        WeeklyClassrooms.text += "--" + '\n';
-                        continue;
-                    }
-                    else
-                        break;
-                }
-                else
-                    NullLesson = false;
-                WeeklyLessons.text += Data.Instance.LessonsMatrix.GetCell(CWD + i * 2, CWC) + '\n';
+            foreach (string item in tl.Lesson)
+                WeeklyLessons.text += item + Environment.NewLine;
 
-                string Classrooms = "";
-                if (Data.Instance.LessonsMatrix.GetCell(CWD + i * 2 + 1, CWC + 1) != "")
-                {
-                    Classrooms += Data.Instance.LessonsMatrix.GetCell(CWD + i * 2 + 1, CWC + 1);
-                    if (Data.Instance.LessonsMatrix.GetCell(CWD + i * 2, CWC + 2) == "/")
-                        Classrooms += "/" + Data.Instance.LessonsMatrix.GetCell(CWD + i * 2 + 1, CWC + 3);
-                }
-                WeeklyClassrooms.text += Classrooms + '\n';
-            }
+            foreach (string item in tl.Cabinet)
+                WeeklyClassrooms.text += item + Environment.NewLine;
+
+            Loger.Log($"Окно занятий&Class:{CurrentClass.ToString()}&IdDay:{CurrentDay.Normalising()}", "открыли");
         }
 
         public override void PrimaryFill() => Fill();

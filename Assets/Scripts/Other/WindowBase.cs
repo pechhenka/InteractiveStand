@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Stand
 {
@@ -22,7 +23,7 @@ namespace Stand
         abstract public void Fill(GameObject gameObject);
 
         abstract public void ChooseClass(string Class);
-        abstract public void ChooseDay(int id);
+        abstract public void ChooseDay(DayOfWeek d);
 
         abstract public void Merge(bool Status);
 

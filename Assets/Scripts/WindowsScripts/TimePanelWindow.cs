@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -30,6 +28,6 @@ namespace Stand
         }
 
         public override void ChooseClass(string Class) => Fill();
-        public override void ChooseDay(int id) => Fill();
+        public override void ChooseDay(DayOfWeek d) => Fill();
     }
 }

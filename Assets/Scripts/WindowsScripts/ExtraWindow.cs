@@ -169,12 +169,12 @@ namespace Stand
         public override void Fill(int id) => PrimaryFill();
         public override void Fill(GameObject gameObject) => PrimaryFill();
         public override void ChooseClass(string Class) => PrimaryFill();
-        public override void ChooseDay(int id)
+        public override void ChooseDay(DayOfWeek d)
         {
-            if (id != CurrentExtraDay)
+            if (d.Normalising() != CurrentExtraDay)
             {
-                CurrentExtraDay = id;
-                HeadlineExtraClasses.text = ((DayOfWeek)(id + 1)).ConvertToString(false);
+                CurrentExtraDay = d.Normalising();
+                HeadlineExtraClasses.text = d.ConvertToString(false);
                 Fill();
             }
             else

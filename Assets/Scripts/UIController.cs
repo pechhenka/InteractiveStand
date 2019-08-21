@@ -100,13 +100,13 @@ namespace Stand
             }
         }
 
-        public void Lessons_ClassWindow_ChooseClass(string ClassID)
+        public void Lessons_ClassWindow_ChooseClass(string Class)
         {
             Lessons_ClassWindow.SetActive(true);
             LessonsWindow.SetActive(false);
             TimePanelWindow.Merge(true);
             TimePanelWindow.SetActive(true);
-            Lessons_ClassWindow.ChooseClass(ClassID);
+            Lessons_ClassWindow.ChooseClass(Class);
         }
 
         public void MergeTimePanel(bool Status)
