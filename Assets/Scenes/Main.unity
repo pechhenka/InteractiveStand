@@ -6285,6 +6285,11 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  CallsButton: {fileID: 0}
+  LessonsButton: {fileID: 0}
+  ExtraButton: {fileID: 0}
+  ChangeCallsWindowButton: {fileID: 1654877136}
+  ChangeLessonsWindowButton: {fileID: 1224154702}
   MainStaticSchedulesWindow: {fileID: 1670625790}
   MainChangesSchedulesWindow: {fileID: 468854047}
   CallsWindow: {fileID: 1866142174}

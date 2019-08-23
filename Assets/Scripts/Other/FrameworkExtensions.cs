@@ -1,11 +1,29 @@
 ﻿using NPOI.SS.UserModel;
 using System;
 using UnityEngine;
+using Stand;
+using System.IO;
 
 /* Методы расширения
  */
 public static partial class FrameworkExtensions
 {
+    public static bool EqualsPath(this string p1, in string p2)
+    {
+        return Path.GetFullPath(p1) == Path.GetFullPath(p2);
+    }
+
+    public static string ToShortDate(this DateRange d)
+    {
+        string res = "";
+        res = d.Left.ToShortDate();
+        if (d.Twins)
+        {
+            res += "-" + d.Right.ToShortDate();
+        }
+        return res;
+    }
+
     public static string ToShortDate(this DateTime d)
     {
         string res = "";

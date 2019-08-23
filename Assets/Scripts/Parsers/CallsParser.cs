@@ -1,16 +1,12 @@
 ﻿using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Stand
 {
-    public class CallsParser : Parser<CallsParser>, IReciever, IReceive<SignalCallsMatrixChanged>, IReceive<SignalChangeCallsMatrixChanged>
+    public class CallsParser : Parser<CallsParser>, IReceive<SignalCallsMatrixChanged>, IReceive<SignalChangeCallsMatrixChanged>
     {
-        void IReciever.StartRecieve()
-        {
-            ProcessingSignals.Default.Add(this);
-        }
-
         public bool Changes()
         {
             throw new NotImplementedException();
@@ -153,7 +149,7 @@ namespace Stand
                             {
                                 string s = Data.Instance.ChangeCallsMatrix.Cell(j, i);
                                 if (s == "") continue;
-                                res.Add(ToTime(s));
+                                res.AddRange(Times(s));
                             }
 
                             return res;
@@ -164,9 +160,9 @@ namespace Stand
             return GetCurrentColumnWithoutChanges();
         }
 
-        public List<(DateTime date, List<TimeSpan> times)> GetListChangesCalls()
+        public List<(DateRange date, List<TimeSpan> times)> GetListChangesCalls()
         {
-            var res = new List<(DateTime date, List<TimeSpan> times)>();
+            var res = new List<(DateRange date, List<TimeSpan> times)>();
 
             if (Data.Instance.ChangeCallsMatrix == null) return res;
 
@@ -177,7 +173,7 @@ namespace Stand
             {
                 string DatesVal = DatesRow.Cell(i);
                 if (DatesVal == "") continue;
-                List<DateTime> dates = Dates(DatesVal);
+                List<DateRange> dates = DatesRange(DatesVal);
                 List<TimeSpan> calls = new List<TimeSpan>();
                 for (int j = 1; j <= len; j++)
                 {
@@ -186,7 +182,7 @@ namespace Stand
                     calls.AddRange(Times(s));
                 }
 
-                foreach (DateTime item in dates)
+                foreach (DateRange item in dates)
                     res.Add((item, calls));
             }
 

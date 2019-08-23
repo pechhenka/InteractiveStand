@@ -10,6 +10,11 @@ namespace Stand
 
         }
 
+        public bool GetChanges()
+        {
+            return false;
+        }
+
         public override void Refill() => PrimaryFill();
         public override void Fill() => PrimaryFill();
         public override void Fill(int id) => PrimaryFill();

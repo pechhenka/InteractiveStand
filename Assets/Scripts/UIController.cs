@@ -22,6 +22,13 @@ namespace Stand
         private float YesBlind = 4.3f;
         private float StartAnimBlind = -10f;
 
+        [Header("Buttons")]
+        public GameObject CallsButton;
+        public GameObject LessonsButton;
+        public GameObject ExtraButton;
+        public GameObject ChangeCallsWindowButton;
+        public GameObject ChangeLessonsWindowButton;
+
         [Header("Mains")]
         public WindowBase MainStaticSchedulesWindow;
         public WindowBase MainChangesSchedulesWindow;
@@ -57,10 +64,15 @@ namespace Stand
         {
             MainChangesSchedulesWindow.SetActive(false);
             MainStaticSchedulesWindow.SetActive(false);
+
             if (Data.Instance.CurrentManifest.SupportChangesSchedules)
                 MainCurrentWindow = MainChangesSchedulesWindow;
             else
                 MainCurrentWindow = MainStaticSchedulesWindow;
+
+            CallsButton = MainCurrentWindow.transform.Find("Button (Calls)").gameObject;
+            LessonsButton = MainCurrentWindow.transform.Find("Button (Lessons)").gameObject;
+            ExtraButton = MainCurrentWindow.transform.Find("Button (Extra)").gameObject;
 
             HideAll();
             MainCurrentWindow.SetActive(true);
@@ -97,6 +109,23 @@ namespace Stand
                     cam.orthographicSize = Mathf.Lerp(YesBlind, NoBlind, ScaleCam.Evaluate(t));
                     GrayScale.SetFloat("_EffectAmount", 1 - GrayScaleAnim.Evaluate(t));
                 }
+            }
+
+            if (Data.Instance.CurrentManifest.HideChangeButtonsIfOutdated)
+            {
+                CallsButton.SetActive(Data.Instance.CallsMatrix != null);
+                LessonsButton.SetActive(Data.Instance.LessonsMatrix != null);
+                ExtraButton.SetActive(Data.Instance.ExtraMatrix != null);
+                ChangeCallsWindowButton.SetActive((ChangeCallsWindow as ChangeCallsWindow).GetChanges());
+                ChangeLessonsWindowButton.SetActive((ChangeLessonsWindow as ChangeLessonsWindow).GetChanges());
+            }
+            else
+            {
+                CallsButton.SetActive(true);
+                LessonsButton.SetActive(true);
+                ExtraButton.SetActive(true);
+                ChangeCallsWindowButton.SetActive(true);
+                ChangeLessonsWindowButton.SetActive(true);
             }
         }
 

@@ -4,13 +4,14 @@ using UnityEngine;
 namespace Stand
 {
     [RequireComponent(typeof(CanvasGroup))]
-    public abstract class WindowBase : MonoBehaviour
+    public abstract class WindowBase : MonoBehaviour , IReceive<SignalSceneRaload>
     {
         [HideInInspector] public CanvasGroup _CanvasGroup;
         [HideInInspector] public UIController _UIController;
         private bool? OpenStatus = null;
         void Awake()
         {
+            ProcessingSignals.Default.Add(this);
             _CanvasGroup = GetComponent<CanvasGroup>();
             _UIController = GetComponentInParent<UIController>();
             SetActive(false);
@@ -45,6 +46,11 @@ namespace Stand
                 _CanvasGroup.blocksRaycasts = false;
             }
             OpenStatus = Open;
+        }
+
+        void IReceive<SignalSceneRaload>.HandleSignal(SignalSceneRaload arg)
+        {
+            ProcessingSignals.Default.Remove(this);
         }
     }
 }

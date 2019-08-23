@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Stand
 {
-    public class ChangeCallsWindow : WindowBase
+    public class ChangeCallsWindow : WindowBase,IReceive<SignalChangeCallsMatrixChanged>
     {
         [Header("Prefabs")]
         public GameObject DateCallButton;
@@ -21,15 +21,15 @@ namespace Stand
                 Destroy(child.gameObject);
             Calls.text = "";
 
-            List<(DateTime date, List<TimeSpan> times)> Table = CallsParser.Instance.GetListChangesCalls();
-            Table.Sort((a, b) => a.date.CompareTo(b.date));
+            List<(DateRange date, List<TimeSpan> times)> Table = CallsParser.Instance.GetListChangesCalls();
+            Table.Sort((a, b) => a.date.Left.CompareTo(b.date.Left));
 
             GameObject go = null;
             bool First = true;
             DateTime Today = DateTime.Now;
             foreach(var item in Table)
             {
-                if (item.date < Today) continue;
+                if ((item.date.Twins && item.date.Right < Today) || (!item.date.Twins && item.date.Left < Today)) continue;
 
                 go = Instantiate(DateCallButton, DateButtons.transform);
                 go.GetComponentInChildren<Text>().text = item.date.ToShortDate();
@@ -43,7 +43,20 @@ namespace Stand
             }
         }
 
-        public void Choose((DateTime date, List<TimeSpan> times) item)
+        public bool GetChanges()
+        {
+            bool flag = false;
+            List<(DateRange date, List<TimeSpan> times)> Table = CallsParser.Instance.GetListChangesCalls();
+            DateTime Today = DateTime.Now;
+            foreach (var item in Table)
+            {
+                if ((item.date.Twins && item.date.Right < Today) || (!item.date.Twins && item.date.Left < Today)) continue;
+                flag = true;
+            }
+            return flag;
+        }
+
+        public void Choose((DateRange date, List<TimeSpan> times) item)
         {
             Calls.text = item.date.ToShortDate() + Environment.NewLine;
 
@@ -60,5 +73,7 @@ namespace Stand
         public override void ChooseDay(DayOfWeek d) => PrimaryFill();
 
         public override void Merge(bool Status) { }
+
+        void IReceive<SignalChangeCallsMatrixChanged>.HandleSignal(SignalChangeCallsMatrixChanged arg) => Fill();
     }
 }

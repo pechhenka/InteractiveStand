@@ -5,13 +5,8 @@ using UnityEngine;
 
 namespace Stand
 {
-    public class LessonsParser : Parser<LessonsParser>, IReciever, IReceive<SignalLessonsMatrixChanged>, IReceive<SignalChangeLessonsMatrixChanged>
+    public class LessonsParser : Parser<LessonsParser>, IReceive<SignalLessonsMatrixChanged>, IReceive<SignalChangeLessonsMatrixChanged>
     {
-        void IReciever.StartRecieve()
-        {
-            ProcessingSignals.Default.Add(this);
-        }
-
         public List<Class> GetClassesWithoutChanges()
         {
             IRow ClassesRow = Data.Instance.LessonsMatrix?.GetRow(2);

@@ -22,12 +22,48 @@ namespace Stand
             }
         }
 
-        private readonly char[] SeparatorTime = { ':','.' };
+        private readonly char[] SeparatorTime = { ':', '.' };
         private readonly char[] SeparatorCommand = { ';' };
         private readonly char[] SeparatorDashes = { '-', '—' };
         private readonly char[] SeparatorDate = { '.', ',' };
 
         #region Dates
+        public List<DateRange> DatesRange(in string s)
+        {
+            string[] gap = s.Clear().Split(SeparatorCommand);
+
+            DateRange dt = new DateRange(false, default, default);
+            int len;
+            string[] a;
+            List<DateRange> res = new List<DateRange>();
+            foreach (string c in gap)
+            {
+                if (c == string.Empty) continue;
+
+                a = c.Split(SeparatorDashes);
+                len = a.Length;
+
+                if (len == 1)
+                {
+                    dt.Twins = false;
+                    dt.Left = ToDate(a[0]);
+                    res.Add(dt);
+                }
+                else if (len == 2)
+                {
+                    dt.Twins = true;
+                    dt.Left = ToDate(a[0]);
+                    dt.Right = ToDate(a[1]);
+
+                    res.Add(dt);
+                }
+                else
+                    Loger.Warning("Parser", "неправильная часть команды:" + s + "&" + c);
+            }
+
+            return res;
+        }
+
         public List<DateTime> Dates(in string s)
         {
             string[] gap = s.Clear().Split(SeparatorCommand);

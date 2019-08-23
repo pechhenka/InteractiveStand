@@ -6,7 +6,7 @@ namespace Stand
 {
     public class DateCallButton : MonoBehaviour
     {
-        public (DateTime date, List<TimeSpan> times) item;
+        public (DateRange date, List<TimeSpan> times) item;
         UIController UIC;
         bool FirstEnable = false;
 

@@ -35,6 +35,7 @@ namespace Stand
             if ((DownTime > 0) && LastTouch + DownTime < Time.time)
             {
                 Loger.Log("Стенд", $"Возврат в нальное состояние LastTouch:{LastTouch}");
+                ProcessingSignals.Default.Send(new SignalSceneRaload());
                 LastTouch = Time.time;
                 SceneManager.LoadScene(1);
             }

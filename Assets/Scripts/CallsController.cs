@@ -3,11 +3,15 @@ using UnityEngine.Networking;
 
 namespace Stand
 {
-    public class CallsController : Singleton<CallsController>
+    public class CallsController : Singleton<CallsController>, IReceive<SignalCallsMatrixChanged>, IReceive<SignalChangeCallsMatrixChanged>
     {
         private TimeSpan TimeToCall;
         private bool TimeSet = false;
 
+        void Start()
+        {
+            ProcessingSignals.Default.Add(this);
+        }
         void FixedUpdate()
         {
             if (!Data.Instance.CurrentManifest.SupportAutomaticCalling)
@@ -42,5 +46,8 @@ namespace Stand
 
             Loger.Log("звонок", "включен звонок продолжительность:" + t);
         }
+
+        void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg) => TimeSet = false;
+        void IReceive<SignalChangeCallsMatrixChanged>.HandleSignal(SignalChangeCallsMatrixChanged arg) => TimeSet = false;
     }
 }

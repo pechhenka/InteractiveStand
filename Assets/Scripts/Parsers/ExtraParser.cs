@@ -2,13 +2,8 @@
 
 namespace Stand
 {
-    public class ExtraParser : Parser<ExtraParser>, IReciever, IReceive<SignalExtraMatrixChanged>
+    public class ExtraParser : Parser<ExtraParser>, IReceive<SignalExtraMatrixChanged>
     {
-        void IReciever.StartRecieve()
-        {
-            ProcessingSignals.Default.Add(this);
-        }
-
         public Extra GetExtra(DayOfWeek d)
         {
             if (Data.Instance.ExtraMatrix == null || d == DayOfWeek.Sunday) return new Extra();
