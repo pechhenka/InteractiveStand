@@ -4,8 +4,8 @@
 //--НАСТРАИВАЕМЫЕ ПАРАМЕТРЫ--//
 #define Display //раскомментировать для включения дисплея
 
-const char* ssid = "pechhenka";// Имя WI-FI
-const char* password = "ipassword";// Пароль от этого WI-FI
+const char* ssid = "ASUS-0360";// Имя WI-FI
+const char* password = "12345678";// Пароль от этого WI-FI
 
 IPAddress IPplate(192, 168, 1, 100); //IP адресс платы, не каждый адресс работает из-за чего принимает динамический адресс
 IPAddress IPsubnet(255, 255, 255, 0); //маска подсети
@@ -45,7 +45,6 @@ const uint8_t pinD8   = 15;
 unsigned long TaskStart = 0 ; //время принятия текущего задания
 bool TasksCompleted = true; // отработаны ли уже задания
 
-unsigned long CycleMillis = 0; //текущий цикл времени 
 unsigned long CurrentMillis = 0; //текущее время
 unsigned long LastMillis = 0;// предыдущее время
 
@@ -65,6 +64,7 @@ String cmd = "";
 
 void setup(){
   Serial.begin(74880);
+  delay(1000);
   Serial.println("Started");
   pinMode(pinLED_BUILTIN, OUTPUT);
   Call(false);
@@ -73,20 +73,48 @@ void setup(){
   WiFi.config(IPplate, IPsubnet, IPgateway, IPDNS);
   WiFi.begin(ssid, password);
   Serial.println("Configured controller completed!");
-  
-  // Wait for connection
-  Serial.println("Connecting to WI-FI");
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println();
-  Serial.println("WI-FI connected!");
 
   #ifdef Display
   Wire.begin(pinD1,pinD2);
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.cp437(true);
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setTextColor(WHITE);
+  display.setCursor(6,3);
+  display.print("Connecting to:");
+  display.setCursor(6,14);
+  display.print(ssid);
+  display.setCursor(6,25);
+  display.println("Requested IP:");
+  display.setCursor(6,36);
+  display.println(IPplate.toString());
+  display.setTextSize(1);
+  display.setTextColor(BLACK, WHITE);
+  display.setCursor(0,56);
+  display.println(" made by pechhenka.ru  ");
+  display.display();
+  ThreadWorkIndicator.onRun(WorkIndicator);
+  ThreadWorkIndicator.setInterval(500);
+  #endif
+
+  Serial.println();
+  // Wait for connection
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+     #ifdef Display
+      if (ThreadWorkIndicator.shouldRun())
+        ThreadWorkIndicator.run();
+     #endif
+  }
+  
+  Serial.println('\n');
+  Serial.println("WI-FI connected!");
+  Serial.println("Connected to: " + (String)ssid);
+  Serial.println("IP adress: " + WiFi.localIP().toString());
+
+  #ifdef Display
   display.clearDisplay();
   display.setTextSize(2);
   display.setTextColor(WHITE);
@@ -98,21 +126,6 @@ void setup(){
   display.setTextColor(BLACK, WHITE);
   display.setCursor(0,56);
   display.println(" made by pechhenka.ru  ");
-  display.display();
-  ThreadWorkIndicator.onRun(WorkIndicator);
-  ThreadWorkIndicator.setInterval(500);
-  #endif
-
-  // Wait for connection
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("Connected to: " + (String)ssid);
-  Serial.println("IP adress: " + WiFi.localIP().toString());
-
-  #ifdef Display
   display.setTextSize(1);
   display.setTextColor(WHITE); 
   display.setCursor(6,43);
@@ -122,13 +135,9 @@ void setup(){
 
   server.on("/", handleRoot);
   server.on("/Call", handleCall);
-  server.on("/CallOff", [](){
-    Call(false);
-    TaskStart = 0;
-    TasksCompleted = true;
-    ClearTasks();
-    server.send(200, "text/plain", "The current task is canceled");
-  });
+  server.on("/call", handleCall);
+  server.on("/Stop", handleStopCall);
+  server.on("/Stop", handleStopCall);
   
   server.begin();
   Serial.println("Call controller started");
@@ -136,14 +145,12 @@ void setup(){
 
 void loop(){
   CurrentMillis = millis();
-  if (CurrentMillis < LastMillis)
-    CycleMillis++;
     
   server.handleClient();
 
   if ((!TasksCompleted) && (!Tasks.empty()))
   {
-    if (CurrentMillis >= TaskStart + Tasks.front().duration)
+    if (CurrentMillis - TaskStart>= Tasks.front().duration)
     {
       Tasks.pop();
       if (!Tasks.empty())
@@ -168,8 +175,6 @@ void loop(){
       }
     }
   }
-  else if (CurrentMillis > 4000000000) //перезапускает плату для сброса времени
-    digitalWrite(pinD8,HIGH);
 
   #ifdef Display
   if (ThreadWorkIndicator.shouldRun())
@@ -177,6 +182,17 @@ void loop(){
   #endif
 
   LastMillis = CurrentMillis;
+}
+
+void handleStopCall()
+{
+  if(CheckAccess(server.client().remoteIP())) return;
+  
+  Call(false);
+    TaskStart = 0;
+    TasksCompleted = true;
+    ClearTasks();
+    server.send(200, "text/plain", "The current task is canceled");
 }
 
 #ifdef Display
@@ -300,7 +316,7 @@ void handleRoot() //главная страница
   cmd += "Your IP: " + server.client().remoteIP().toString() + "\n";
   cmd += "Sitemap:\n";
   cmd += "  /Call - gives the task to the controller; Arguments(can alternate): c=(call duration),p=(pause duration)\n";
-  cmd += "  /CallOff Disables the current task\n";
+  cmd += "  /Stop Disables the current task\n";
 
   cmd += "\n\n\nmade by pechhenka.ru";
   server.send(200, "text/plain", cmd);
