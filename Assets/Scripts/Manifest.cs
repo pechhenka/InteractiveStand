@@ -37,7 +37,7 @@ namespace Stand
         public string ChangeLessonsMatrixCurrentPath { get { return CurrentPathData + NameChangeLessonsMatrix; } }
         #endregion
 
-        #region Смещения
+        #region Смещения таблиц
         public int CallsMatrixOffsetX = 0;
         public int CallsMatrixOffsetY = 0;
 
@@ -58,19 +58,28 @@ namespace Stand
         public string LocalPathData = null; // Папка с локальными данными
         public string OutsidePathData = null; // Папка с внешними данными
 
-        public int DownTime = 120; // Время через которое стенд вернётся в начальное состояние
+        public int DownTime = 120; // Время через которое стенд вернётся в начальное состояние (секунды)
 
-        public bool LogNotesRecording = false; // Запись логов с заметками
+        public bool LogNotesRecording = true; // Запись логов с заметками
         public bool LogWarningsRecording = true; // Запись логов с предупреждениями
         public bool LogErrorsRecording = true; // Запись логов с ошибками
-        public bool SendLogsToOutsideData = false; // Отправка логов в папку с внешними данными
+        public bool SendLogsToOutsideData = true; // Отправка логов в папку с внешними данными
 
         public bool SupportChangesSchedules = false; // Поддержка меню с кнопками с изменениями в расписаниях
+		public bool HideChangeButtonsIfOutdated = true; // Если изменения устарели скрыть соответствующие кнопки
+
+        #region Автоматический звонок
         public bool SupportAutomaticCalling = false; // Включить автоматическую подачу звонков
 
-        public bool HideChangeButtonsIfOutdated = true; // Если изменения устарели скрыть соответствующие кнопки
+        public int PrecedingCallTime = 180; // Дать предшествующий звонок основному начала урока (секунды)
+        // Пример начало первого урока 9:00 и значение равно 180 секунд, то будет два звонка в 8:57 и 9:00
+        // РАБОТАЕТ ТОЛЬКО ДЛЯ НАЧАЛА УРОКА, в конце урока будет только один звонок, пример: если урок кончается в 9:40, то никакого предшествующего звонка не будет
 
-        public string WebsiteAddress = "http://192.168.1.211/";
+        public string CallOptions = "c=1500&p=1000&c=1000"; // Параметры основного звонка (звонить 1,5 секунды, пауза 1 секунда, звонить 1 секунду)
+        public string PrecedingCallOptions = "c=1500&p=1000&c=1000"; // Параметры предшествующего звонка
+
+        public string WebsiteAddress = "http://192.168.1.211/"; // web-адрес звонка
+        #endregion
 
         public bool Load(string path)
         {

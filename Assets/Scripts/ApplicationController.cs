@@ -19,7 +19,7 @@ namespace Stand
 
         void FixedUpdate()
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Space))
             {
                 if (!Quit)
                 {

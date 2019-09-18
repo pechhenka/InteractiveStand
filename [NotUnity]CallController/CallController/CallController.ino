@@ -4,6 +4,8 @@
 //--НАСТРАИВАЕМЫЕ ПАРАМЕТРЫ--//
 #define Display //раскомментировать для включения дисплея
 
+const uint8_t pinRelay = 15;
+
 const char* ssid = "ASUS-0360";// Имя WI-FI
 const char* password = "12345678";// Пароль от этого WI-FI
 
@@ -236,10 +238,12 @@ void Call(bool state)// true - включить звонок, false - выклю
 {
   if (state)//On
   {
+    digitalWrite(pinRelay,HIGH);
     digitalWrite(pinLED_BUILTIN, LOW); 
   }
   else//Off
   {
+    digitalWrite(pinRelay,LOW);
     digitalWrite(pinLED_BUILTIN, HIGH); 
   }
 }

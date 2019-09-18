@@ -62,11 +62,7 @@ namespace Stand
             List<IRecieve> cachedSignals;
 
             if (!signals.TryGetValue(typeof(T).GetHashCode(), out cachedSignals)) return;
-            var len = cachedSignals.Count;
-            for (var i = 0; i < len; i++)
-            {
-                (cachedSignals[i] as IReceive<T>).HandleSignal(val);
-            }
+            cachedSignals.ForEach(x => (x as IReceive<T>)?.HandleSignal(val));
         }
 
         public void Dispose()
