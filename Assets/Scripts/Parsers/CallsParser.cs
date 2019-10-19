@@ -1,7 +1,7 @@
 ﻿using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
 
 namespace Stand
 {
@@ -24,6 +24,7 @@ namespace Stand
             List<TimeSpan> gap = GetCurrentColumn();
 
             int len = gap.Count;
+            if (len == 0) return res;
             if (TimeSpanNow <= gap[0]) { res.Next = gap[0]; return res; }
             if (TimeSpanNow >= gap[len - 1]) { res.Last = gap[len - 1]; return res; }
             for (int j = 0; j < len; j++)
@@ -35,7 +36,7 @@ namespace Stand
 
             return res;
         }
-
+        
         public bool CheckClassroomHour() => CheckClassroomHour(GetFirstLineCurrentColumn());
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace Stand
             List<TimeSpan> gap = GetCurrentColumn();
             TimeSpan TimeSpanNow = DateTime.Now.ToTimeSpan();
 
-            if (TimeSpanNow < gap[0]) return 0;
+            if (!gap.Any() || TimeSpanNow < gap[0]) return 0;
 
             int len = gap.Count;
             for (int i = 0; i < len; i++)
@@ -88,7 +89,7 @@ namespace Stand
 
             DateTime DateTimeNow = DateTime.Now;
 
-            if (Data.Instance.CallsMatrix == null) return res;
+            if (Data.Instance.CallsMatrix == null || DateTimeNow.DayOfWeek == DayOfWeek.Sunday) return res;
 
             int index = 0;
             switch (DateTimeNow.DayOfWeek)

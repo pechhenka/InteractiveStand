@@ -25,36 +25,57 @@ namespace Stand
         {
             try
             {
-                string sourcePath = Application.dataPath;//Папка проекта Unity
-                string dataPath = report.summary.outputPath;//Папка Data построенного проекта
-                string buildPath = dataPath.Replace(Application.productName + ".exe", "");//Папка построенного проекта
+                string source_Path = Application.dataPath + "/Editor/"; // ../Unity projects/InteractiveStand/Assets/Editor/
+                string build_Path = report.summary.outputPath // ../Interactive Stand/Interactive Stand.exe
+                    .Replace(Application.productName + ".exe", ""); // ../Interactive Stand/
 
-                sourcePath += @"/LocalData/";
-                dataPath = buildPath + Application.productName + "_Data/LocalData/";
+                string build_LocalDataPath = build_Path + Application.productName + "_Data/LocalData/";
+                string build_TaskSchedulerPath = build_Path + "Task scheduler/";
 
-                //Создаёт папку Data
-                if (!System.IO.Directory.Exists(dataPath))
-                {
-                    System.IO.Directory.CreateDirectory(dataPath);
-                }
+                if (!System.IO.Directory.Exists(build_LocalDataPath))
+                    System.IO.Directory.CreateDirectory(build_LocalDataPath);
+                if (!System.IO.Directory.Exists(build_TaskSchedulerPath))
+                    System.IO.Directory.CreateDirectory(build_TaskSchedulerPath);
 
-                //Копирует файлы из sourcePath в dataPath
-                string[] files = System.IO.Directory.GetFiles(sourcePath);
+                // Копирует таблицы и манифест
+                string[] files = System.IO.Directory.GetFiles(source_Path + "LocalData/");
                 foreach (string s in files)
                 {
                     if (s.Substring(s.Length - 5) == ".meta")
                         continue;
 
                     string fileName = System.IO.Path.GetFileName(s);
-                    string destFile = System.IO.Path.Combine(dataPath, fileName);
+                    string destFile = System.IO.Path.Combine(build_LocalDataPath, fileName);
                     System.IO.File.Copy(s, destFile, true);
                 }
 
-                //Удаляет ненужную папку
-                if (System.IO.Directory.Exists(buildPath + Application.productName + "_BackUpThisFolder_ButDontShipItWithYourGame"))
+                // Копирует Task scheduler
+                files = System.IO.Directory.GetFiles(source_Path + "Task scheduler/");
+                foreach (string s in files)
                 {
-                    System.IO.Directory.Delete(buildPath + Application.productName + "_BackUpThisFolder_ButDontShipItWithYourGame", true);
+                    if (s.Substring(s.Length - 5) == ".meta")
+                        continue;
+
+                    string fileName = System.IO.Path.GetFileName(s);
+                    string destFile = System.IO.Path.Combine(build_TaskSchedulerPath, fileName);
+                    System.IO.File.Copy(s, destFile, true);
                 }
+
+                // Копирует руководства обслуживания
+                files = System.IO.Directory.GetFiles(source_Path + "Guides/");
+                foreach (string s in files)
+                {
+                    if (s.Substring(s.Length - 5) == ".meta")
+                        continue;
+
+                    string fileName = System.IO.Path.GetFileName(s);
+                    string destFile = System.IO.Path.Combine(build_Path, fileName);
+                    System.IO.File.Copy(s, destFile, true);
+                }
+
+                //При сборке IL2CPP
+                if (System.IO.Directory.Exists(build_Path + Application.productName + "_BackUpThisFolder_ButDontShipItWithYourGame"))
+                    System.IO.Directory.Delete(build_Path + Application.productName + "_BackUpThisFolder_ButDontShipItWithYourGame", true);
             }
             catch (Exception e)
             {

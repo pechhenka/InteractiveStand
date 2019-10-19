@@ -26,7 +26,11 @@ namespace Stand
         {
             try
             {
+#if UNITY_EDITOR
+                DataPath = Application.dataPath + "/Editor/LocalData/";
+#else
                 DataPath = Application.dataPath + "/LocalData/";
+#endif
                 LocalManifest.LocalPathData = DataPath;
                 OutsideManifest.LocalPathData = DataPath;
                 LocalManifest.CurrentPathData = DataPath;
