@@ -62,7 +62,8 @@ namespace Stand
             List<IRecieve> cachedSignals;
 
             if (!signals.TryGetValue(typeof(T).GetHashCode(), out cachedSignals)) return;
-            cachedSignals.ForEach(x => (x as IReceive<T>)?.HandleSignal(val));
+            for (int i = cachedSignals.Count - 1; i >= 0; --i) // Походу выполнения могут неявно удаляться элементы из листа
+                (cachedSignals[i] as IReceive<T>)?.HandleSignal(val);
         }
 
         public void Dispose()
