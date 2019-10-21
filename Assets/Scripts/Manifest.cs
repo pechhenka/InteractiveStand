@@ -90,7 +90,7 @@ namespace Stand
 
                 foreach (string Values in ReadText.Split(';'))
                 {
-                    string[] s = Values.Split('=');
+                    string[] s = Values.Split(new char[] { '=' }, 2);
                     if (s.Length != 2) continue;
 
                     foreach (FieldInfo item in Fields)

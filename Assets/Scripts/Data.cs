@@ -49,18 +49,18 @@ namespace Stand
                         CurrentManifest = OutsideManifest;
                     }
                 }
-
-                try { CallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameCallsMatrix).GetSheetAt(0); }
+                
+                try { CallsMatrix = WorkbookFactory.Create(CurrentManifest.CallsMatrixCurrentPath).GetSheetAt(0); }
                 catch (Exception e) { Loger.Error<Data>(e.Message); }
-                try { LessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameLessonsMatrix).GetSheetAt(0); }
+                try { LessonsMatrix = WorkbookFactory.Create(CurrentManifest.LessonsMatrixCurrentPath).GetSheetAt(0); }
                 catch (Exception e) { Loger.Error<Data>(e.Message); }
-                try { ExtraMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameExtraMatrix).GetSheetAt(0); }
+                try { ExtraMatrix = WorkbookFactory.Create(CurrentManifest.ExtraMatrixCurrentPath).GetSheetAt(0); }
                 catch (Exception e) { Loger.Error<Data>(e.Message); }
                 if (CurrentManifest.SupportChangesSchedules)
                 {
-                    try { ChangeCallsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeCallsMatrix).GetSheetAt(0); }
+                    try { ChangeCallsMatrix = WorkbookFactory.Create(CurrentManifest.ChangeCallsMatrixCurrentPath).GetSheetAt(0); }
                     catch (Exception e) { Loger.Error<Data>(e.Message); }
-                    try { ChangeLessonsMatrix = WorkbookFactory.Create(DataPath + CurrentManifest.NameChangeLessonsMatrix).GetSheetAt(0); }
+                    try { ChangeLessonsMatrix = WorkbookFactory.Create(CurrentManifest.ChangeLessonsMatrixCurrentPath).GetSheetAt(0); }
                     catch (Exception e) { Loger.Error<Data>(e.Message); }
                 }
 
