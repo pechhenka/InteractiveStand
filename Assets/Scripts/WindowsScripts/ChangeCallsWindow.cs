@@ -26,10 +26,10 @@ namespace Stand
 
             GameObject go = null;
             bool First = true;
-            DateTime Today = DateTime.Now;
+            DateTime Today = DateTime.Now.Date;
             foreach(var item in Table)
             {
-                if ((item.date.Twins && item.date.Right < Today) || (!item.date.Twins && item.date.Left < Today)) continue;
+                if ((item.date.Twins && item.date.Right.Date < Today) || (!item.date.Twins && item.date.Left.Date < Today)) continue;
 
                 go = Instantiate(DateCallButton, DateButtons.transform);
                 go.GetComponentInChildren<Text>().text = item.date.ToShortDate();
@@ -45,15 +45,14 @@ namespace Stand
 
         public bool GetChanges()
         {
-            bool flag = false;
             List<(DateRange date, List<TimeSpan> times)> Table = CallsParser.Instance.GetListChangesCalls();
-            DateTime Today = DateTime.Now;
+            DateTime Today = DateTime.Now.Date;
             foreach (var item in Table)
             {
-                if ((item.date.Twins && item.date.Right < Today) || (!item.date.Twins && item.date.Left < Today)) continue;
-                flag = true;
+                if ((item.date.Twins && item.date.Right.Date < Today) || (!item.date.Twins && item.date.Left.Date < Today)) continue;
+                return true;
             }
-            return flag;
+            return false;
         }
 
         public void Choose((DateRange date, List<TimeSpan> times) item)
