@@ -54,7 +54,7 @@ namespace Stand
             WeeklyClassrooms.text = "";
             WeeklyLessons.text = "";
 
-            TableLessons tl = LessonsParser.Instance.GetTableLessonsWithoutChanges(CurrentClass,CurrentDay);
+            TableLessons tl = LessonsParser.Instance.GetTableLessonsWithoutChanges(CurrentClass, CurrentDay);
 
             foreach (string item in tl.Lesson)
                 WeeklyLessons.text += item + Environment.NewLine;

@@ -64,19 +64,19 @@ namespace Stand
 
         public (int Difference, int TimeLeft) AttitudeCalls()
         {
-            (TimeSpan? Last, TimeSpan? Next) res = BordersCalls();
+            (TimeSpan? Last, TimeSpan? Next) = BordersCalls();
 
             int Difference = 0;
             int TimeLeft = 0;
 
-            TimeSpan RightBorderTS = res.Next ?? new TimeSpan();
-            TimeSpan LeftBorderTS = res.Last ?? new TimeSpan();
+            TimeSpan RightBorderTS = Next ?? new TimeSpan();
+            TimeSpan LeftBorderTS = Last ?? new TimeSpan();
 
-            if (res.Next != null)
+            if (Next != null)
             {
                 TimeSpan TimeCurrentTS = DateTime.Now.ToTimeSpan();
                 TimeLeft = (int)(RightBorderTS - TimeCurrentTS).TotalSeconds;
-                if (res.Last != null)
+                if (Last != null)
                     Difference = (int)(RightBorderTS - LeftBorderTS).TotalSeconds;
             }
 

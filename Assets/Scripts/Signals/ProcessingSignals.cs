@@ -11,8 +11,7 @@ namespace Stand
 
         public void Add(IRecieve recieve, Type type)
         {
-            List<IRecieve> cachedSignals;
-            if (signals.TryGetValue(type.GetHashCode(), out cachedSignals))
+            if (signals.TryGetValue(type.GetHashCode(), out List<IRecieve> cachedSignals))
             {
                 cachedSignals.Add(recieve);
                 return;
@@ -23,8 +22,7 @@ namespace Stand
 
         public void Remove(IRecieve recieve, Type type)
         {
-            List<IRecieve> cachedSignals;
-            if (signals.TryGetValue(type.GetHashCode(), out cachedSignals))
+            if (signals.TryGetValue(type.GetHashCode(), out List<IRecieve> cachedSignals))
             {
                 cachedSignals.Remove(recieve);
             }
@@ -59,9 +57,7 @@ namespace Stand
 
         public void Send<T>(T val)
         {
-            List<IRecieve> cachedSignals;
-
-            if (!signals.TryGetValue(typeof(T).GetHashCode(), out cachedSignals)) return;
+            if (!signals.TryGetValue(typeof(T).GetHashCode(), out List<IRecieve>  cachedSignals)) return;
             for (int i = cachedSignals.Count - 1; i >= 0; --i) // Походу выполнения могут неявно удаляться элементы из листа
                 (cachedSignals[i] as IReceive<T>)?.HandleSignal(val);
         }

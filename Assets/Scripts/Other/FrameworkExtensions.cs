@@ -15,8 +15,7 @@ public static partial class FrameworkExtensions
 
     public static string ToShortDate(this DateRange d)
     {
-        string res = "";
-        res = d.Left.ToShortDate();
+        string res = d.Left.ToShortDate();
         if (d.Twins)
         {
             res += "-" + d.Right.ToShortDate();

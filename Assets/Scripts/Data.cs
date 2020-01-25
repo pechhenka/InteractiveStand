@@ -22,6 +22,9 @@ namespace Stand
         private readonly Manifest LocalManifest = new Manifest();
         private readonly Manifest OutsideManifest = new Manifest();
 
+        private FileSystemWatcher watcherLocal;
+        private FileSystemWatcher watcherOutside;
+
         void Awake()
         {
             try
@@ -81,10 +84,12 @@ namespace Stand
 
         void StartWatch()
         {
-            FileSystemWatcher watcherLocal = new FileSystemWatcher();
-            watcherLocal.Path = CurrentManifest.LocalPathData;
-            watcherLocal.NotifyFilter = NotifyFilters.LastWrite;
-            watcherLocal.Filter = "*.*";
+            watcherLocal = new FileSystemWatcher
+            {
+                Path = CurrentManifest.LocalPathData,
+                NotifyFilter = NotifyFilters.LastWrite,
+                Filter = "*.*"
+            };
             watcherLocal.Created += new FileSystemEventHandler(OnEventLocal);
             watcherLocal.Changed += new FileSystemEventHandler(OnEventLocal);
             watcherLocal.Deleted += new FileSystemEventHandler(OnEventLocal);
@@ -92,10 +97,12 @@ namespace Stand
 
             if (CurrentManifest.OutsidePathData != null)
             {
-                FileSystemWatcher watcherOutside = new FileSystemWatcher();
-                watcherOutside.Path = CurrentManifest.OutsidePathData;
-                watcherOutside.NotifyFilter = NotifyFilters.LastWrite;
-                watcherOutside.Filter = "*.*";
+                watcherOutside = new FileSystemWatcher
+                {
+                    Path = CurrentManifest.OutsidePathData,
+                    NotifyFilter = NotifyFilters.LastWrite,
+                    Filter = "*.*"
+                };
                 watcherOutside.Created += new FileSystemEventHandler(OnEventOutside);
                 watcherOutside.Changed += new FileSystemEventHandler(OnEventOutside);
                 watcherOutside.Deleted += new FileSystemEventHandler(OnEventOutside);
@@ -105,16 +112,16 @@ namespace Stand
 
         void OnEventLocal(object source, FileSystemEventArgs e)
         {
-            Func<string, ISheet> GetMatrix = (s) =>
+            ISheet GetMatrix(string s)
             {
                 ISheet res = null;
                 if ((LocalManifest.OutsidePathData != null && File.Exists(s)) || (e.ChangeType == WatcherChangeTypes.Deleted))
                     return res;
 
                 try { res = WorkbookFactory.Create(e.FullPath).GetSheetAt(0); }
-                catch (Exception ex) { Loger.Error<Data>(ex.Message); }
+                catch (Exception ex) { Loger.Error<Data>(ex); }
                 return res;
-            };
+            }
             if (e.FullPath.EqualsPath(LocalManifest.CallsMatrixLocalPath))
             {
                 ISheet t = GetMatrix(OutsideManifest.CallsMatrixOutsidePath);
@@ -164,16 +171,16 @@ namespace Stand
 
         void OnEventOutside(object source, FileSystemEventArgs e)
         {
-            Func<ISheet> GetMatrix = () =>
+            ISheet GetMatrix()
             {
                 ISheet res = null;
                 if (e.ChangeType == WatcherChangeTypes.Deleted)
                     return res;
 
                 try { res = WorkbookFactory.Create(e.FullPath).GetSheetAt(0); }
-                catch (Exception ex) { Loger.Error<Data>(ex.Message); }
+                catch (Exception ex) { Loger.Error<Data>(ex); }
                 return res;
-            };
+            }
             if (e.FullPath.EqualsPath(OutsideManifest.CallsMatrixOutsidePath))
             {
                 ISheet t = GetMatrix();

@@ -19,8 +19,8 @@ namespace Stand
         public AnimationCurve ScaleCam;
         public AnimationCurve GrayScaleAnim;
 
-        private float NoBlind = 5f;
-        private float YesBlind = 4.3f;
+        private readonly float NoBlind = 5f;
+        private readonly float YesBlind = 4.3f;
         private float StartAnimBlind = -10f;
 
         [Header("Buttons")]

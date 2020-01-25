@@ -47,9 +47,9 @@ namespace Stand
         {
             List<(DateRange date, List<TimeSpan> times)> Table = CallsParser.Instance.GetListChangesCalls();
             DateTime Today = DateTime.Now.Date;
-            foreach (var item in Table)
+            foreach (var (date, times) in Table)
             {
-                if ((item.date.Twins && item.date.Right.Date < Today) || (!item.date.Twins && item.date.Left.Date < Today)) continue;
+                if ((date.Twins && date.Right.Date < Today) || (!date.Twins && date.Left.Date < Today)) continue;
                 return true;
             }
             return false;

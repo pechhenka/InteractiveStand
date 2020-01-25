@@ -15,7 +15,6 @@ namespace Stand
 
             List<Class> res = new List<Class>();
             int len;
-            int number;
             foreach (ICell item in ClassesRow)
             {
                 string s = item.Cell();
@@ -23,7 +22,7 @@ namespace Stand
 
                 len = s.Length;
 
-                if (int.TryParse(s.Substring(0, len - 1), out number))
+                if (int.TryParse(s.Substring(0, len - 1), out int number))
                     if (number >= 5 && number <= 11)
                         res.Add(new Class(s));
             }
@@ -38,7 +37,6 @@ namespace Stand
 
             List<Class> res = new List<Class>();
             int len;
-            int number;
             foreach (ICell item in ClassesRow)
             {
                 string s = item.Cell();
@@ -46,7 +44,7 @@ namespace Stand
 
                 len = s.Length;
 
-                if (int.TryParse(s.Substring(0, len - 1), out number))
+                if (int.TryParse(s.Substring(0, len - 1), out int number))
                     if (number >= 5 && number <= 11)
                         res.Add(new Class(s));
             }
@@ -77,7 +75,6 @@ namespace Stand
                 int LastRow = Data.Instance.LessonsMatrix.LastRowNum;
 
                 int NumberCounter = 0;
-                int CurNum = 0;
                 int LastNum = 0;
                 int j = 0;
                 bool LineSwitch = false;
@@ -92,7 +89,7 @@ namespace Stand
                         ) ?? "";
                     if (val == "") { j++; continue; }
 
-                    if (!int.TryParse(val, out CurNum)) { j++; continue; }
+                    if (!int.TryParse(val, out int CurNum)) { j++; continue; }
 
                     if (CurNum < LastNum)
                     {
@@ -148,11 +145,6 @@ namespace Stand
             }
 
             return new TableLessons(Lesson, Cabinet);
-        }
-
-        public TableLessons GetTableLessons(Class c)
-        {
-            throw new System.NotImplementedException();
         }
 
         void IReceive<SignalLessonsMatrixChanged>.HandleSignal(SignalLessonsMatrixChanged arg)

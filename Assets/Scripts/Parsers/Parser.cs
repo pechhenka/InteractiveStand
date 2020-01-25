@@ -6,7 +6,7 @@ namespace Stand
     public class Parser<T> where T : new()
     {
         private static T _instance;
-        private static object _lock = new object();
+        private static readonly object _lock = new object();
 
         public static T Instance
         {

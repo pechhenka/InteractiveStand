@@ -136,7 +136,7 @@ namespace Stand
             CurrentExtraBlock = 0;
             LengthExtraBlocks = extra.Amount;
 
-            GameObject go = null;
+            GameObject go;
             if (extra.Amount == 0)
             {
                 go = Instantiate(InformationBlockPrefab, InformationsBlocks.transform);
