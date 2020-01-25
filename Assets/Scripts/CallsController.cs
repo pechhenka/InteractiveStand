@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine.Networking;
+using System.Collections.Generic;
 
 namespace Stand
 {
@@ -48,7 +49,9 @@ namespace Stand
                         TimeSetToPrecedingCall = true;
                     }
                     TimeSetToCall = true;
-                    Loger.Log("звонок", $"время звонка установлено на:{TimeToCall}");
+                    Loger.Log("Звонок", new List<KeyValuePair<string, string>>(){
+                        new KeyValuePair<string, string>("время звонка установлено", TimeToCall.ToString())
+                    });
                 }
             }
         }
@@ -57,13 +60,17 @@ namespace Stand
         {
             UnityWebRequest.Get(Data.Instance.CurrentManifest.WebsiteAddress + "Call?" + Data.Instance.CurrentManifest.PrecedingCallOptions).SendWebRequest();
 
-            Loger.Log("звонок", "включен предшествующий звонок параметр:" + Data.Instance.CurrentManifest.PrecedingCallOptions);
+            Loger.Log("Звонок", new List<KeyValuePair<string, string>>(){
+                new KeyValuePair<string, string>("включен предшествующий звонок", Data.Instance.CurrentManifest.PrecedingCallOptions.ToString())
+            });
         }
         public void Call()
         {
             UnityWebRequest.Get(Data.Instance.CurrentManifest.WebsiteAddress + "Call?c=" + Data.Instance.CurrentManifest.CallOptions).SendWebRequest();
 
-            Loger.Log("звонок", "включен звонок параметр:" + Data.Instance.CurrentManifest.CallOptions);
+            Loger.Log("Звонок", new List<KeyValuePair<string, string>>(){
+                new KeyValuePair<string, string>("включен звонок", Data.Instance.CurrentManifest.CallOptions.ToString())
+            });
         }
 
         void IReceive<SignalCallsMatrixChanged>.HandleSignal(SignalCallsMatrixChanged arg) => TimeSetToCall = false;

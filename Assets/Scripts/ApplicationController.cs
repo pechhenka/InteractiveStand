@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 namespace Stand
 {
@@ -24,7 +25,9 @@ namespace Stand
                 if (!Quit)
                 {
                     Quit = true;
-                    Loger.Log("Стенд", "Выход с клавиатуры");
+                    Loger.Log("Стенд", new List<KeyValuePair<string, string>>(){
+                        new KeyValuePair<string, string>("Выход с клавиатуры", null)
+                    });
                     Application.Quit();
                 }
             }
@@ -34,7 +37,10 @@ namespace Stand
 
             if ((DownTime > 0) && LastTouch + DownTime < Time.time)
             {
-                Loger.Log("Стенд", $"Возврат в нальное состояние LastTouch:{LastTouch}");
+                Loger.Log("Стенд", new List<KeyValuePair<string, string>>(){
+                    new KeyValuePair<string, string>("Возврат в нальное состояние", null),
+                    new KeyValuePair<string, string>("LastTouch", LastTouch.ToString())
+                });
                 ProcessingSignals.Default.Send(new SignalSceneRaload());
                 LastTouch = Time.time;
                 SceneManager.LoadScene(1);
@@ -43,18 +49,24 @@ namespace Stand
 
         void OnApplicationFocus(bool focus)
         {
-            Loger.Log("Стенд", "MonoBehaviour.OnApplicationFocus:" + focus);
+            Loger.Log("Стенд", new List<KeyValuePair<string, string>>(){
+                new KeyValuePair<string, string>("OnApplicationFocus", focus.ToString())
+            });
         }
 
         void OnApplicationPause(bool pause)
         {
-            Loger.Log("Стенд", "MonoBehaviour.OnApplicationPause:" + pause);
+            Loger.Log("Стенд", new List<KeyValuePair<string, string>>(){
+                new KeyValuePair<string, string>("OnApplicationPause", pause.ToString())
+            });
         }
 
         void OnApplicationQuit()
         {
             if (!Quit)
-                Loger.Log("Стенд", "Закрыт");
+                Loger.Log("Стенд", new List<KeyValuePair<string, string>>(){
+                    new KeyValuePair<string, string>("Закрыт", null)
+                });
         }
     }
 }

@@ -49,19 +49,19 @@ namespace Stand
                         CurrentManifest = OutsideManifest;
                     }
                 }
-                
+
                 try { CallsMatrix = WorkbookFactory.Create(CurrentManifest.CallsMatrixCurrentPath).GetSheetAt(0); }
-                catch (Exception e) { Loger.Error<Data>(e.Message); }
+                catch (Exception e) { Loger.Error<Data>(e); }
                 try { LessonsMatrix = WorkbookFactory.Create(CurrentManifest.LessonsMatrixCurrentPath).GetSheetAt(0); }
-                catch (Exception e) { Loger.Error<Data>(e.Message); }
+                catch (Exception e) { Loger.Error<Data>(e); }
                 try { ExtraMatrix = WorkbookFactory.Create(CurrentManifest.ExtraMatrixCurrentPath).GetSheetAt(0); }
-                catch (Exception e) { Loger.Error<Data>(e.Message); }
+                catch (Exception e) { Loger.Error<Data>(e); }
                 if (CurrentManifest.SupportChangesSchedules)
                 {
                     try { ChangeCallsMatrix = WorkbookFactory.Create(CurrentManifest.ChangeCallsMatrixCurrentPath).GetSheetAt(0); }
-                    catch (Exception e) { Loger.Error<Data>(e.Message); }
+                    catch (Exception e) { Loger.Error<Data>(e); }
                     try { ChangeLessonsMatrix = WorkbookFactory.Create(CurrentManifest.ChangeLessonsMatrixCurrentPath).GetSheetAt(0); }
-                    catch (Exception e) { Loger.Error<Data>(e.Message); }
+                    catch (Exception e) { Loger.Error<Data>(e); }
                 }
 
                 ProcessingSignals.Default.Add(CallsParser.Instance);
@@ -69,13 +69,13 @@ namespace Stand
                 ProcessingSignals.Default.Add(ExtraParser.Instance);
 
                 try { StartWatch(); }
-                catch (Exception e) { Loger.Error<Data>(e.Message); }
+                catch (Exception e) { Loger.Error<Data>(e); }
 
                 ApplicationController.Instance.DownTime = CurrentManifest.DownTime;
             }
             catch (Exception e)
             {
-                Loger.Error<Data>(e.Message);
+                Loger.Error<Data>(e);
             }
         }
 

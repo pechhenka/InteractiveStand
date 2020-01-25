@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -150,7 +151,9 @@ namespace Stand
             TimePanelWindow.SetActive(true);
             MainCurrentWindow.SetActive(!Open);
             TimePanelWindow.Merge(Open);
-            Loger.Log("Окно звонков", Open ? "открыли" : "закрыли");
+            Loger.Log("(UIC)Окно звонков", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",Open ? "открыли" : "закрыли")
+            });
         }
 
         public void OpenLessonsWindow(bool Open)
@@ -159,7 +162,9 @@ namespace Stand
             LessonsWindow.SetActive(Open);
             TimePanelWindow.SetActive(!Open);
             MainCurrentWindow.SetActive(!Open);
-            Loger.Log("Окно уроков", Open ? "открыли" : "закрыли");
+            Loger.Log("(UIC)Окно уроков", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",Open ? "открыли" : "закрыли")
+            });
         }
 
         public void OpenLessons_ClassWindow(bool Open)
@@ -168,7 +173,9 @@ namespace Stand
             LessonsWindow.SetActive(true);
             TimePanelWindow.SetActive(false);
             MainCurrentWindow.SetActive(false);
-            Loger.Log("Окно занятий", Open ? "открыли" : "закрыли");
+            Loger.Log("(UIC)Окно занятий", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",Open ? "открыли" : "закрыли")
+            });
         }
 
         public void OpenExtraWindow(bool Open)
@@ -180,7 +187,9 @@ namespace Stand
             MainCurrentWindow.SetActive(!Open);
             ExtraWindow.SetActive(Open);
             TimePanelWindow.SetActive(true);
-            Loger.Log("Окно доп.секций", Open ? "открыли" : "закрыли");
+            Loger.Log("(UIC)Окно доп.секций", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",Open ? "открыли" : "закрыли")
+            });
         }
 
         public void OpenChangeCallsWindow(bool Open)
@@ -192,7 +201,9 @@ namespace Stand
             MainCurrentWindow.SetActive(!Open);
             ChangeCallsWindow.SetActive(Open);
             TimePanelWindow.SetActive(true);
-            Loger.Log("Окно изменений звонков", Open ? "открыли" : "закрыли");
+            Loger.Log("(UIC)Окно изменений звонков", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",Open ? "открыли" : "закрыли")
+            });
         }
         public void OpenChangeLessonsWindow(bool Open)
         {
@@ -203,7 +214,9 @@ namespace Stand
             MainCurrentWindow.SetActive(!Open);
             ChangeLessonsWindow.SetActive(Open);
             TimePanelWindow.SetActive(true);
-            Loger.Log("Окно изменений звонков", Open ? "открыли" : "закрыли");
+            Loger.Log("(UIC)Окно изменений уроков", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",Open ? "открыли" : "закрыли")
+            });
         }
         void HideAll()
         {
@@ -220,7 +233,9 @@ namespace Stand
         public void OnClickBlindMode()
         {
             BlindMode = !BlindMode;
-            Loger.Log("BlindMode", BlindMode ? "включён" : "выключен");
+            Loger.Log("(UIC)BlindMode", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Действие",BlindMode ? "Включён" : "Выключен")
+            });
             StartAnimBlind = Time.time;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,10 @@ namespace Stand
 
         public override void ChooseClass(string Class)
         {
-            Loger.Log("Окно занятий", "открыли");
+            Loger.Warning("Окно занятий", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Открыли", null)
+            });
+
             CurrentClass = new Class(Class);
             ChooseDay(DateTime.Now.DayOfWeek);
             HeadlineWeeklySchedule.text = CurrentDay.ConvertToString(false) + " " + CurrentClass.ToString();
@@ -35,7 +39,11 @@ namespace Stand
             }
             else
             {
-                Loger.Log($"Окно занятий&Class:{CurrentClass.ToString()}&IdDay:{CurrentDay}", "нервное касание");
+                Loger.Log("Окно занятий", new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("Class", CurrentClass.ToString()),
+                    new KeyValuePair<string, string>("IdDay", CurrentDay.ToString()),
+                    new KeyValuePair<string, string>("Повтор", null),
+                });
             }
         }
 
@@ -54,7 +62,11 @@ namespace Stand
             foreach (string item in tl.Cabinet)
                 WeeklyClassrooms.text += item + Environment.NewLine;
 
-            Loger.Log($"Окно занятий&Class:{CurrentClass.ToString()}&IdDay:{CurrentDay.Normalising()}", "открыли");
+            Loger.Log("Окно занятий", new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("Class", CurrentClass.ToString()),
+                    new KeyValuePair<string, string>("IdDay", CurrentDay.ToString()),
+                    new KeyValuePair<string, string>("Открыли", null),
+                });
         }
 
         public override void PrimaryFill() => Fill();

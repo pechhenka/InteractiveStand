@@ -58,7 +58,11 @@ namespace Stand
                     res.Add(dt);
                 }
                 else
-                    Loger.Warning("Parser", "неправильная часть команды:" + s + "&" + c);
+                    Loger.Warning("Parser", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("Неправильный синтаксис команды","DatesRange"),
+                        new KeyValuePair<string, string>("s",s),
+                        new KeyValuePair<string, string>("c",c)
+                    });
             }
 
             return res;
@@ -92,7 +96,11 @@ namespace Stand
                         res.Add(day);
                 }
                 else
-                    Loger.Warning("Parser", "неправильная часть команды:" + s + "&" + c);
+                    Loger.Warning("Parser", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("Неправильный синтаксис команды","Dates"),
+                        new KeyValuePair<string, string>("s",s),
+                        new KeyValuePair<string, string>("c",c)
+                    });
             }
 
             return res;
@@ -128,7 +136,11 @@ namespace Stand
                         return true;
                 }
                 else
-                    Loger.Warning("Parser", "неправильная часть команды:" + s + "&" + c);
+                    Loger.Warning("Parser", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("Неправильный синтаксис команды","ContainsDate"),
+                        new KeyValuePair<string, string>("s",s),
+                        new KeyValuePair<string, string>("c",c)
+                    });
             }
 
             return false;
@@ -186,7 +198,11 @@ namespace Stand
                     res.Add(ToTime(a[1]));
                 }
                 else
-                    Loger.Warning("Parser", "неправильная часть команды:" + s + "&" + c);
+                    Loger.Warning("Parser", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("Неправильный синтаксис команды","Times"),
+                        new KeyValuePair<string, string>("s",s),
+                        new KeyValuePair<string, string>("c",c)
+                    });
             }
 
             return res;
@@ -231,7 +247,11 @@ namespace Stand
                         return true;
                 }
                 else
-                    Loger.Warning("Parser", "неправильная часть команды:" + s + "&" + c);
+                    Loger.Warning("Parser", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("Неправильный синтаксис команды","ContainsCall"),
+                        new KeyValuePair<string, string>("s",s),
+                        new KeyValuePair<string, string>("c",c)
+                    });
             }
 
             return false;

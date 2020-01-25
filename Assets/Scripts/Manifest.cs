@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -112,7 +113,11 @@ namespace Stand
                             }
                             else
                             {
-                                Loger.Warning(path, $"Не прочитаное значение:&{s[0]}&{s[1]}");
+                                Loger.Warning(path, new List<KeyValuePair<string, string>>(){
+                                    new KeyValuePair<string, string>("Не удалось прочитать аргумент", null),
+                                    new KeyValuePair<string, string>("Key",s[0]),
+                                    new KeyValuePair<string, string>("Value",s[1])
+                                });
                             }
                             break;
                         }
@@ -122,7 +127,12 @@ namespace Stand
             }
             catch (Exception e)
             {
-                Loger.Warning(path, "Ошибка чтения манифеста:" + e.Message);
+                Loger.Warning(path, new List<KeyValuePair<string, string>>(){
+                    new KeyValuePair<string, string>("Ошибка чтения манифеста", null),
+                    new KeyValuePair<string, string>("Message",e.Message),
+                    new KeyValuePair<string, string>("StackTrace",e.StackTrace),
+                    new KeyValuePair<string, string>("Source",e.Source)
+                });
             }
             return false;
         }

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 namespace Stand
 {
@@ -19,7 +20,9 @@ namespace Stand
         {
             if (!anim.isPlaying)
             {
-                Loger.Log("Пасхалка", "вход");
+                Loger.Log("Пасхалка", new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("Вход",null)
+                });
                 anim.Play("OnAboutTheAuthor");
             }
         }
@@ -28,7 +31,9 @@ namespace Stand
         {
             if (!anim.isPlaying)
             {
-                Loger.Log("Пасхалка", "выход");
+                Loger.Log("Пасхалка", new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("Выход",null)
+                });
                 anim.Play("OffAboutTheAuthor");
             }
         }

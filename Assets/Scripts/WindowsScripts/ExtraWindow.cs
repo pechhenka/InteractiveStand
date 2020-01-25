@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -121,7 +122,10 @@ namespace Stand
         public override void Refill() => PrimaryFill();
         public override void Fill()
         {
-            Loger.Log($"Окно доп.секций&IdDay:{CurrentExtraDay}", "открыли");
+            Loger.Log("Окно доп.секций", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Открыли",null),
+                new KeyValuePair<string, string>("IdDay",CurrentExtraDay.ToString())
+            });
 
             foreach (Transform child in InformationsBlocks.transform)
                 Destroy(child.gameObject);
@@ -175,7 +179,10 @@ namespace Stand
             }
             else
             {
-                Loger.Log($"Окно доп.секций&IdDay:{CurrentExtraDay}", "нервное касание");
+                Loger.Log("Окно доп.секций", new List<KeyValuePair<string, string>> {
+                    new KeyValuePair<string, string>("Повтор",null),
+                    new KeyValuePair<string, string>("IdDay",CurrentExtraDay.ToString())
+                });
             }
         }
 

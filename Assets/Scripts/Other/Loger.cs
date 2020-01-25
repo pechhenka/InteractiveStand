@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Stand
 {
@@ -13,21 +14,13 @@ namespace Stand
         private const string NameWarningsLog = "LogWarnings_Stand.txt";
         private const string NameErrorsLog = "LogErrors_Stand.txt";
 
-        public static void Log(string Name, string Body)
+        private static void WriteLog(in bool recording, in string writePath, in string Name, in string Body)
         {
-            if (!Data.Instance.CurrentManifest.LogNotesRecording)
-                return;
-
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameNotesLog;
-
-            if (Name == null || Name == "")
-                Name = "Untagged";
-            if (Body == null || Body == "")
-                Body = "Untagged";
+            if (!recording) return;
 
             string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
-            line += Name + "|";
-            line += Body + ";";
+            line += (string.IsNullOrEmpty(Name) ? "Untagged" : Name) + "|";
+            line += (string.IsNullOrEmpty(Body) ? "Untagged" : Body) + ";";
 
             try
             {
@@ -41,177 +34,117 @@ namespace Stand
             }
             catch (Exception e)
             {
+#if UNITY_EDITOR
                 Debug.LogWarning(line + '\n' + e.Message);
+#endif
             }
         }
 
-        public static void Log<Name>(string Body)
+        #region Log
+        [Obsolete("This method will soon be deprecated. Use new Log method with List<KeyValuePair<string, string>> instead.")]
+        public static void Log(in string Name, in string Body)
         {
-            if (!Data.Instance.CurrentManifest.LogNotesRecording)
-                return;
-
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameNotesLog;
-
-            if (Body == null || Body == "")
-                Body = "Untagged";
-
-            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
-            line += typeof(Name).ToString() + "|";
-            line += Body + ";";
-
-            try
-            {
-                if (!File.Exists(writePath))
-                    CreateFile(writePath);
-
-                using (StreamWriter sw = new StreamWriter(writePath, true))
-                {
-                    sw.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(line + '\n' + e.Message);
-            }
+            WriteLog(Data.Instance.CurrentManifest.LogNotesRecording,
+#if UNITY_EDITOR
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameNotesLog,
+#else
+                Application.dataPath + "/Logs/" + NameNotesLog,
+#endif
+                Name, Body);
         }
 
+        [Obsolete("This method will soon be deprecated. Use new Log method with List<KeyValuePair<string, string>> instead.")]
+        public static void Log<Name>(in string Body) => Log(typeof(Name).ToString(), Body);
+
+        public static void Log(in string Name, in List<KeyValuePair<string, string>> args)
+        {
+#pragma warning disable CS0618 // Тип или член устарел
+            Log(Name, args.ArgsToString());
+#pragma warning restore CS0618 // Тип или член устарел
+        }
+
+        public static void Log<Name>(in List<KeyValuePair<string, string>> args) => Log(typeof(Name).ToString(), args);
+        #endregion
+
+        #region Warning
+        [Obsolete("This method will soon be deprecated. Use new Log method with List<KeyValuePair<string, string>> instead.")]
         public static void Warning(string Name, string Body)
         {
-            if (!Data.Instance.CurrentManifest.LogWarningsRecording)
-                return;
-
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameWarningsLog;
-
-            if (Name == null || Name == "")
-                Name = "Untagged";
-            if (Body == null || Body == "")
-                Body = "Untagged";
-
-            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
-            line += Name + "|";
-            line += Body + ";";
-
-            try
-            {
-                if (!File.Exists(writePath))
-                    CreateFile(writePath);
-
-                using (StreamWriter sw = new StreamWriter(writePath, true))
-                {
-                    sw.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(line + '\n' + e.Message);
-            }
+            WriteLog(Data.Instance.CurrentManifest.LogWarningsRecording,
+#if UNITY_EDITOR
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameWarningsLog,
+#else
+                Application.dataPath + "/Logs/" + NameWarningsLog,
+#endif
+            Name, Body);
         }
 
-        public static void Warning<Name>(string Body)
+        [Obsolete("This method will soon be deprecated. Use new Log method with List<KeyValuePair<string, string>> instead.")]
+        public static void Warning<Name>(string Body) => Warning(typeof(Name).ToString(), Body);
+        public static void Warning(in string Name, in List<KeyValuePair<string, string>> args)
         {
-            if (!Data.Instance.CurrentManifest.LogWarningsRecording)
-                return;
-
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameWarningsLog;
-
-            if (Body == null || Body == "")
-                Body = "Untagged";
-
-            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
-            line += typeof(Name).ToString() + "|";
-            line += Body + ";";
-
-            try
-            {
-                if (!File.Exists(writePath))
-                    CreateFile(writePath);
-
-                using (StreamWriter sw = new StreamWriter(writePath, true))
-                {
-                    sw.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(line + '\n' + e.Message);
-            }
+#pragma warning disable CS0618 // Тип или член устарел
+            Warning(Name, args.ArgsToString());
+#pragma warning restore CS0618 // Тип или член устарел
         }
 
+        public static void Warning<Name>(in List<KeyValuePair<string, string>> args) => Warning(typeof(Name).ToString(), args);
+        #endregion
+
+        #region Error
+        [Obsolete("This method will soon be deprecated. Use new Log method with List<KeyValuePair<string, string>> instead.")]
         public static void Error(string Name, string Body)
         {
-            if (!Data.Instance.CurrentManifest.LogErrorsRecording)
-                return;
-
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameErrorsLog;
-
-            if (Name == null || Name == "")
-                Name = "Untagged";
-            if (Body == null || Body == "")
-                Body = "Untagged";
-
-            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
-            line += Name + "|";
-            line += Body + ";";
-
-            try
-            {
-                if (!File.Exists(writePath))
-                    CreateFile(writePath);
-
-                using (StreamWriter sw = new StreamWriter(writePath, true))
-                {
-                    sw.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(line + '\n' + e.Message);
-            }
+            WriteLog(Data.Instance.CurrentManifest.LogErrorsRecording,
+#if UNITY_EDITOR
+                Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameErrorsLog,
+#else
+                Application.dataPath + "/Logs/" + NameErrorsLog,
+#endif
+            Name, Body);
         }
 
-        public static void Error<Name>(string Body)
+        [Obsolete("This method will soon be deprecated. Use new Log method with List<KeyValuePair<string, string>> instead.")]
+        public static void Error<Name>(string Body) => Error(typeof(Name).ToString(), Body);
+
+        public static void Error(in string Name, in List<KeyValuePair<string, string>> args)
         {
-            if (!Data.Instance.CurrentManifest.LogErrorsRecording)
-                return;
-
-            string writePath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + @"\" + NameErrorsLog;
-
-            if (Body == null || Body == "")
-                Body = "Untagged";
-
-            string line = DateTime.Now.ToString("yyyy.MM.dd|HH:mm:ss|");
-            line += typeof(Name).ToString() + "|";
-            line += Body + ";";
-
-            try
-            {
-                if (!File.Exists(writePath))
-                    CreateFile(writePath);
-
-                using (StreamWriter sw = new StreamWriter(writePath, true))
-                {
-                    sw.WriteLine(line);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogWarning(line + '\n' + e.Message);
-            }
+#pragma warning disable CS0618 // Тип или член устарел
+            Error(Name, args.ArgsToString());
+#pragma warning restore CS0618 // Тип или член устарел
         }
+
+        public static void Error<Name>(in List<KeyValuePair<string, string>> args) => Error(typeof(Name).ToString(), args);
+
+        public static void Error(in string Name, in Exception e)
+        {
+            Error(Name, new List<KeyValuePair<string, string>>()
+            {
+                new KeyValuePair<string, string>("Message",e.Message),
+                new KeyValuePair<string, string>("StackTrace",e.StackTrace),
+                new KeyValuePair<string, string>("Source",e.Source)
+            });
+        }
+
+        public static void Error<Name>(in Exception e) => Error(typeof(Name).ToString(), e);
+        #endregion
 
         private static void CreateFile(string writePath)
         {
             using (StreamWriter sw = new StreamWriter(writePath, true))
             {
-                sw.WriteLine("date|time|key|value;");
+                sw.WriteLine("date|time|topic|arguments;");
             }
-            Log("Лог файл", "не обнаржен&был создан");
+            Log("Loger", new List<KeyValuePair<string, string>> {
+                new KeyValuePair<string, string>("Создан лог",writePath)
+            });
         }
 
         public static void StartLoger()
         {
             Application.logMessageReceived += HandleLog;
         }
+
         static void HandleLog(string logString, string stackTrace, LogType type)
         {
             switch (type)
@@ -219,18 +152,49 @@ namespace Stand
                 case LogType.Log:
                     if (!Data.Instance.CurrentManifest.LogNotesRecording) return;
 
-                    Log("HookConsole", logString + "&" + stackTrace + "&" + "LogType:" + type.ToString());
+                    Log("HookConsole", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("logString",logString),
+                        new KeyValuePair<string, string>("stackTrace",stackTrace),
+                        new KeyValuePair<string, string>("LogType",type.ToString())
+                    });
                     break;
                 case LogType.Warning:
                     if (!Data.Instance.CurrentManifest.LogWarningsRecording) return;
 
-                    Warning("HookConsole", logString + "&" + stackTrace + "&" + "LogType:" + type.ToString());
+                    Warning("HookConsole", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("logString",logString),
+                        new KeyValuePair<string, string>("stackTrace",stackTrace),
+                        new KeyValuePair<string, string>("LogType",type.ToString())
+                    });
                     break;
                 default:
                     if (!Data.Instance.CurrentManifest.LogErrorsRecording) return;
-                    Error("HookConsole", logString + "&" + stackTrace + "&" + "LogType:" + type.ToString());
+
+                    Error("HookConsole", new List<KeyValuePair<string, string>> {
+                        new KeyValuePair<string, string>("logString",logString),
+                        new KeyValuePair<string, string>("stackTrace",stackTrace),
+                        new KeyValuePair<string, string>("LogType",type.ToString())
+                    });
                     break;
             }
+        }
+
+        private static string ArgsToString(this List<KeyValuePair<string, string>> args)
+        {
+            if (args is null) throw new ArgumentNullException(nameof(args));
+
+            string body = "";
+            foreach (var item in args)
+            {
+                if (body != "") body += '&';
+                if (!string.IsNullOrEmpty(item.Key))
+                {
+                    body += item.Key;
+                    if (!string.IsNullOrEmpty(item.Value))
+                        body += '=' + item.Value;
+                }
+            }
+            return body;
         }
     }
 }
