@@ -39,8 +39,8 @@
 ![Вид окна](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/EnterArduinoIDELibraryManager.png)
 
 В поиске открывшегося окна вводим `Adafruit_SSD1306` и жмём установить, аналогично делаем для `Adafruit_GFX`:
-![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/Adafruit_SSD1306.png)
-![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/Adafruit_GFX.png)
+![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/InstallAdafruit_SSD1306.png.png)
+![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/InstallAdafruit_GFX.png)
 
 Поздравляю x2!! Остаётся только раскомментировать следующую строку в программе:
 ```C++
