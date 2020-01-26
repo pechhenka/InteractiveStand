@@ -24,9 +24,9 @@ IPAddress WhiteListIP[]={//IP адресса от которых можно по
 
 ESP8266WebServer server(80);//порт сервера (80 - HTTP) 
 #ifdef Display
-#include <Adafruit_GFX.h>
+//#include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <Thread.h>
+#include "Thread.h"
 Adafruit_SSD1306 display(128, 64, &Wire);// ширина, высота, I2C: дисплея
 Thread ThreadWorkIndicator = Thread(); // поток для индикатора работы
 #endif
@@ -96,8 +96,8 @@ void setup(){
   display.setCursor(0,56);
   display.println(" made by pechhenka.ru  ");
   display.display();
-  ThreadWorkIndicator.onRun(WorkIndicator);
   ThreadWorkIndicator.setInterval(500);
+  ThreadWorkIndicator.onRun(WorkIndicator);
   #endif
 
   Serial.println();
