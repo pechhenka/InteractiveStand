@@ -131,7 +131,10 @@ namespace Stand
 
         private static void CreateFile(string writePath)
         {
-            using (StreamWriter sw = new StreamWriter(writePath, true))
+            FileInfo fi = new FileInfo(writePath);
+            if (!fi.Directory.Exists)
+                Directory.CreateDirectory(fi.DirectoryName);
+            using (StreamWriter sw = new StreamWriter(writePath, false))
             {
                 sw.WriteLine("date|time|topic|arguments;");
             }
