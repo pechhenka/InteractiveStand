@@ -25,7 +25,7 @@
 
 Далее надо пройти в «Инструменты» и выбрать нужный COM порт, потом ставим Upload Speed:«921600» (остальные настройки можно оставить по умолчанию, тем самым у меня были следующие настройки):
 
-![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/Extras/PlateSettings.png)
+![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/PlateSettings.png)
 
 Если вам будет необходима отладка ПО в мониторе порта выставьте скорость 74880 бод и «NL & CR»:
 ![Вид окна](https://habrastorage.org/files/83b/d9d/297/83bd9d2977d948158c56f675c5c8be1b.png)
@@ -36,11 +36,11 @@
 Для "оживления" дисплея остаётся только установить `Adafruit_SSD1306` и `Adafruit_GFX`
 
 Предпочтительным способом установки является использование Arduino IDE Library Manager.
-![Вид окна](https://raw.githubusercontent.com/pechhenka/InteractiveStand/Extras/EnterArduinoIDELibraryManager.png)
+![Вид окна](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/EnterArduinoIDELibraryManager.png)
 
 В поиске открывшегося окна вводим `Adafruit_SSD1306` и жмём установить, аналогично делаем для `Adafruit_GFX`:
-![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/Extras/Adafruit_SSD1306.png)
-![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/Extras/Adafruit_GFX.png)
+![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/Adafruit_SSD1306.png)
+![Вид меню](https://raw.githubusercontent.com/pechhenka/InteractiveStand/master/Extras/Adafruit_GFX.png)
 
 Поздравляю x2!! Остаётся только раскомментировать следующую строку в программе:
 ```C++
